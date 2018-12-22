@@ -1,10 +1,10 @@
-export const OverlayExifProperties = [
-  'Model',
-  'FocalLength',
-  'FNumber',
-  'ExposureTime',
-  'ISOSpeedRatings',
-];
+export enum OverlayExifProperties {
+  Model = 'Camera',
+  FocalLength = 'Focal length',
+  FNumber = 'Aperture',
+  ExposureTime = 'Exposure',
+  ISOSpeedRatings = 'ISO',
+}
 
 export enum OverlayClasses {
   Overlay = 'exify-overlay',
@@ -18,3 +18,4 @@ export enum OverlayClasses {
 }
 
 export const OverlayHeight = 60;
+export const MinLongSideLength = 600;

@@ -6,6 +6,26 @@ import {
 
 import { DomListener } from '../utils/dom-listener';
 
+const formatExifPropertyValue = (
+  property: OverlayExifProperties,
+  value: any
+) => {
+  if (typeof value === 'undefined') {
+    return '--';
+  }
+
+  switch (property) {
+    case OverlayExifProperties.FocalLength:
+      return `${value}mm`;
+    case OverlayExifProperties.FNumber:
+      return `f/${value}`;
+    case OverlayExifProperties.ExposureTime:
+      return `${value}s`;
+    default:
+      return value;
+  }
+};
+
 const getOverlayHtml = () => `
   <div class="${OverlayClasses.Background}"></div>
   <div class="${OverlayClasses.Content}">
@@ -15,14 +35,21 @@ const getOverlayHtml = () => `
 `;
 
 const getExifDataHtml = (exifData: object) =>
-  OverlayExifProperties.map(
-    exifProp => `
+  Object.keys(OverlayExifProperties)
+    .map(
+      exifProp => `
       <div>
-        <div class="${OverlayClasses.PropertyName}">${exifProp}</div>
-        <div class="${OverlayClasses.PropertyValue}">${exifData[exifProp]}</div>
+        <div class="${OverlayClasses.PropertyName}">${
+        OverlayExifProperties[exifProp]
+      }</div>
+        <div class="${OverlayClasses.PropertyValue}">${formatExifPropertyValue(
+        OverlayExifProperties[exifProp],
+        exifData[exifProp]
+      )}</div>
       </div>
     `
-  ).join('');
+    )
+    .join('');
 
 export class Overlay {
   private overlay: HTMLElement;
@@ -30,8 +57,10 @@ export class Overlay {
   constructor(private document: Document, private domListener: DomListener) {}
 
   public renderOverlay(image: HTMLImageElement) {
+    this.remove();
+
     const { top, left, width, height } = image.getBoundingClientRect();
-    const overlay = this.document.createElement('div');
+    const overlay = (this.overlay = this.document.createElement('div'));
 
     overlay.innerHTML = getOverlayHtml();
     overlay.className = OverlayClasses.Overlay;
@@ -40,8 +69,6 @@ export class Overlay {
     overlay.style.width = `${width}px`;
     overlay.style.height = `${OverlayHeight}px`;
 
-    this.remove();
-    this.overlay = overlay;
     this.document.body.appendChild(overlay);
     this.domListener.onOverlayMouseOut(overlay, () => this.remove());
   }
@@ -56,11 +83,9 @@ export class Overlay {
       return;
     }
 
-    const exifPropertyList = this.overlay.querySelector(
+    this.overlay.querySelector(
       `.${OverlayClasses.PropertyList}`
-    );
-
-    exifPropertyList.innerHTML = getExifDataHtml(exifData);
+    ).innerHTML = getExifDataHtml(exifData);
 
     this.overlay.classList.add(`${OverlayClasses.Overlay}--loaded`);
   }

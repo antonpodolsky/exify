@@ -1,6 +1,11 @@
-import { OverlayClasses } from '../constants';
+import { OverlayClasses, MinLongSideLength } from '../constants';
 
 const isImage = (element: Element) => element && element.tagName === 'IMG';
+
+const isImageBigEnough = (image: HTMLImageElement) =>
+  image.width > image.height
+    ? image.width >= MinLongSideLength
+    : image.height >= MinLongSideLength;
 
 const isOverlay = (element: Element) =>
   element &&
@@ -10,8 +15,12 @@ const isOverlay = (element: Element) =>
 const invokeImageHandler = (
   element: Element,
   handler,
-  condition = () => true
-) => isImage(element) && condition() && handler(element);
+  customCondition = () => true
+) =>
+  isImage(element) &&
+  isImageBigEnough(element as HTMLImageElement) &&
+  customCondition() &&
+  handler(element);
 
 export class DomListener {
   private imageHandlers = {
