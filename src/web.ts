@@ -10,4 +10,5 @@ const overlay = new Overlay(
       getExifData(image).then(exifData => overlay.renderExifData(exifData));
     })
     .onImageMouseOut(() => overlay.remove())
+    .onScroll(() => overlay.remove())
 );

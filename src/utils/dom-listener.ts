@@ -1,4 +1,4 @@
-import { OverlayClasses, MinLongSideLength } from '../constants';
+import { MinLongSideLength, OverlayClasses } from '../constants';
 
 const isImage = (element: Element) => element && element.tagName === 'IMG';
 
@@ -24,14 +24,16 @@ const invokeImageHandler = (
 
 export class DomListener {
   private imageHandlers = {
-    mouseout: (x: MouseEvent) => x,
-    mouseover: (x: MouseEvent) => x,
+    mouseout: (e: MouseEvent) => e,
+    mouseover: (e: MouseEvent) => e,
   };
 
   constructor(private document: Document) {
     Object.keys(this.imageHandlers).forEach(event =>
       this.document.addEventListener(event, e => this.imageHandlers[event](e))
     );
+
+    this.document.addEventListener('scroll', e => this.scrollHandler(e));
   }
 
   public onImageMouseIn(handler: (image: HTMLImageElement) => any) {
@@ -59,4 +61,11 @@ export class DomListener {
 
     return this;
   }
+
+  public onScroll(handler: () => any) {
+    this.scrollHandler = handler;
+    return this;
+  }
+
+  private scrollHandler = (e: UIEvent) => e;
 }
