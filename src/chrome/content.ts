@@ -1,17 +1,19 @@
 import { ChromeBackgroundMethods } from '../constants';
-import { DomListener } from '../dom-listener';
-import { Overlay } from '../overlay';
+import { Overlay } from '../overlay/overlay';
+import { DomListener } from '../utils/dom-listener';
 
 const overlay = new Overlay(document);
 
 new DomListener(document)
-  .onImageMouseIn(image =>
+  .onImageMouseIn(image => {
+    overlay.renderOverlay(image);
+
     chrome.runtime.sendMessage(
       {
         method: ChromeBackgroundMethods.GET_EXIF_DATA,
         args: [image.getAttribute('src'), image.getAttribute('exifdata')],
       },
-      exifData => overlay.render(image, exifData)
-    )
-  )
+      exifData => overlay.renderExifData(exifData)
+    );
+  })
   .onImageMouseOut(() => overlay.remove());

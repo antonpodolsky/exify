@@ -25,7 +25,7 @@ const chrome = {
     new CleanWebpackPlugin(['dist']),
     new CopyWebpackPlugin([
       { from: './src/chrome/manifest.json', to: 'chrome/' },
-      { from: './src/overlay.css', to: 'chrome/' },
+      { from: './src/overlay/overlay.css', to: 'chrome/' },
     ]),
   ],
   module: {

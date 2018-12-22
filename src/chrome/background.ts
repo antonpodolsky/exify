@@ -1,5 +1,5 @@
 import { ChromeBackgroundMethods } from '../constants';
-import { getExifData } from '../exif';
+import { getExifData } from '../utils/exif';
 
 const Methods = {
   [ChromeBackgroundMethods.GET_EXIF_DATA]: (src: string, exifdata: object) =>

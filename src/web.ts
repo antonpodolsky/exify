@@ -1,11 +1,12 @@
-import { DomListener } from './dom-listener';
-import { getExifData } from './exif';
-import { Overlay } from './overlay';
+import { DomListener } from './utils/dom-listener';
+import { getExifData } from './utils/exif';
+import { Overlay } from './overlay/overlay';
 
 const overlay = new Overlay(document);
 
 new DomListener(document)
-  .onImageMouseIn(image =>
-    getExifData(image).then(exifData => overlay.render(image, exifData))
-  )
+  .onImageMouseIn(image => {
+    overlay.renderOverlay(image);
+    getExifData(image).then(exifData => overlay.renderExifData(exifData));
+  })
   .onImageMouseOut(() => overlay.remove());

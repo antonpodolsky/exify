@@ -1,6 +1,6 @@
 import * as exif from 'exif-js';
-import { IExifyImage } from './types';
-import { OverlayExifProperties } from './constants';
+import { OverlayExifProperties } from '../constants';
+import { IExifyImage } from '../types';
 
 export const getExifData = (image: IExifyImage): Promise<object> =>
   new Promise(resolve =>
