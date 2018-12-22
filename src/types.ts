@@ -1,2 +1,3 @@
-declare module '*.html';
-declare module '*.css';
+export interface IExifyImage extends HTMLImageElement {
+  exifdata?: object;
+}

@@ -3,7 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const chrome = {
-  mode: 'none',
+  mode: 'production',
   entry: {
     background: './src/chrome/background.ts',
     content: './src/chrome/content.ts',
@@ -14,6 +14,7 @@ const chrome = {
     publicPath: '/dist',
   },
   devServer: {
+    disableHostCheck: true,
     contentBase: './src',
     noInfo: false,
   },
@@ -24,6 +25,7 @@ const chrome = {
     new CleanWebpackPlugin(['dist']),
     new CopyWebpackPlugin([
       { from: './src/chrome/manifest.json', to: 'chrome/' },
+      { from: './src/overlay.css', to: 'chrome/' },
     ]),
   ],
   module: {
@@ -32,7 +34,7 @@ const chrome = {
 };
 
 const web = {
-  mode: 'none',
+  mode: 'production',
   entry: {
     web: './src/web.ts',
   },
@@ -42,6 +44,7 @@ const web = {
     publicPath: '/dist',
   },
   devServer: {
+    disableHostCheck: true,
     contentBase: './src',
     noInfo: false,
   },
