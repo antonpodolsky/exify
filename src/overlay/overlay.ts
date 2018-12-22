@@ -4,6 +4,8 @@ import {
   OverlayHeight,
 } from '../constants';
 
+import { DomListener } from '../utils/dom-listener';
+
 const getOverlayHtml = () => `
   <div class="${OverlayClasses.Background}"></div>
   <div class="${OverlayClasses.Content}">
@@ -25,7 +27,7 @@ const getExifDataHtml = (exifData: object) =>
 export class Overlay {
   private overlay: HTMLElement;
 
-  constructor(private document: Document) {}
+  constructor(private document: Document, private domListener: DomListener) {}
 
   public renderOverlay(image: HTMLImageElement) {
     const { top, left, width, height } = image.getBoundingClientRect();
@@ -41,10 +43,16 @@ export class Overlay {
     this.remove();
     this.overlay = overlay;
     this.document.body.appendChild(overlay);
+    this.domListener.onOverlayMouseOut(overlay, () => this.remove());
   }
 
   public renderExifData(exifData: object) {
     if (!this.overlay) {
+      return;
+    }
+
+    if (!exifData) {
+      this.overlay.classList.add(`${OverlayClasses.Overlay}--error`);
       return;
     }
 
@@ -54,18 +62,13 @@ export class Overlay {
 
     exifPropertyList.innerHTML = getExifDataHtml(exifData);
 
-    this.overlay.classList.replace(
-      OverlayClasses.Overlay,
-      `${OverlayClasses.Overlay}--loaded`
-    );
+    this.overlay.classList.add(`${OverlayClasses.Overlay}--loaded`);
   }
 
   public remove() {
     this.overlay = null;
     this.document
-      .querySelectorAll(
-        `.${OverlayClasses.Overlay}, .${OverlayClasses.Overlay}--loaded`
-      )
+      .querySelectorAll(`.${OverlayClasses.Overlay}`)
       .forEach(element => element.remove());
   }
 }

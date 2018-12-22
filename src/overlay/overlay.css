@@ -24,9 +24,10 @@
   }
 }
 
-.exify-overlay,
-.exify-overlay--loaded {
+.exify-overlay {
   position: fixed;
+  line-height: normal !important;
+  color: #fff !important;
 }
 
 .exify-overlay {
@@ -39,6 +40,10 @@
 
 .exify-overlay--loaded .exify-loader {
   display: none;
+}
+
+.exify-overlay--error .exify-loader {
+  animation: exify-rotate 1.5s ease 1;
 }
 
 .exify-background {
@@ -63,7 +68,7 @@
 }
 
 .exify-loader {
-  animation: exify-rotate 1.5s;
+  animation: exify-rotate 0.8s linear infinite;
 }
 
 .exify-property-list {
