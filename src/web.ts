@@ -7,6 +7,7 @@ const overlay = new Overlay(
   new DomListener(document)
     .onImageMouseIn(image => {
       overlay.renderOverlay(image);
+
       getExifData(image)
         .then(exifData => overlay.renderExifData(exifData))
         .catch(() => overlay.renderExifData(null));

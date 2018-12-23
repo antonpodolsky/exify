@@ -56,11 +56,9 @@ export class Overlay {
 
   constructor(private document: Document, private domListener: DomListener) {}
 
-  public renderOverlay(image: HTMLImageElement) {
-    this.remove();
-
+  private create(image: HTMLImageElement) {
     const { top, left, width, height } = image.getBoundingClientRect();
-    const overlay = (this.overlay = this.document.createElement('div'));
+    const overlay = this.document.createElement('div');
 
     overlay.innerHTML = getOverlayHtml();
     overlay.className = OverlayClasses.Overlay;
@@ -69,8 +67,20 @@ export class Overlay {
     overlay.style.width = `${width}px`;
     overlay.style.height = `${OverlayHeight}px`;
 
+    return overlay;
+  }
+
+  private attach(overlay: HTMLElement, image: HTMLImageElement) {
     this.document.body.appendChild(overlay);
-    this.domListener.onOverlayMouseOut(overlay, () => this.remove());
+    this.domListener.onOverlayMouseOut(overlay, image, () => this.remove());
+
+    return overlay;
+  }
+
+  public renderOverlay(image: HTMLImageElement) {
+    this.remove();
+
+    this.overlay = this.attach(this.create(image), image);
   }
 
   public renderExifData(exifData: object) {
@@ -91,9 +101,10 @@ export class Overlay {
   }
 
   public remove() {
+    if (this.overlay) {
+      this.overlay.remove();
+    }
+
     this.overlay = null;
-    this.document
-      .querySelectorAll(`.${OverlayClasses.Overlay}`)
-      .forEach(element => element.remove());
   }
 }

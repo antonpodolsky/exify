@@ -23,28 +23,27 @@ const invokeImageHandler = (
   handler(element);
 
 export class DomListener {
-  private imageHandlers = {
+  private handlers = {
     mouseout: (e: MouseEvent) => e,
     mouseover: (e: MouseEvent) => e,
+    scroll: (e: UIEvent) => e,
   };
 
   constructor(private document: Document) {
-    Object.keys(this.imageHandlers).forEach(event =>
-      this.document.addEventListener(event, e => this.imageHandlers[event](e))
+    Object.keys(this.handlers).forEach(event =>
+      this.document.addEventListener(event, e => this.handlers[event](e))
     );
-
-    this.document.addEventListener('scroll', e => this.scrollHandler(e));
   }
 
   public onImageMouseIn(handler: (image: HTMLImageElement) => any) {
-    this.imageHandlers.mouseover = ({ fromElement, toElement }) =>
+    this.handlers.mouseover = ({ fromElement, toElement }) =>
       invokeImageHandler(toElement, handler, () => !isOverlay(fromElement));
 
     return this;
   }
 
   public onImageMouseOut(handler: (image: HTMLImageElement) => any) {
-    this.imageHandlers.mouseout = ({ fromElement, toElement }) =>
+    this.handlers.mouseout = ({ fromElement, toElement }) =>
       invokeImageHandler(fromElement, handler, () => !isOverlay(toElement));
 
     return this;
@@ -52,20 +51,19 @@ export class DomListener {
 
   public onOverlayMouseOut(
     overlay: HTMLElement,
+    image: HTMLImageElement,
     handler: (overlay: HTMLElement) => any
   ) {
     overlay.addEventListener(
       'mouseleave',
-      ({ toElement }) => !isImage(toElement) && handler(overlay)
+      ({ toElement }) => toElement !== image && handler(overlay)
     );
 
     return this;
   }
 
   public onScroll(handler: () => any) {
-    this.scrollHandler = handler;
+    this.handlers.scroll = handler;
     return this;
   }
-
-  private scrollHandler = (e: UIEvent) => e;
 }
