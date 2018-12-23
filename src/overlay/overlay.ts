@@ -29,7 +29,7 @@ const formatExifPropertyValue = (
 const getOverlayHtml = () => `
   <div class="${OverlayClasses.Background}"></div>
   <div class="${OverlayClasses.Content}">
-    <i class="${OverlayClasses.Loader} ${OverlayClasses.Icon}">camera</i>
+    <span class="${OverlayClasses.Loader} ${OverlayClasses.Icon}">camera</span>
     <div class="${OverlayClasses.PropertyList}"></div>
   </div>
 `;

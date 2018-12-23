@@ -7,7 +7,9 @@ const overlay = new Overlay(
   new DomListener(document)
     .onImageMouseIn(image => {
       overlay.renderOverlay(image);
-      getExifData(image).then(exifData => overlay.renderExifData(exifData));
+      getExifData(image)
+        .then(exifData => overlay.renderExifData(exifData))
+        .catch(() => overlay.renderExifData(null));
     })
     .onImageMouseOut(() => overlay.remove())
     .onScroll(() => overlay.remove())

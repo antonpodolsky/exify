@@ -26,6 +26,7 @@ const chrome = {
     new CopyWebpackPlugin([
       { from: './src/chrome/manifest.json', to: 'chrome/' },
       { from: './src/overlay/overlay.css', to: 'chrome/' },
+      { from: './src/icons', to: 'chrome/icons' },
     ]),
   ],
   module: {

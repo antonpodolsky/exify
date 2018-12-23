@@ -41,6 +41,7 @@
   font-family: Exify;
   line-height: normal !important;
   color: #fff !important;
+  z-index: 2147483647;
 }
 
 .exify-overlay {
@@ -106,5 +107,4 @@
 .exify-icon {
   font-family: 'Material Icons';
   font-size: 24px;
-  font-style: normal;
 }
