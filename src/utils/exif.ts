@@ -33,6 +33,10 @@ export const getExifData = (image: IExifyImage): Promise<object> =>
         {}
       );
 
-      resolve(Object.keys(exifData).length ? exifData : null);
+      resolve(
+        typeof exifData === 'object' && Object.keys(exifData).length
+          ? exifData
+          : null
+      );
     })
   );
