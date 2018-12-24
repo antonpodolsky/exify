@@ -17,7 +17,7 @@ const convertVlaue = (property: OverlayExifProperties, value: any) => {
   }
 };
 
-export const getExifData = (image: IExifyImage): Promise<object> =>
+export const readExif = (image: IExifyImage): Promise<object> =>
   new Promise(resolve =>
     exif.getData(image as any, () => {
       const exifData = Object.keys(OverlayExifProperties).reduce(

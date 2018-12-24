@@ -27,12 +27,12 @@ const formatExifPropertyValue = (
 const getOverlayHtml = () => `
   <div class="${OverlayClasses.Background}"></div>
   <div class="${OverlayClasses.Content}">
-    <span class="${OverlayClasses.Loader} ${OverlayClasses.Icon}">camera</span>
+    <span class="${OverlayClasses.Loader}"></span>
     <div class="${OverlayClasses.PropertyList}"></div>
   </div>
 `;
 
-const getExifDataHtml = (exifData: object) =>
+const getExifHtml = (exifData: object) =>
   Object.keys(OverlayExifProperties)
     .map(
       exifProp => `
@@ -63,10 +63,10 @@ export const createOverlay = (document: Document, image: HTMLImageElement) => {
   return overlay;
 };
 
-export const renderExifData = (overlay: HTMLElement, exifData: object) =>
+export const renderExif = (overlay: HTMLElement, exifData: object) =>
   (overlay.querySelector(
     `.${OverlayClasses.PropertyList}`
-  ).innerHTML = getExifDataHtml(exifData));
+  ).innerHTML = getExifHtml(exifData));
 
 export const setError = (overlay: HTMLElement) => {
   overlay.classList.add(`${OverlayClasses.Overlay}--error`);

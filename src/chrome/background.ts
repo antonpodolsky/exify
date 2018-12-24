@@ -1,14 +1,10 @@
-import { getExifData } from '../utils/exif';
+import { readExif } from '../utils/exif-reader';
 import { BackgroundMethods } from './api';
 
 const Methods = {
-  [BackgroundMethods.GET_EXIF_DATA]: (src: string, exifdata: object) =>
-    getExifData({ src, exifdata } as any),
+  [BackgroundMethods.READ_EXIF]: (src: string, exifdata: object) =>
+    readExif({ src, exifdata } as any),
 };
-
-chrome.runtime.onInstalled.addListener(() => {
-  console.log('Exify installed');
-});
 
 chrome.runtime.onMessage.addListener(
   ({ method, args }, sender, sendResponse) => {

@@ -19,7 +19,7 @@ const chrome = {
     noInfo: false,
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js', '.css'],
   },
   plugins: [
     new CleanWebpackPlugin(['dist']),
@@ -54,7 +54,10 @@ const web = {
   },
   plugins: [],
   module: {
-    rules: [{ test: /\.ts?$/, loader: 'ts-loader' }],
+    rules: [
+      { test: /\.ts?$/, loader: 'ts-loader' },
+      { test: /\.css?$/, loader: ['style-loader', 'css-loader'] },
+    ],
   },
 };
 

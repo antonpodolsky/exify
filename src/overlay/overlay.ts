@@ -1,5 +1,5 @@
 import { DomListener } from '../utils/dom-listener';
-import { createOverlay, renderExifData, setError, setLoaded } from './renderer';
+import { createOverlay, renderExif, setError, setLoaded } from './renderer';
 
 export class Overlay {
   private overlay: HTMLElement;
@@ -19,7 +19,7 @@ export class Overlay {
     this.overlay = this.attach(createOverlay(this.document, image), image);
   }
 
-  public renderExifData(exifData: object) {
+  public renderExif(exifData: object) {
     if (!this.overlay) {
       return;
     }
@@ -29,7 +29,7 @@ export class Overlay {
       return;
     }
 
-    renderExifData(this.overlay, exifData);
+    renderExif(this.overlay, exifData);
     setLoaded(this.overlay);
   }
 

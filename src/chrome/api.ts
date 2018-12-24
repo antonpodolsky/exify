@@ -1,16 +1,22 @@
 import { IExifyImage } from '../types';
 
 export enum BackgroundMethods {
-  GET_EXIF_DATA,
+  READ_EXIF,
 }
 
-export const getExifData = (image: IExifyImage): Promise<object> =>
-  new Promise(resolve =>
+export const readExif = (image: IExifyImage): Promise<object> =>
+  new Promise(resolve => {
+    let src = image.getAttribute('src');
+
+    if (src.startsWith('/')) {
+      src = location.protocol + '//' + location.host + src;
+    }
+
     chrome.runtime.sendMessage(
       {
-        method: BackgroundMethods.GET_EXIF_DATA,
+        method: BackgroundMethods.READ_EXIF,
         args: [image.getAttribute('src'), image.exifdata],
       },
       resolve
-    )
-  );
+    );
+  });

@@ -7,6 +7,11 @@ const isImageBigEnough = (image: HTMLImageElement) =>
     ? image.width >= MinLongSideLength
     : image.height >= MinLongSideLength;
 
+const isImageFullyVisible = (image: HTMLElement) => {
+  const { scrollHeight, clientHeight } = image.parentElement;
+  return scrollHeight === clientHeight;
+};
+
 const isOverlay = (element: Element) =>
   element &&
   (element.classList.contains(OverlayClasses.Overlay) ||
@@ -19,6 +24,7 @@ const invokeImageHandler = (
 ) =>
   isImage(element) &&
   isImageBigEnough(element as HTMLImageElement) &&
+  isImageFullyVisible(element as HTMLImageElement) &&
   customCondition() &&
   handler(element);
 
