@@ -2,10 +2,8 @@ import { readExif } from '../utils/exif-reader';
 import { BackgroundMethods } from '../constants';
 
 const Methods: { [key: string]: (...args) => Promise<any> } = {
-  [BackgroundMethods.READ_EXIF]: (
-    src: string,
-    exifdata: object
-  ): Promise<any> => readExif({ src, exifdata } as any),
+  [BackgroundMethods.READ_EXIF]: (src: string, exifdata: object) =>
+    readExif({ src, exifdata } as any),
 };
 
 export const start = (browser: typeof chrome) => {
