@@ -19,3 +19,4 @@ export enum OverlayClasses {
 
 export const OverlayHeight = 60;
 export const MinLongSideLength = 600;
+export const RequestTimeout = 4500;

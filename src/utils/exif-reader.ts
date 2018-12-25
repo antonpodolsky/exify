@@ -1,5 +1,5 @@
 import * as exif from 'exif-js';
-import { OverlayExifProperties } from '../constants';
+import { OverlayExifProperties, RequestTimeout } from '../constants';
 import { IExifyImage } from '../types';
 
 const convertVlaue = (property: OverlayExifProperties, value: any) => {
@@ -18,7 +18,9 @@ const convertVlaue = (property: OverlayExifProperties, value: any) => {
 };
 
 export const readExif = (image: IExifyImage): Promise<object> =>
-  new Promise(resolve =>
+  new Promise((resolve, reject) => {
+    let timedOut = false;
+
     exif.getData(image as any, () => {
       const exifData = Object.keys(OverlayExifProperties).reduce(
         (res, prop) => {
@@ -33,10 +35,18 @@ export const readExif = (image: IExifyImage): Promise<object> =>
         {}
       );
 
-      resolve(
-        typeof exifData === 'object' && Object.keys(exifData).length
-          ? exifData
-          : null
+      return (
+        !timedOut &&
+        resolve(
+          typeof exifData === 'object' && Object.keys(exifData).length
+            ? exifData
+            : null
+        )
       );
-    })
-  );
+    });
+
+    setTimeout(() => {
+      timedOut = true;
+      reject();
+    }, RequestTimeout);
+  });

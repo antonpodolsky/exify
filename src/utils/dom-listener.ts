@@ -1,4 +1,4 @@
-import { MinLongSideLength, OverlayClasses } from '../constants';
+import { MinLongSideLength, OverlayClasses, OverlayHeight } from '../constants';
 
 const isImage = (element: Element) => element && element.tagName === 'IMG';
 
@@ -9,7 +9,7 @@ const isImageBigEnough = (image: HTMLImageElement) =>
 
 const isImageFullyVisible = (image: HTMLElement) => {
   const { scrollHeight, clientHeight } = image.parentElement;
-  return scrollHeight === clientHeight;
+  return scrollHeight - clientHeight < OverlayHeight / 2;
 };
 
 const isOverlay = (element: Element) =>
@@ -42,15 +42,23 @@ export class DomListener {
   }
 
   public onImageMouseIn(handler: (image: HTMLImageElement) => any) {
-    this.handlers.mouseover = ({ fromElement, toElement }) =>
-      invokeImageHandler(toElement, handler, () => !isOverlay(fromElement));
+    this.handlers.mouseover = ({ target: to, relatedTarget: from }) =>
+      invokeImageHandler(
+        to as HTMLElement,
+        handler,
+        () => !isOverlay(from as HTMLElement)
+      );
 
     return this;
   }
 
   public onImageMouseOut(handler: (image: HTMLImageElement) => any) {
-    this.handlers.mouseout = ({ fromElement, toElement }) =>
-      invokeImageHandler(fromElement, handler, () => !isOverlay(toElement));
+    this.handlers.mouseout = ({ target: from, relatedTarget: to }) =>
+      invokeImageHandler(
+        from as HTMLElement,
+        handler,
+        () => !isOverlay(to as HTMLElement)
+      );
 
     return this;
   }
@@ -62,7 +70,7 @@ export class DomListener {
   ) {
     overlay.addEventListener(
       'mouseleave',
-      ({ toElement }) => toElement !== image && handler(overlay)
+      ({ relatedTarget: to }) => to !== image && handler(overlay)
     );
 
     return this;

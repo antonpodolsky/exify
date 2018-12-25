@@ -1,3 +1,5 @@
 import { start } from '../shared/content';
 
-start(chrome);
+declare const browser;
+
+start(browser);
