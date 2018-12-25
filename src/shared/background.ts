@@ -1,5 +1,5 @@
 import { readExif } from '../utils/exif-reader';
-import { BackgroundMethods } from '../types';
+import { BackgroundMethods } from '../constants';
 
 const Methods: { [key: string]: (...args) => Promise<any> } = {
   [BackgroundMethods.READ_EXIF]: (

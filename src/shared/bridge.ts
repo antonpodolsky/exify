@@ -1,5 +1,5 @@
 import { IExifyImage } from '../types';
-import { BackgroundMethods } from '../types';
+import { BackgroundMethods } from '../constants';
 
 export const readExif = (browser: typeof chrome) => (
   image: IExifyImage

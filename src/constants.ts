@@ -17,6 +17,10 @@ export enum OverlayClasses {
   Icon = 'exify-icon',
 }
 
+export enum BackgroundMethods {
+  READ_EXIF,
+}
+
 export const OverlayHeight = 60;
 export const MinLongSideLength = 600;
 export const RequestTimeout = 4500;
