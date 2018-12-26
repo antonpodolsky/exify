@@ -15,6 +15,7 @@ npm start
 ## Install as a browser extension
 ```bash
 npm run build
+# Open http://localhost:8080/
 ```
 ### Firefox
 Use the contents of the `/dist/firefox` folder and follow https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Temporary_Installation_in_Firefox
