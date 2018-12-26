@@ -4,6 +4,15 @@ import {
   OverlayHeight,
 } from '../constants';
 
+const escape = (value: string) => {
+  return ('' + value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+};
+
 const formatExifPropertyValue = (
   property: OverlayExifProperties,
   value: any
@@ -40,10 +49,13 @@ const getExifHtml = (exifData: object) =>
     <div class="${OverlayClasses.PropertyName}">${
         OverlayExifProperties[exifProp]
       }</div>
-    <div class="${OverlayClasses.PropertyValue}">${formatExifPropertyValue(
-        OverlayExifProperties[exifProp],
-        exifData[exifProp]
-      )}</div>
+    <div class="${OverlayClasses.PropertyValue}">${escape(
+        formatExifPropertyValue(
+          OverlayExifProperties[exifProp],
+          exifData[exifProp]
+        )
+      )}
+    </div>
   </div>
   `
     )
