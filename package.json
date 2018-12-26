@@ -1,8 +1,8 @@
 {
-  "name": "exify-chrome",
+  "name": "exify",
   "version": "1.0.0",
   "description": "Exify Chrome extension",
-  "main": "index.js",
+  "main": "web.js",
   "scripts": {
     "start": "webpack-dev-server",
     "build": "webpack",
