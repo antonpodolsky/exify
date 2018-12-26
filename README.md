@@ -2,7 +2,7 @@
 Browser extension for viewing EXIF information.  
 https://www.exify.info/
 
-## Build
+## Install
 ```bash
 npm i
 ```
