@@ -42,7 +42,7 @@ const addon = (
     },
     plugins: [
       new CopyWebpackPlugin([
-        { from: './src/manifest.json', to: `${browser}/` },
+        { from: './manifest.json', to: `${browser}/` },
         { from: './src/overlay/overlay.css', to: `${browser}/` },
         { from: './src/icons', to: `${browser}/icons` },
       ]),

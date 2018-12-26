@@ -28,6 +28,13 @@ const invokeImageHandler = (
   customCondition() &&
   handler(element);
 
+const waitForImageLoad = (image: HTMLImageElement): Promise<HTMLImageElement> =>
+  new Promise(resolve =>
+    image.complete
+      ? resolve(image)
+      : image.addEventListener('load', () => resolve(image))
+  );
+
 export class DomListener {
   private handlers = {
     mouseout: (e: MouseEvent) => e,
@@ -41,11 +48,31 @@ export class DomListener {
     );
   }
 
-  public onImageMouseIn(handler: (image: HTMLImageElement) => any) {
+  public static onOverlayMouseOut(
+    overlay: HTMLElement,
+    image: HTMLImageElement,
+    handler: (overlay: HTMLElement) => any
+  ) {
+    overlay.addEventListener(
+      'mouseleave',
+      ({ relatedTarget: to }) => to !== image && handler(overlay)
+    );
+  }
+
+  public onImageMouseIn(
+    handler: (
+      image: HTMLImageElement,
+      onImageLoad: (handler: (image: HTMLImageElement) => any) => any
+    ) => any
+  ) {
     this.handlers.mouseover = ({ target: to, relatedTarget: from }) =>
       invokeImageHandler(
         to as HTMLElement,
-        handler,
+        image => {
+          handler(image, onImageLoad =>
+            waitForImageLoad(image).then(onImageLoad)
+          );
+        },
         () => !isOverlay(from as HTMLElement)
       );
 
@@ -59,19 +86,6 @@ export class DomListener {
         handler,
         () => !isOverlay(to as HTMLElement)
       );
-
-    return this;
-  }
-
-  public onOverlayMouseOut(
-    overlay: HTMLElement,
-    image: HTMLImageElement,
-    handler: (overlay: HTMLElement) => any
-  ) {
-    overlay.addEventListener(
-      'mouseleave',
-      ({ relatedTarget: to }) => to !== image && handler(overlay)
-    );
 
     return this;
   }

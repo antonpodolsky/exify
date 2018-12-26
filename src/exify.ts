@@ -5,18 +5,19 @@ export class Exify {
   constructor(private document) {}
 
   public init(readExif: (image: HTMLElement) => Promise<object>) {
-    const overlay = new Overlay(
-      this.document,
-      new DomListener(this.document)
-        .onImageMouseIn(image => {
-          overlay.renderOverlay(image);
+    const overlay = new Overlay(this.document);
 
+    new DomListener(this.document)
+      .onImageMouseIn((image, onImageLoad) => {
+        overlay.renderOverlay(image);
+
+        onImageLoad(() =>
           readExif(image)
             .then(exifData => overlay.renderExif(exifData))
-            .catch(() => overlay.renderExif(null));
-        })
-        .onImageMouseOut(() => overlay.remove())
-        .onScroll(() => overlay.remove())
-    );
+            .catch(() => overlay.renderExif(null))
+        );
+      })
+      .onImageMouseOut(() => overlay.remove())
+      .onScroll(() => overlay.remove());
   }
 }

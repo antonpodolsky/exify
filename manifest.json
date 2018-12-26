@@ -15,12 +15,12 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*"],
+      "matches": ["*://*/*"],
       "js": ["content.js"],
       "css": ["overlay.css"]
     }
   ],
   "web_accessible_resources": ["icons/icon48.png"],
-  "permissions": ["activeTab"],
+  "permissions": ["*://*/*"],
   "manifest_version": 2
 }

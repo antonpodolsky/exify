@@ -4,11 +4,11 @@ import { createOverlay, renderExif, setError, setLoaded } from './renderer';
 export class Overlay {
   private overlay: HTMLElement;
 
-  constructor(private document: Document, private domListener: DomListener) {}
+  constructor(private document: Document) {}
 
   private attach(overlay: HTMLElement, image: HTMLImageElement) {
     this.document.body.appendChild(overlay);
-    this.domListener.onOverlayMouseOut(overlay, image, () => this.remove());
+    DomListener.onOverlayMouseOut(overlay, image, () => this.remove());
 
     return overlay;
   }
