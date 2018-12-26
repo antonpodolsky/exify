@@ -1,7 +1,7 @@
 {
   "name": "Exify",
-  "version": "1.0.0",
-  "description": "Easily view essential EXIF info",
+  "version": "1.0.1",
+  "description": "Easily view essential EXIF information",
   "homepage_url": "https://www.exify.info/",
 
   "icons": {

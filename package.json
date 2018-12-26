@@ -1,8 +1,8 @@
 {
-  "name": "exify",
-  "version": "1.0.0",
-  "description": "Exify Chrome extension",
-  "main": "web.js",
+  "name": "exify-web",
+  "version": "1.0.1",
+  "description": "Easily view essential EXIF information",
+  "main": "dist/web/bundle.js",
   "scripts": {
     "start": "webpack-dev-server",
     "build": "webpack",
