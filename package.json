@@ -3,6 +3,10 @@
   "version": "1.0.2",
   "description": "View essential EXIF information",
   "main": "dist/web/bundle.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antonpod/exify.git"
+  },
   "scripts": {
     "start": "webpack-dev-server",
     "build": "webpack",
