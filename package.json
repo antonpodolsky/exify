@@ -1,7 +1,7 @@
 {
   "name": "exify-web",
   "version": "1.0.2",
-  "description": "Easily view essential EXIF information",
+  "description": "View essential EXIF information",
   "main": "dist/web/bundle.js",
   "scripts": {
     "start": "webpack-dev-server",
