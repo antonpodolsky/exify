@@ -21,8 +21,8 @@ const getSettingsHtml = (exifData: IExifData) => `
 `
 )}</div>
     <div class="${CssClasses.SettingsFooter}">
-      <button class="${CssClasses.SettingsSave}">Save</button>
-      <button class="${CssClasses.SettingsCancel}">Cancel</button>
+      <div class="${CssClasses.SettingsSave}">Save</div>
+      <div class="${CssClasses.SettingsCancel}">Cancel</div>
     </div>
   </div>
 `;
