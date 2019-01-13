@@ -29,13 +29,13 @@ const extend = conf => {
   };
 };
 
-const addon = (
-  browser // chrome | firefox
+const extension = (
+  browser // webkit | firefox
 ) =>
   extend({
     entry: {
-      background: `./src/${browser}/background.ts`,
-      content: `./src/${browser}/content.ts`,
+      background: `./src/extension/${browser}/background.ts`,
+      content: `./src/extension/${browser}/content.ts`,
     },
     output: {
       filename: `${browser}/[name].js`,
@@ -43,7 +43,14 @@ const addon = (
     plugins: [
       new CopyWebpackPlugin([
         { from: './manifest.json', to: `${browser}/` },
-        { from: './src/overlay/overlay.css', to: `${browser}/` },
+        {
+          from: './node_modules/dialog-polyfill/dialog-polyfill.css',
+          to: `${browser}/`,
+        },
+        { from: './src/views/exify.css', to: `${browser}/` },
+        { from: './src/views/exif/exif.css', to: `${browser}/` },
+        { from: './src/views/overlay/overlay.css', to: `${browser}/` },
+        { from: './src/views/settings/settings.css', to: `${browser}/` },
         { from: './src/icons', to: `${browser}/icons` },
       ]),
     ],
@@ -58,4 +65,4 @@ const web = extend({
   },
 });
 
-module.exports = [addon('chrome'), addon('firefox'), web];
+module.exports = [extension('webkit'), extension('firefox'), web];

@@ -1,6 +1,6 @@
 {
   "name": "exify-web",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "description": "View essential EXIF information",
   "main": "dist/web/bundle.js",
   "repository": {
@@ -33,6 +33,7 @@
     "webpack-dev-server": "^3.1.11"
   },
   "dependencies": {
+    "dialog-polyfill": "^0.4.10",
     "exif-js": "^2.3.0"
   }
 }

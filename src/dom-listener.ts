@@ -1,4 +1,4 @@
-import { MinLongSideLength, OverlayClasses, OverlayHeight } from '../constants';
+import { MinLongSideLength, CssClasses, OverlayHeight } from './constants';
 
 const isImage = (element: Element) => element && element.tagName === 'IMG';
 
@@ -14,8 +14,8 @@ const isImageFullyVisible = (image: HTMLElement) => {
 
 const isOverlay = (element: Element) =>
   element &&
-  (element.classList.contains(OverlayClasses.Overlay) ||
-    element.closest(`.${OverlayClasses.Overlay}`));
+  (element.classList.contains(CssClasses.Overlay) ||
+    element.closest(`.${CssClasses.Overlay}`));
 
 const invokeImageHandler = (
   element: Element,
@@ -26,6 +26,11 @@ const invokeImageHandler = (
   isImageBigEnough(element as HTMLImageElement) &&
   isImageFullyVisible(element as HTMLImageElement) &&
   customCondition() &&
+  handler(element);
+
+const invokeSettingsHandler = (element: HTMLElement, handler) =>
+  element &&
+  element.classList.contains(CssClasses.OverlaySettingsToggle) &&
   handler(element);
 
 const waitForImageLoad = (image: HTMLImageElement): Promise<HTMLImageElement> =>
@@ -40,6 +45,7 @@ export class DomListener {
     mouseout: (e: MouseEvent) => e,
     mouseover: (e: MouseEvent) => e,
     scroll: (e: UIEvent) => e,
+    click: (e: MouseEvent) => e,
   };
 
   constructor(private document: Document) {
@@ -61,18 +67,18 @@ export class DomListener {
 
   public onImageMouseIn(
     handler: (
-      image: HTMLImageElement,
-      onImageLoad: (handler: (image: HTMLImageElement) => any) => any
+      image: HTMLImageElement
+    ) => (
+      handler: (onImageLoad: (image: HTMLImageElement) => any) => any
     ) => any
   ) {
     this.handlers.mouseover = ({ target: to, relatedTarget: from }) =>
       invokeImageHandler(
         to as HTMLElement,
-        image => {
-          handler(image, onImageLoad =>
+        image =>
+          handler(image)(onImageLoad =>
             waitForImageLoad(image).then(onImageLoad)
-          );
-        },
+          ),
         () => !isOverlay(from as HTMLElement)
       );
 
@@ -93,5 +99,10 @@ export class DomListener {
   public onScroll(handler: () => any) {
     this.handlers.scroll = handler;
     return this;
+  }
+
+  public onSettingsClick(handler: () => any) {
+    this.handlers.click = ({ target }) =>
+      invokeSettingsHandler(target as HTMLElement, handler);
   }
 }

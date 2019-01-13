@@ -1,6 +1,6 @@
 {
   "name": "Exify",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "description": "View essential EXIF information",
   "homepage_url": "https://www.exify.info/",
 
@@ -17,10 +17,16 @@
     {
       "matches": ["*://*/*"],
       "js": ["content.js"],
-      "css": ["overlay.css"]
+      "css": [
+        "dialog-polyfill.css",
+        "exify.css",
+        "exif.css",
+        "overlay.css",
+        "settings.css"
+      ]
     }
   ],
   "web_accessible_resources": ["icons/icon48.png"],
-  "permissions": ["*://*/*"],
+  "permissions": ["*://*/*", "storage"],
   "manifest_version": 2
 }

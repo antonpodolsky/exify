@@ -1,0 +1,75 @@
+.exify-settings {
+  position: fixed;
+  top: 50%;
+  transform: translate(0, -50%);
+  width: 500px;
+  min-height: 406px;
+  padding: 20px 30px;
+  font-family: 'Exify Font';
+  border: 0;
+  border-radius: 5px;
+  background-color: #202225;
+  color: #c4c4c4 !important;
+}
+
+.exify-settings > div {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+
+.exify-settings-header {
+  display: flex;
+  padding-bottom: 20px;
+  align-items: center;
+  font-size: 18px;
+  border-bottom: 1px solid #36393f;
+}
+
+.exify-settings-header > .exify-logo {
+  margin-right: 14px;
+}
+
+.exify-settings-content {
+  display: flex;
+  margin: 25px 0;
+  flex-direction: column;
+  flex-grow: 1;
+  font-size: 14px;
+}
+
+.exify-settings-content > .exify-settings-property {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.exify-settings-content > .exify-settings-property:not(:first-child) {
+  margin-top: 20px;
+}
+
+.exify-settings-content > .exify-settings-property > .exify-icon {
+  margin-right: 10px;
+}
+
+.exify-settings-footer {
+  padding-top: 20px;
+  font-size: 14px;
+  border-top: 1px solid #36393f;
+  text-align: center;
+}
+
+.exify-settings-footer button {
+  padding: 5px 14px;
+  border-radius: 100px;
+  border: 1px solid #c4c4c4;
+  background-color: transparent;
+  color: inherit;
+  outline: none !important;
+  cursor: pointer;
+}
+
+.exify-settings-footer button:not(:first-child) {
+  margin-left: 10px;
+}
