@@ -1,52 +1,17 @@
 import * as dialogPolyfill from 'dialog-polyfill';
-import { CssClasses, CheckboxIcon, PropAttribute } from '../../constants';
+import { CssClasses } from '../../constants';
 import { createSettingsDialog } from './settings-renderer';
+import * as Events from './settings-events';
 import { IUserSettings, OptionalExifProperties } from '../../types';
-
-const destroy = (dialog: HTMLDialogElement) => {
-  dialog.classList.remove(CssClasses.Show);
-  dialog.addEventListener('transitionend', () => {
-    dialog.close();
-    dialog.remove();
-  });
-};
+import { reduce } from '../../utils';
 
 const initEvents = (dialog: HTMLDialogElement) =>
   new Promise<IUserSettings>((resolve, reject) =>
     dialog.addEventListener('click', ({ target }) =>
       [
-        [
-          CssClasses.SettingsProperty,
-          (element: HTMLElement) => {
-            const checkbox = element.querySelector(`.${CssClasses.Icon}`);
-
-            checkbox.innerHTML =
-              checkbox.innerHTML === CheckboxIcon.Off
-                ? CheckboxIcon.On
-                : CheckboxIcon.Off;
-          },
-        ],
-        [
-          CssClasses.SettingsSave,
-          () => {
-            resolve({
-              optionalExifProperties: Array.from(
-                dialog.querySelectorAll(`.${CssClasses.Icon}`)
-              )
-                .filter(checkbox => checkbox.innerHTML === CheckboxIcon.On)
-                .map(e => e.getAttribute(PropAttribute)),
-            });
-
-            destroy(dialog);
-          },
-        ],
-        [
-          CssClasses.SettingsCancel,
-          () => {
-            reject();
-            destroy(dialog);
-          },
-        ],
+        [CssClasses.SettingsProperty, Events.toggle],
+        [CssClasses.SettingsSave, () => Events.save(dialog, resolve)],
+        [CssClasses.SettingsCancel, () => Events.cancel(dialog, reject)],
       ].forEach(([className, action]: any) => {
         const element = (target as HTMLElement).closest(`.${className}`);
         return element && action(element);
@@ -55,13 +20,13 @@ const initEvents = (dialog: HTMLDialogElement) =>
   );
 
 const getOptionalExifProps = (exifData: object, userSettings: IUserSettings) =>
-  Object.keys(OptionalExifProperties).reduce((res, prop) => {
-    res[prop] = {
-      value: exifData[prop],
-      selected: userSettings.optionalExifProperties.indexOf(prop) !== -1,
-    };
-    return res;
-  }, {});
+  reduce(OptionalExifProperties)(
+    (res, _, key) =>
+      (res[key] = {
+        value: exifData[key],
+        selected: userSettings.optionalExifProperties.indexOf(key) !== -1,
+      })
+  );
 
 export class Settings {
   constructor(private document: Document) {}

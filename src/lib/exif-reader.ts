@@ -1,6 +1,7 @@
 import * as exif from 'exif-js';
 import { RequestTimeout } from '../constants';
 import { IExifyImage, ExifProperties } from '../types';
+import { reduce } from '../utils';
 
 const convertValue = (property: ExifProperties, value: any) => {
   if (typeof value === 'undefined') {
@@ -25,12 +26,11 @@ export const readExif = (image: IExifyImage): Promise<object> =>
     let timedOut = false;
 
     exif.getData(image as any, () => {
-      const exifData = Object.keys(ExifProperties).reduce((res, prop) => {
-        if (typeof image.exifdata[prop] !== 'undefined') {
-          res[prop] = convertValue(ExifProperties[prop], image.exifdata[prop]);
-        }
-        return res;
-      }, {});
+      const exifData = reduce(ExifProperties)(
+        (res, prop, key) =>
+          typeof image.exifdata[key] !== 'undefined' &&
+          (res[key] = convertValue(prop, image.exifdata[key]))
+      );
 
       return (
         !timedOut &&

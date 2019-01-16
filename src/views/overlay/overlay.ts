@@ -6,17 +6,14 @@ import {
   setLoaded,
 } from './overlay-renderer';
 import { IUserSettings, DefaultExifProperties } from '../../types';
+import { reduce } from '../../utils';
 
 const getUserExifProps = (
   exifData: object,
   { optionalExifProperties }: IUserSettings
 ) =>
-  [...Object.keys(DefaultExifProperties), ...optionalExifProperties].reduce(
-    (res, prop) => {
-      res[prop] = { value: exifData[prop] };
-      return res;
-    },
-    {}
+  reduce([...Object.keys(DefaultExifProperties), ...optionalExifProperties])(
+    (res, prop) => (res[prop] = { value: exifData[prop] })
   );
 
 export class Overlay {
