@@ -3,6 +3,14 @@ import { CssClasses, CheckboxIcon, PropAttribute } from '../../constants';
 import { createSettingsDialog } from './settings-renderer';
 import { IUserSettings, OptionalExifProperties } from '../../types';
 
+const destroy = (dialog: HTMLDialogElement) => {
+  dialog.classList.remove(CssClasses.Show);
+  dialog.addEventListener('transitionend', () => {
+    dialog.close();
+    dialog.remove();
+  });
+};
+
 const initEvents = (dialog: HTMLDialogElement) =>
   new Promise<IUserSettings>((resolve, reject) =>
     dialog.addEventListener('click', ({ target }) =>
@@ -28,16 +36,15 @@ const initEvents = (dialog: HTMLDialogElement) =>
                 .filter(checkbox => checkbox.innerHTML === CheckboxIcon.On)
                 .map(e => e.getAttribute(PropAttribute)),
             });
-            dialog.close();
-            dialog.remove();
+
+            destroy(dialog);
           },
         ],
         [
           CssClasses.SettingsCancel,
           () => {
             reject();
-            dialog.close();
-            dialog.remove();
+            destroy(dialog);
           },
         ],
       ].forEach(([className, action]: any) => {
@@ -61,7 +68,9 @@ export class Settings {
 
   private attach(dialog: HTMLDialogElement) {
     dialogPolyfill.registerDialog(dialog);
+
     this.document.body.appendChild(dialog).showModal();
+    dialog.classList.add(CssClasses.Show);
 
     return initEvents(dialog);
   }

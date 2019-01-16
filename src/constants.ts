@@ -2,6 +2,7 @@ export enum CssClasses {
   Logo = 'exify-logo',
   Loader = 'exify-loader',
   Icon = 'exify-icon',
+  Show = 'exify-show',
   PropertyName = 'exify-property-name',
   PropertyValue = 'exify-property-value',
   Overlay = 'exify-overlay',

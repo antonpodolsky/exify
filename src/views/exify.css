@@ -27,6 +27,17 @@
   }
 }
 
+@keyframes exify-fade-in-scale {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 @keyframes exify-rotate {
   from {
     transform: rotate(0deg);

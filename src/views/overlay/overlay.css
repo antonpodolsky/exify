@@ -1,5 +1,4 @@
 .exify-overlay {
-  transition: top 0.2s;
   position: fixed;
   font-family: 'Exify Font';
   line-height: normal !important;

@@ -1,7 +1,5 @@
 .exify-settings {
-  position: fixed;
-  top: 50%;
-  transform: translate(0, -50%);
+  transition: all 0.2s;
   width: 500px;
   min-height: 406px;
   padding: 20px 30px;
@@ -10,6 +8,30 @@
   border-radius: 5px;
   background-color: #202225;
   color: #c4c4c4 !important;
+
+  opacity: 0;
+  transform: scale(0.7);
+}
+
+.exify-settings.exify-show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.exify-settings::backdrop,
+.exify-settings + .backdrop {
+  transition: all 0.2s;
+  opacity: 0;
+}
+
+.exify-settings.exify-show::backdrop,
+.exify-settings.exify-show + .backdrop {
+  opacity: 1;
+}
+
+.exify-settings::backdrop,
+.exify-settings + .backdrop {
+  animation: exify-fade-in 0.2s;
 }
 
 .exify-settings > div {
