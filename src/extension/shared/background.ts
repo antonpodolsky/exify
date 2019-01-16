@@ -6,7 +6,7 @@ const Methods: { [key: string]: (...args) => Promise<any> } = {
     readExif({ src, exifdata } as any),
 };
 
-export const init = (browser: typeof chrome) => {
+export const init = (browser: typeof chrome) =>
   browser.runtime.onMessage.addListener(({ method, args }, _, sendResponse) => {
     if (Methods[method]) {
       Methods[method](...args)
@@ -15,4 +15,3 @@ export const init = (browser: typeof chrome) => {
       return true;
     }
   });
-};
