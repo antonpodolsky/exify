@@ -4,10 +4,10 @@ import { IStorage, IUserSettings } from './types';
 import { StorageKey } from './constants';
 
 import 'dialog-polyfill/dialog-polyfill.css';
-import './views/exify.css';
-import './views/exif/exif.css';
-import './views/overlay/overlay.css';
-import './views/settings/settings.css';
+import './components/exify.css';
+import './components/exif/exif.css';
+import './components/overlay/overlay.css';
+import './components/settings/settings.css';
 
 class Storage implements IStorage {
   constructor(private localStorage) {}

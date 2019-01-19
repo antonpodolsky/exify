@@ -8,17 +8,27 @@ export const escapeHTML = (value: string) => {
 };
 
 export const reduce = (obj: object | any[]) => (
-  fn: (res: object, value: any, key?: string) => any
+  fn: (res: object, value: any, key?: any, isArray?: boolean) => any
 ) => {
-  const isObject = typeof (obj as any[]).length === 'undefined';
+  const isArr = isArray(obj);
 
-  return (isObject ? Object.keys(obj) : (obj as any[])).reduce((res, key) => {
-    if (isObject) {
-      fn(res, obj[key], key);
-    } else {
-      fn(res, key);
-    }
+  return (isArr ? (obj as any[]) : Object.keys(obj)).reduce(
+    (res, key, index) => {
+      if (isArr) {
+        fn(res, key, index, isArr);
+      } else {
+        fn(res, obj[key], key, isArr);
+      }
 
-    return res;
-  }, {});
+      return res;
+    },
+    {}
+  );
 };
+
+export const each = (obj: object | any[]) => (
+  fn: (value: any, key?: any, isArray?: boolean) => any
+) => reduce(obj)((_, ...args) => fn(...args));
+
+const isArray = (obj: object | any[]) =>
+  typeof (obj as any[]).length !== 'undefined';

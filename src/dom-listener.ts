@@ -100,9 +100,4 @@ export class DomListener {
     this.handlers.scroll = handler;
     return this;
   }
-
-  public onSettingsClick(handler: () => any) {
-    this.handlers.click = ({ target }) =>
-      invokeSettingsHandler(target as HTMLElement, handler);
-  }
 }

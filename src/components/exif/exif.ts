@@ -1,8 +1,8 @@
 import { CssClasses } from '../../constants';
 import { ExifProperties, IExifData, IExifDataProp } from '../../types';
-import { escapeHTML } from '../../utils';
+import { Component } from '../../lib/component';
 
-const formatValue = (value: any, prop: ExifProperties) => {
+export const formatValue = (value: any, prop: ExifProperties) => {
   if (typeof value === 'undefined') {
     return '--';
   }
@@ -29,7 +29,7 @@ const formatValue = (value: any, prop: ExifProperties) => {
   }
 };
 
-const mapData = (exifData: IExifData): IExifDataProp[] =>
+const mapProps = (exifData: IExifData): IExifDataProp[] =>
   Object.keys(exifData).map(name => ({
     ...exifData[name],
     name,
@@ -37,28 +37,21 @@ const mapData = (exifData: IExifData): IExifDataProp[] =>
     value: formatValue(exifData[name].value, ExifProperties[name]),
   }));
 
-export const getExifHtml = (
-  exifData: IExifData,
-  transform: (propHtml: string, prop: IExifDataProp) => string = x => x
-) =>
-  mapData(exifData)
-    .map(prop =>
-      transform(
-        `
-        <div>
-          <div class="${CssClasses.PropertyName}">${escapeHTML(
-          prop.title
-        )}</div>
-          <div class="${CssClasses.PropertyValue}">${escapeHTML(
-          prop.value
-        )}</div>
-        </div>
-      `,
-        prop
-      )
-    )
-    .join('');
+export class Exif extends Component {
+  protected template = `
+    <div class="${CssClasses.PropertyList}">
+      <div ex-repeat="props::prop">
+        <div class="${CssClasses.PropertyName}" ex-html="prop.title"></div>
+        <div class="${CssClasses.PropertyValue}" ex-html="prop.value"></div>
+      </div>
+    </div>
+  `;
 
-export const renderExif = (container: HTMLElement, exifData: IExifData) => {
-  container.innerHTML = getExifHtml(exifData);
-};
+  public show(exifData: IExifData) {
+    this.scope = {
+      props: mapProps(exifData),
+    };
+
+    this.render();
+  }
+}

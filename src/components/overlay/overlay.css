@@ -47,7 +47,7 @@
   opacity: 1;
 }
 
-.exify-overlay-property-list {
+.exify-property-list {
   animation: exify-fade-in 0.2s;
   display: none;
   max-width: 100%;
@@ -56,16 +56,16 @@
   overflow: hidden;
 }
 
-.exify-overlay-property-list > * {
+.exify-property-list > * {
   display: inline-block;
   text-align: left;
 }
 
-.exify-overlay-property-list > *:not(:first-child) {
+.exify-property-list > *:not(:first-child) {
   margin-left: 24px;
 }
 
-.exify-overlay--loaded .exify-overlay-property-list {
+.exify-overlay--loaded .exify-property-list {
   display: block;
 }
 

@@ -1,6 +1,6 @@
 import { DomListener } from './dom-listener';
-import { Overlay } from './views/overlay/overlay';
-import { Settings } from './views/settings/settings';
+import { Overlay } from './components/overlay/overlay';
+import { Settings } from './components/settings/settings';
 import { IStorage } from './types';
 
 export class Exify {
@@ -10,33 +10,36 @@ export class Exify {
     readExif: (image: HTMLElement) => Promise<object>,
     storage: IStorage
   ) {
-    const overlay = new Overlay(this.document);
+    const document = this.document;
+
+    const overlay = new Overlay(this.document.body, {
+      settings(exifData) {
+        overlay.destroy();
+
+        storage.getUserSettings().then(userSettings =>
+          new Settings(document.body)
+            .open(exifData, userSettings)
+            .then(updatedUserSettings =>
+              storage.saveUserSettings(updatedUserSettings)
+            )
+            .catch(() => null)
+        );
+      },
+    });
 
     new DomListener(this.document)
       .onImageMouseIn(image => onImageLoad => {
-        overlay.showOverlay(image);
+        overlay.show(image);
 
         onImageLoad(() =>
           Promise.all([readExif(image), storage.getUserSettings()])
             .then(([exifData, userSettings]) =>
-              overlay.showExif(exifData, userSettings)
+              overlay.exif(exifData, userSettings)
             )
-            .catch(() => overlay.showExif(null))
+            .catch(() => overlay.exif(null))
         );
       })
-      .onScroll(() => overlay.remove())
-      .onImageMouseOut(() => overlay.remove())
-      .onSettingsClick(() => {
-        overlay.remove();
-
-        storage.getUserSettings().then(userSettings =>
-          new Settings(this.document)
-            .showSettings(overlay.getExifData(), userSettings)
-            .then(updatedUserSettings =>
-              storage.saveUserSettings(updatedUserSettings)
-            )
-            .catch(_ => _)
-        );
-      });
+      .onScroll(() => overlay.destroy())
+      .onImageMouseOut(() => overlay.destroy());
   }
 }

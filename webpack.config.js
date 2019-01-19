@@ -5,7 +5,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const extend = conf => {
   return {
     ...conf,
-    mode: 'production',
+    mode: 'development',
     output: {
       ...conf.output,
       path: path.resolve(__dirname, './dist'),
@@ -47,10 +47,10 @@ const extension = (
           from: './node_modules/dialog-polyfill/dialog-polyfill.css',
           to: `${browser}/`,
         },
-        { from: './src/views/exify.css', to: `${browser}/` },
-        { from: './src/views/exif/exif.css', to: `${browser}/` },
-        { from: './src/views/overlay/overlay.css', to: `${browser}/` },
-        { from: './src/views/settings/settings.css', to: `${browser}/` },
+        { from: './src/components/exify.css', to: `${browser}/` },
+        { from: './src/components/exif/exif.css', to: `${browser}/` },
+        { from: './src/components/overlay/overlay.css', to: `${browser}/` },
+        { from: './src/components/settings/settings.css', to: `${browser}/` },
         { from: './src/icons', to: `${browser}/icons` },
       ]),
     ],
