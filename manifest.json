@@ -17,13 +17,7 @@
     {
       "matches": ["*://*/*"],
       "js": ["content.js"],
-      "css": [
-        "dialog-polyfill.css",
-        "exify.css",
-        "exif.css",
-        "overlay.css",
-        "settings.css"
-      ]
+      "css": ["bundle.css"]
     }
   ],
   "web_accessible_resources": ["icons/icon48.png"],

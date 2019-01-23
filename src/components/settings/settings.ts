@@ -1,23 +1,33 @@
 import * as dialogPolyfill from 'dialog-polyfill';
 import { CssClasses, CheckboxIcon } from '../../constants';
 import * as Events from './settings-events';
-import { IUserSettings, OptionalExifProperties } from '../../types';
-import { reduce } from '../../utils';
+import {
+  IUserSettings,
+  OptionalExifProperties,
+  IExifDataProp,
+} from '../../types';
+import { map } from '../../utils';
 import { formatValue } from '../exif/exif';
 import { Component } from '../../lib/component';
 
 const getOptionalExifProps = (exifData: object, userSettings: IUserSettings) =>
-  reduce(OptionalExifProperties)(
-    (res, _, key) =>
-      (res[key] = {
-        name: key,
-        title: OptionalExifProperties[key],
-        value: formatValue(exifData[key], OptionalExifProperties[key] as any),
-        selected: userSettings.optionalExifProperties.indexOf(key) !== -1,
-      })
-  );
+  map(OptionalExifProperties, [])((value, key) => ({
+    name: key,
+    title: OptionalExifProperties[key],
+    value: formatValue(exifData[key], value),
+    selected: userSettings.optionalExifProperties.indexOf(key) !== -1,
+  }));
 
-export class Settings extends Component<HTMLDialogElement> {
+export class Settings extends Component<
+  {},
+  {
+    props: IExifDataProp[];
+    save: () => any;
+    cancel: () => any;
+    toggle: (prop, element) => void;
+  },
+  HTMLDialogElement
+> {
   protected template = `
     <dialog class="${CssClasses.Settings}">
       <div>
@@ -53,6 +63,10 @@ export class Settings extends Component<HTMLDialogElement> {
     </dialog>  
   `;
 
+  constructor(root: HTMLElement) {
+    super(root);
+  }
+
   protected link(dialog: HTMLDialogElement) {
     dialogPolyfill.registerDialog(dialog);
 
@@ -60,16 +74,14 @@ export class Settings extends Component<HTMLDialogElement> {
     dialog.classList.add(CssClasses.Show);
   }
 
-  public open(exifData: object, userSettings: IUserSettings) {
+  public show(exifData: object, userSettings: IUserSettings) {
     return new Promise<IUserSettings>((resolve, reject) => {
-      this.scope = {
+      this.updateScope({
         props: getOptionalExifProps(exifData, userSettings),
         save: () => Events.save(this.scope, this.element, resolve),
         cancel: () => Events.cancel(this.element, reject),
         toggle: (prop, element) => Events.toggle(prop, element),
-      };
-
-      this.render();
+      });
     }).finally(() => this.destroy());
   }
 }

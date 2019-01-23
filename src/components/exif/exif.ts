@@ -1,6 +1,7 @@
 import { CssClasses } from '../../constants';
 import { ExifProperties, IExifData, IExifDataProp } from '../../types';
 import { Component } from '../../lib/component';
+import { map } from '../../utils';
 
 export const formatValue = (value: any, prop: ExifProperties) => {
   if (typeof value === 'undefined') {
@@ -29,29 +30,31 @@ export const formatValue = (value: any, prop: ExifProperties) => {
   }
 };
 
-const mapProps = (exifData: IExifData): IExifDataProp[] =>
-  Object.keys(exifData).map(name => ({
-    ...exifData[name],
-    name,
+const mapProps = (exifData: IExifData) =>
+  map(exifData, [])((value, name) => ({
     title: ExifProperties[name],
-    value: formatValue(exifData[name].value, ExifProperties[name]),
+    value: formatValue((value as any).value, ExifProperties[
+      name
+    ] as ExifProperties),
   }));
 
-export class Exif extends Component {
+export class Exif extends Component<{}, { data: IExifDataProp[] }> {
   protected template = `
     <div class="${CssClasses.PropertyList}">
-      <div ex-repeat="props::prop">
+      <div ex-repeat="data::prop">
         <div class="${CssClasses.PropertyName}" ex-html="prop.title"></div>
         <div class="${CssClasses.PropertyValue}" ex-html="prop.value"></div>
       </div>
     </div>
   `;
 
-  public show(exifData: IExifData) {
-    this.scope = {
-      props: mapProps(exifData),
-    };
+  constructor(root: HTMLElement, { data }) {
+    super(root);
 
-    this.render();
+    this.updateScope({
+      data: mapProps(data),
+    });
   }
 }
+
+Component.register('exify-exif', Exif as any);

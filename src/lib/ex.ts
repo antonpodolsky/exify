@@ -1,51 +1,19 @@
-import { each } from '../utils';
+import { each, query, querySelf, reduce } from '../utils';
 
-export const compile = <T = HTMLElement>(
-  elementOrTemplate: string | HTMLElement
-) => (scope): T => {
-  const element = resolveElement(elementOrTemplate);
+export const compile = <E extends HTMLElement>(
+  elementOrTemplate: string | E,
+  registry = {}
+) => scope => {
+  const element = resolveElement(elementOrTemplate) as E;
 
-  (attr =>
-    element.querySelectorAll(`[${attr}]`).forEach(el => {
-      const [itemsAlias, itemAlias] = el.getAttribute(attr).split('::');
-      el.removeAttribute(attr);
+  repeat(element, scope);
+  condition(element, scope);
+  component(element, scope, registry);
+  html(element, scope);
+  cssClass(element, scope);
+  events(element, scope);
 
-      each(scope[itemsAlias])(value =>
-        el.parentElement.appendChild(
-          compile(el.cloneNode(true) as HTMLElement)({
-            ...scope,
-            [itemAlias]: value,
-          })
-        )
-      );
-
-      el.remove();
-    }))('ex-repeat');
-
-  (attr =>
-    element.querySelectorAll(`[${attr}]`).forEach(el => {
-      el.innerHTML = escapeHTML(evalInScope(el.getAttribute(attr), scope));
-      el.removeAttribute(attr);
-    }))('ex-html');
-
-  ['click'].forEach(event =>
-    [element, ...Array.from(element.querySelectorAll(`[ex-${event}]`))].forEach(
-      el => {
-        const expression = el.getAttribute(`ex-${event}`);
-
-        if (!expression) {
-          return;
-        }
-
-        el.removeAttribute(`ex-${event}`);
-        el.addEventListener(event, () =>
-          evalInScope(expression, { ...scope, $element: el })
-        );
-      }
-    )
-  );
-
-  return element as any;
+  return element;
 };
 
 const resolveElement = (elementOrTemplate: HTMLElement | string) => {
@@ -62,6 +30,68 @@ const resolveElement = (elementOrTemplate: HTMLElement | string) => {
   return element;
 };
 
+const repeat = (element: HTMLElement, scope: object, attr = 'ex-repeat') =>
+  query(element, `[${attr}]`)(el => {
+    const [itemsAlias, itemAlias] = el.getAttribute(attr).split('::');
+    el.removeAttribute(attr);
+
+    each(scope[itemsAlias])(value =>
+      el.parentElement.appendChild(
+        compile(el.cloneNode(true) as HTMLElement)({
+          ...scope,
+          [itemAlias]: value,
+        })
+      )
+    );
+
+    el.remove();
+  });
+
+const condition = (element: HTMLElement, scope: object, attr = 'ex-if') =>
+  query(element, `[${attr}]`)(el => {
+    if (!evalInScope(el.getAttribute(attr), scope)) {
+      el.remove();
+    }
+
+    el.removeAttribute(attr);
+  });
+
+const component = (element: HTMLElement, scope: object, registry: object) =>
+  querySelf(element, Object.keys(registry).join(','))(
+    el =>
+      new registry[(el.tagName.toLowerCase())](
+        el,
+        reduce(Array.from(el.attributes))(
+          (res, { name, value }) => (res[name] = evalInScope(value, scope))
+        )
+      )
+  );
+
+const html = (element: HTMLElement, scope: object, attr = 'ex-html') =>
+  query(element, `[${attr}]`)(el => {
+    el.innerHTML = escapeHTML(evalInScope(el.getAttribute(attr), scope));
+    el.removeAttribute(attr);
+  });
+
+const cssClass = (element: HTMLElement, scope: object, attr = 'ex-class') =>
+  querySelf(element, `[${attr}]`)(el => {
+    el.classList.add(evalInScope(el.getAttribute(attr), scope));
+    el.removeAttribute(attr);
+  });
+
+const events = (element: HTMLElement, scope: object, types = ['click']) =>
+  types.forEach(type =>
+    (attr =>
+      querySelf(element, `[${attr}]`)(el => {
+        const expression = el.getAttribute(attr);
+
+        el.removeAttribute(attr);
+        el.addEventListener(type, () =>
+          evalInScope(expression, { ...scope, $element: el })
+        );
+      }))(`ex-${type}`)
+  );
+
 const evalInScope = (expression: string, scope: object) =>
   (() =>
     // tslint:disable-next-line:no-eval
@@ -72,7 +102,7 @@ const evalInScope = (expression: string, scope: object) =>
       )
     )).call(scope);
 
-const escapeHTML = (value: string) => {
+const escapeHTML = (value: any) => {
   return ('' + value)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')

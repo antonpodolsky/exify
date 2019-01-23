@@ -3,6 +3,7 @@
     "lib": ["es2018", "dom"],
     "sourceMap": true,
     "types": ["chrome"],
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "target": "es5"
   }
 }

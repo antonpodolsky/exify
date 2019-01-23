@@ -13,9 +13,7 @@ const isImageFullyVisible = (image: HTMLElement) => {
 };
 
 const isOverlay = (element: Element) =>
-  element &&
-  (element.classList.contains(CssClasses.Overlay) ||
-    element.closest(`.${CssClasses.Overlay}`));
+  element && element.closest(`.${CssClasses.Overlay}`);
 
 const invokeImageHandler = (
   element: Element,
@@ -28,13 +26,8 @@ const invokeImageHandler = (
   customCondition() &&
   handler(element);
 
-const invokeSettingsHandler = (element: HTMLElement, handler) =>
-  element &&
-  element.classList.contains(CssClasses.OverlaySettingsToggle) &&
-  handler(element);
-
-const waitForImageLoad = (image: HTMLImageElement): Promise<HTMLImageElement> =>
-  new Promise(resolve =>
+const waitForImageLoad = (image: HTMLImageElement) =>
+  new Promise<HTMLImageElement>(resolve =>
     image.complete
       ? resolve(image)
       : image.addEventListener('load', () => resolve(image))
@@ -69,7 +62,7 @@ export class DomListener {
     handler: (
       image: HTMLImageElement
     ) => (
-      handler: (onImageLoad: (image: HTMLImageElement) => any) => any
+      onImageLoad: (handler: (image: HTMLImageElement) => any) => any
     ) => any
   ) {
     this.handlers.mouseover = ({ target: to, relatedTarget: from }) =>

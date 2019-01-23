@@ -18,9 +18,9 @@ export const toggle = (prop, element: HTMLElement) => {
 export const save = (scope, dialog: HTMLDialogElement, next) =>
   destroy(dialog, () =>
     next({
-      optionalExifProperties: Object.keys(scope.props).filter(
-        prop => scope.props[prop].selected
-      ),
+      optionalExifProperties: scope.props
+        .filter(prop => prop.selected)
+        .map(({ name }) => name),
     })
   );
 

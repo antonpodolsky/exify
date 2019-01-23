@@ -1,4 +1,5 @@
 export enum CssClasses {
+  Shadow = 'exify-shadow',
   Logo = 'exify-logo',
   Loader = 'exify-loader',
   Icon = 'exify-icon',

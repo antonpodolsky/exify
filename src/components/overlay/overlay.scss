@@ -1,0 +1,71 @@
+.exify-overlay {
+  animation: exify-fade-in 0.3s;
+  position: fixed;
+  font-family: 'Exify Font';
+  line-height: normal !important;
+  color: #fff !important;
+  z-index: 2147483647;
+
+  .exify-overlay--error {
+    .exify-loader {
+      animation: exify-rotate 1s ease 1;
+    }
+
+    .exify-overlay-content {
+      animation: exify-grayscale 1s forwards;
+    }
+  }
+
+  .exify-overlay-background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #000;
+    opacity: 0.7;
+  }
+
+  .exify-overlay-content {
+    position: absolute;
+    display: flex;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    justify-content: center;
+
+    .exify-loader {
+      margin-top: 15px;
+    }
+
+    .exify-property-list {
+      animation: exify-fade-in 0.2s;
+      max-width: 100%;
+      margin: 14px 74px 0;
+      white-space: nowrap;
+      overflow: hidden;
+
+      > * {
+        display: inline-block;
+        text-align: left;
+      }
+
+      > *:not(:first-child) {
+        margin-left: 24px;
+      }
+    }
+
+    .exify-overlay-settings-toggle {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      opacity: 0.6;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}

@@ -9,7 +9,7 @@ export interface IExifData {
 export interface IExifDataProp {
   value: any;
   name?: string;
-  title: string;
+  title?: string;
   selected?: boolean;
 }
 
@@ -19,7 +19,7 @@ export interface IStorage {
 }
 
 export interface IUserSettings {
-  optionalExifProperties: string[];
+  optionalExifProperties: Array<OptionalExifProperties[0]>;
 }
 
 export enum DefaultExifProperties {
@@ -31,10 +31,10 @@ export enum DefaultExifProperties {
 }
 
 export enum OptionalExifProperties {
-  MeteringMode = 'Metering Mode',
-  ExposureProgram = 'Exposure Mode',
-  ExposureBias = 'Exposure Bias',
-  DateTimeOriginal = 'Date Taken',
+  MeteringMode = 'Metering mode',
+  ExposureProgram = 'Exposure mode',
+  ExposureBias = 'Exposure bias',
+  DateTimeOriginal = 'Date taken',
   Software = 'Software',
 }
 

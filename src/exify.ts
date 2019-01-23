@@ -18,7 +18,7 @@ export class Exify {
 
         storage.getUserSettings().then(userSettings =>
           new Settings(document.body)
-            .open(exifData, userSettings)
+            .show(exifData, userSettings)
             .then(updatedUserSettings =>
               storage.saveUserSettings(updatedUserSettings)
             )

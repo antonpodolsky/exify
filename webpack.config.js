@@ -1,11 +1,12 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const extend = conf => {
   return {
     ...conf,
-    mode: 'development',
+    mode: process.env.NODE_ENV !== 'production' ? 'development' : 'production',
     output: {
       ...conf.output,
       path: path.resolve(__dirname, './dist'),
@@ -22,10 +23,23 @@ const extend = conf => {
     module: {
       rules: [
         { test: /\.ts?$/, loader: 'ts-loader' },
-        { test: /\.css?$/, loader: ['style-loader', 'css-loader'] },
+        {
+          test: /\.css?$/,
+          loader: [MiniCssExtractPlugin.loader, 'css-loader'],
+        },
+        {
+          test: /\.scss?$/,
+          loader: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        },
       ],
     },
-    plugins: [new CleanWebpackPlugin(['dist']), ...(conf.plugins || [])],
+    plugins: [
+      new CleanWebpackPlugin(['dist']),
+      new MiniCssExtractPlugin({
+        filename: './web/bundle.css',
+      }),
+      ...(process.env.NODE_ENV !== 'production' ? [] : conf.plugins || []),
+    ],
   };
 };
 
@@ -43,14 +57,7 @@ const extension = (
     plugins: [
       new CopyWebpackPlugin([
         { from: './manifest.json', to: `${browser}/` },
-        {
-          from: './node_modules/dialog-polyfill/dialog-polyfill.css',
-          to: `${browser}/`,
-        },
-        { from: './src/components/exify.css', to: `${browser}/` },
-        { from: './src/components/exif/exif.css', to: `${browser}/` },
-        { from: './src/components/overlay/overlay.css', to: `${browser}/` },
-        { from: './src/components/settings/settings.css', to: `${browser}/` },
+        { from: './dist/web/bundle.css', to: `${browser}/` },
         { from: './src/icons', to: `${browser}/icons` },
       ]),
     ],
@@ -65,4 +72,4 @@ const web = extend({
   },
 });
 
-module.exports = [extension('webkit'), extension('firefox'), web];
+module.exports = [web, extension('webkit'), extension('firefox')];
