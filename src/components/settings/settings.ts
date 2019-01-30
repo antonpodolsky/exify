@@ -1,44 +1,49 @@
 import * as dialogPolyfill from 'dialog-polyfill';
 import { CssClasses, CheckboxIcon } from '../../constants';
 import * as Events from './settings-events';
+import { map } from '../../utils';
+import { Component } from '../../lib/component';
 import {
   IUserSettings,
   OptionalExifProperties,
   IExifDataProp,
+  IExifData,
 } from '../../types';
-import { map } from '../../utils';
-import { formatValue } from '../exif/exif';
-import { Component } from '../../lib/component';
 
-const getOptionalExifProps = (exifData: object, userSettings: IUserSettings) =>
-  map(OptionalExifProperties, [])((value, key) => ({
-    name: key,
-    title: OptionalExifProperties[key],
-    value: formatValue(exifData[key], value),
-    selected: userSettings.optionalExifProperties.indexOf(key) !== -1,
+interface IProps {
+  userSettings: IUserSettings;
+}
+
+interface IScope {
+  props: IExifDataProp[];
+  enabled: boolean;
+}
+
+const getOptionalExifProps = (
+  exifData: IExifData,
+  userSettings: IUserSettings
+) =>
+  map(OptionalExifProperties, [])((_, prop) => ({
+    ...exifData[prop],
+    selected: userSettings.optionalExifProperties.indexOf(prop) !== -1,
   }));
 
-export class Settings extends Component<
-  {},
-  {
-    props: IExifDataProp[];
-    save: () => any;
-    cancel: () => any;
-    toggle: (prop, element) => void;
-  },
-  HTMLDialogElement
-> {
+export class Settings extends Component<IProps, IScope, HTMLDialogElement> {
   protected template = `
     <dialog class="${CssClasses.Settings}">
       <div>
         <div class="${CssClasses.SettingsHeader}">
-          <div class="${CssClasses.Logo}"></div>
-          Additional EXIF properties
+          <div>
+            <div class="${CssClasses.Logo}"></div>
+            <span>Additional EXIF properties</span>
+          </div>  
+
+          <exify-switch on="enabled" on-change="toggleEnabled"></exify-switch>
         </div>
         <div class="${CssClasses.SettingsContent}">
           <div class="${
             CssClasses.SettingsProperty
-          }" ex-repeat="props::prop" ex-click="toggle(prop, $element)">
+          }" ex-repeat="props::prop" ex-click="toggleProp(prop, $element)">
             <span class="${CssClasses.Icon}" ex-html="prop.selected ? '${
     CheckboxIcon.On
   }' : '${CheckboxIcon.Off}'"></span>
@@ -74,13 +79,22 @@ export class Settings extends Component<
     dialog.classList.add(CssClasses.Show);
   }
 
-  public show(exifData: object, userSettings: IUserSettings) {
+  public show(exifData: IExifData, userSettings: IUserSettings) {
+    this.props = { userSettings };
+
     return new Promise<IUserSettings>((resolve, reject) => {
+      this.events = {
+        save: () => Events.save(this.scope, this.props, this.element, resolve),
+        cancel: () => Events.cancel(this.element, reject),
+        toggleEnabled: enabled => Events.toggleEnabled(this.scope, enabled),
+        toggleProp: (prop, element) => Events.toggleProp(prop, element),
+      };
+
       this.updateScope({
         props: getOptionalExifProps(exifData, userSettings),
-        save: () => Events.save(this.scope, this.element, resolve),
-        cancel: () => Events.cancel(this.element, reject),
-        toggle: (prop, element) => Events.toggle(prop, element),
+        enabled:
+          userSettings.disabledDomains.indexOf(document.location.hostname) ===
+          -1,
       });
     }).finally(() => this.destroy());
   }

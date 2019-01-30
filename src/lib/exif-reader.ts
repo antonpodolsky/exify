@@ -1,6 +1,6 @@
 import * as exif from 'exif-js';
 import { RequestTimeout } from '../constants';
-import { IExifyImage, ExifProperties } from '../types';
+import { IExifyImage, ExifProperties, IExifData } from '../types';
 import { reduce } from '../utils';
 
 const convertValue = (property: ExifProperties, value: any) => {
@@ -21,15 +21,46 @@ const convertValue = (property: ExifProperties, value: any) => {
   }
 };
 
-export const readExif = (image: IExifyImage): Promise<object> =>
+export const formatValue = (prop: ExifProperties, value: any) => {
+  if (typeof value === 'undefined') {
+    return '--';
+  }
+
+  switch (prop) {
+    case ExifProperties.FocalLength:
+      return `${value}mm`;
+    case ExifProperties.FNumber:
+      return `f/${value}`;
+    case ExifProperties.ExposureTime:
+      return `${value}s`;
+    case ExifProperties.ExposureBias:
+      return value || 'Neutral';
+    case ExifProperties.DateTimeOriginal:
+      return (([date, hour]) => [
+        date.replace(/\:/g, '/'),
+        hour
+          .split(':')
+          .splice(0, 2)
+          .join(':'),
+      ])(value.split(' ')).join(' ');
+    default:
+      return value;
+  }
+};
+
+export const readExif = (image: IExifyImage): Promise<IExifData> =>
   new Promise((resolve, reject) => {
     let timedOut = false;
 
     exif.getData(image as any, () => {
       const exifData = reduce(ExifProperties)(
-        (res, prop, key) =>
+        (res, prop: ExifProperties, key) =>
           typeof image.exifdata[key] !== 'undefined' &&
-          (res[key] = convertValue(prop, image.exifdata[key]))
+          (res[key] = {
+            name: key,
+            title: prop,
+            value: formatValue(prop, convertValue(prop, image.exifdata[key])),
+          })
       );
 
       return (

@@ -4,6 +4,7 @@ export class Component<P = {}, S = {}, T extends HTMLElement = HTMLElement> {
   protected template: string = null;
   protected element: T = null;
   protected scope: S = null;
+  protected events = null;
 
   constructor(private root: HTMLElement, protected props?: P) {}
 
@@ -21,7 +22,7 @@ export class Component<P = {}, S = {}, T extends HTMLElement = HTMLElement> {
   }
 
   protected updateScope(scope: S) {
-    this.scope = { ...this.scope, ...scope };
+    this.scope = { ...this.events, ...this.scope, ...scope };
     this.render();
   }
 

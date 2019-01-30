@@ -1,19 +1,22 @@
 import { DomListener } from './dom-listener';
 import { Overlay } from './components/overlay/overlay';
 import { Settings } from './components/settings/settings';
-import { IStorage } from './types';
+import { IStorage, IExifData } from './types';
+
+import './components/switch/switch';
+import './components/exif/exif';
 
 export class Exify {
   constructor(private document) {}
 
   public init(
-    readExif: (image: HTMLElement) => Promise<object>,
+    readExif: (image: HTMLElement) => Promise<IExifData>,
     storage: IStorage
   ) {
     const document = this.document;
 
     const overlay = new Overlay(this.document.body, {
-      settings(exifData) {
+      openSettings(exifData) {
         overlay.destroy();
 
         storage.getUserSettings().then(userSettings =>
@@ -22,7 +25,8 @@ export class Exify {
             .then(updatedUserSettings =>
               storage.saveUserSettings(updatedUserSettings)
             )
-            .catch(() => null)
+            // tslint:disable-next-line: no-console
+            .catch(e => e && console.error(e))
         );
       },
     });

@@ -36,6 +36,7 @@
     "webpack-dev-server": "^3.1.11"
   },
   "dependencies": {
+    "change-case": "^3.1.0",
     "dialog-polyfill": "^0.4.10",
     "exif-js": "^2.3.0"
   }

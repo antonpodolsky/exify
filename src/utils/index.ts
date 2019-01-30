@@ -1,3 +1,9 @@
+import { IKeyValue } from '../types';
+
+type Reducible = any[] | IKeyValue;
+type Value<I> = I extends any[] ? I[0] : I[keyof I];
+type Key<I> = I extends any[] ? number : keyof I;
+
 export const escapeHTML = (value: string) => {
   return ('' + value)
     .replace(/&/g, '&amp;')
@@ -7,49 +13,41 @@ export const escapeHTML = (value: string) => {
     .replace(/'/g, '&#039;');
 };
 
-export const reduce = (input: object | any[], output = {}) => (
-  fn: (res: object | any[], value: any, key?: any, isArray?: boolean) => any
+export const reduce = <I extends Reducible, O extends Reducible = I>(
+  input: I,
+  output?: O
+) => <F extends (res: Reducible, value: Value<I>, key?: Key<I>) => void>(
+  fn: F
 ) => {
-  const isArr = isArray(input);
-
-  return (isArr ? (input as any[]) : Object.keys(input)).reduce(
+  return ((input instanceof Array ? input : Object.keys(input)).reduce as any)(
     (res, key, index) => {
-      if (isArr) {
-        fn(res, key, index, isArr);
+      if (input instanceof Array) {
+        fn(res, key, index);
       } else {
-        fn(res, input[key], key, isArr);
+        fn(res, input[key], key);
       }
 
       return res;
     },
-    output
+    output || (input instanceof Array ? [] : {})
   );
 };
 
-export const map = <I extends any[] | {}, O extends any[] | {} = I>(
+export const map = <I extends Reducible, O extends Reducible = I>(
   input: I,
   output?: O
-) => <
-  F extends (
-    value: I extends any[] ? I[0] : I[keyof I],
-    key?: I extends any[] ? number : keyof I
-  ) => unknown
->(
-  fn: F
-) => {
-  const isInputArray = isArray(input);
-  output = output || ((isInputArray ? [] : {}) as any);
-  const isOutputArray = isArray(output as any);
-
-  return reduce(input, isOutputArray ? [] : {})((res, value, key) => {
-    if (isOutputArray) {
-      (res as any[]).push(fn(value, key));
-    } else if (isInputArray) {
-      res[value] = fn(value, key);
-    } else {
-      res[key] = fn(value, key);
+) => <F extends (value: Value<I>, key?: Key<I>) => any>(fn: F) => {
+  return reduce(input, output || (input instanceof Array ? [] : {}))(
+    (res, value, key) => {
+      if (res instanceof Array) {
+        res.push(fn(value, key));
+      } else if (input instanceof Array) {
+        res[value] = fn(value, key);
+      } else {
+        res[key] = fn(value, key);
+      }
     }
-  }) as O extends any[]
+  ) as O extends any[]
     ? Array<ReturnType<F>>
     : { [key: string]: ReturnType<F> };
 };
@@ -70,6 +68,3 @@ export const querySelf = (element: HTMLElement, selector: string) => (
     ...Array.from(selector ? element.querySelectorAll(selector) : []),
     ...(element.matches(selector) ? [element] : []),
   ].forEach(fn);
-
-const isArray = (obj: object | any[]) =>
-  typeof (obj as any[]).length !== 'undefined';

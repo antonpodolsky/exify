@@ -1,3 +1,7 @@
+export interface IKeyValue<V = any> {
+  [key: string]: V;
+}
+
 export interface IExifyImage extends HTMLImageElement {
   exifdata?: object;
 }
@@ -20,6 +24,7 @@ export interface IStorage {
 
 export interface IUserSettings {
   optionalExifProperties: Array<OptionalExifProperties[0]>;
+  disabledDomains: string[];
 }
 
 export enum DefaultExifProperties {

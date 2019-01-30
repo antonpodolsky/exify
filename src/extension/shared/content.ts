@@ -1,18 +1,22 @@
 import { readExif } from '../../lib/exif-reader';
 import { Exify } from '../../exify';
 import { IStorage, IUserSettings } from '../../types';
-import { StorageKey } from '../../constants';
+import { StorageKey, DefaultUserSettings } from '../../constants';
 
 class Storage implements IStorage {
   constructor(private browser: typeof chrome) {}
 
   public getUserSettings() {
     return new Promise<IUserSettings>(resolve =>
-      this.browser.storage.local.get([StorageKey], res =>
-        resolve(
-          (res[StorageKey] as IUserSettings) || { optionalExifProperties: [] }
-        )
-      )
+      this.browser.storage.local.get([StorageKey], res => {
+        const userSettings = (res[StorageKey] as IUserSettings) || {
+          ...DefaultUserSettings,
+        };
+
+        userSettings.disabledDomains = userSettings.disabledDomains || [];
+
+        resolve(userSettings);
+      })
     );
   }
 

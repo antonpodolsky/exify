@@ -1,3 +1,5 @@
+import { IUserSettings } from './types';
+
 export enum CssClasses {
   Shadow = 'exify-shadow',
   Logo = 'exify-logo',
@@ -28,6 +30,11 @@ export enum CheckboxIcon {
 export enum BackgroundMethods {
   READ_EXIF,
 }
+
+export const DefaultUserSettings: IUserSettings = {
+  optionalExifProperties: [],
+  disabledDomains: [],
+};
 
 export const StorageKey = 'exifyUserSettings';
 export const OverlayHeight = 60;

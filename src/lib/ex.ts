@@ -1,4 +1,5 @@
 import { each, query, querySelf, reduce } from '../utils';
+import { camelCase } from 'change-case';
 
 export const compile = <E extends HTMLElement>(
   elementOrTemplate: string | E,
@@ -11,6 +12,7 @@ export const compile = <E extends HTMLElement>(
   component(element, scope, registry);
   html(element, scope);
   cssClass(element, scope);
+  attribute(element, scope);
   events(element, scope);
 
   return element;
@@ -30,16 +32,23 @@ const resolveElement = (elementOrTemplate: HTMLElement | string) => {
   return element;
 };
 
-const repeat = (element: HTMLElement, scope: object, attr = 'ex-repeat') =>
-  query(element, `[${attr}]`)(el => {
-    const [itemsAlias, itemAlias] = el.getAttribute(attr).split('::');
+const eachAttr = (element: HTMLElement, attr: string, matchSelf = true) => (
+  fn: (el: HTMLElement, value: string, attr: string) => void
+) =>
+  (matchSelf ? querySelf : query)(element, `[${attr}]`)(el => {
+    fn(el, el.getAttribute(attr), attr);
     el.removeAttribute(attr);
+  });
 
-    each(scope[itemsAlias])(value =>
+const repeat = (element: HTMLElement, scope: object) =>
+  eachAttr(element, 'ex-repeat', false)((el, value) => {
+    const [itemsAlias, itemAlias] = value.split('::');
+
+    each(scope[itemsAlias])(val =>
       el.parentElement.appendChild(
         compile(el.cloneNode(true) as HTMLElement)({
           ...scope,
-          [itemAlias]: value,
+          [itemAlias]: val,
         })
       )
     );
@@ -47,14 +56,10 @@ const repeat = (element: HTMLElement, scope: object, attr = 'ex-repeat') =>
     el.remove();
   });
 
-const condition = (element: HTMLElement, scope: object, attr = 'ex-if') =>
-  query(element, `[${attr}]`)(el => {
-    if (!evalInScope(el.getAttribute(attr), scope)) {
-      el.remove();
-    }
-
-    el.removeAttribute(attr);
-  });
+const condition = (element: HTMLElement, scope: object) =>
+  eachAttr(element, 'ex-if')(
+    (el, value) => !evalInScope(value, scope) && el.remove()
+  );
 
 const component = (element: HTMLElement, scope: object, registry: object) =>
   querySelf(element, Object.keys(registry).join(','))(
@@ -62,51 +67,62 @@ const component = (element: HTMLElement, scope: object, registry: object) =>
       new registry[(el.tagName.toLowerCase())](
         el,
         reduce(Array.from(el.attributes))(
-          (res, { name, value }) => (res[name] = evalInScope(value, scope))
+          (res, { name, value }) =>
+            (res[camelCase(name)] = evalInScope(value, scope))
         )
       )
   );
 
-const html = (element: HTMLElement, scope: object, attr = 'ex-html') =>
-  query(element, `[${attr}]`)(el => {
-    el.innerHTML = escapeHTML(evalInScope(el.getAttribute(attr), scope));
-    el.removeAttribute(attr);
-  });
+const html = (element: HTMLElement, scope: object) =>
+  eachAttr(element, 'ex-html')(
+    (el, value) => (el.innerHTML = escapeHTML(evalInScope(value, scope)))
+  );
 
-const cssClass = (element: HTMLElement, scope: object, attr = 'ex-class') =>
-  querySelf(element, `[${attr}]`)(el => {
-    el.classList.add(evalInScope(el.getAttribute(attr), scope));
-    el.removeAttribute(attr);
-  });
+const cssClass = (element: HTMLElement, scope: object) =>
+  eachAttr(element, 'ex-class')((el, value) =>
+    el.classList.add(evalInScope(value, scope))
+  );
 
-const events = (element: HTMLElement, scope: object, types = ['click']) =>
-  types.forEach(type =>
-    (attr =>
-      querySelf(element, `[${attr}]`)(el => {
-        const expression = el.getAttribute(attr);
+const attribute = (element: HTMLElement, scope: object) =>
+  ['checked'].forEach(attr =>
+    eachAttr(element, `ex-attr-${attr}`)(
+      (el, value) => evalInScope(value, scope) && el.setAttribute(attr, attr)
+    )
+  );
 
-        el.removeAttribute(attr);
-        el.addEventListener(type, () =>
-          evalInScope(expression, { ...scope, $element: el })
-        );
-      }))(`ex-${type}`)
+const events = (element: HTMLElement, scope: object) =>
+  ['click'].forEach(type =>
+    eachAttr(element, `ex-${type}`)((el, value) =>
+      el.addEventListener(type, () => {
+        evalInScope(value, { ...scope, $element: el });
+      })
+    )
   );
 
 const evalInScope = (expression: string, scope: object) =>
-  (() =>
+  (() => {
     // tslint:disable-next-line:no-eval
-    eval(
+    return eval(
       Object.keys(scope).reduce(
-        (res, key) => res.replace(key, `this.${key}`),
+        (res, key) =>
+          res.replace(
+            new RegExp(
+              '\\$?\\b' + escapeRegex(key.replace('$', '')) + '\\b',
+              'g'
+            ),
+            `this.${key}`
+          ),
         expression
       )
-    )).call(scope);
+    );
+  }).call(scope);
 
-const escapeHTML = (value: any) => {
-  return ('' + value)
+const escapeHTML = (value: any) =>
+  ('' + value)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
-};
+
+const escapeRegex = (value: any) => ('' + value).replace(/\$/g, '\\$');

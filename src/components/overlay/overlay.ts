@@ -1,8 +1,22 @@
 import { DomListener } from '../../dom-listener';
-import { IUserSettings, DefaultExifProperties, IExifData } from '../../types';
+import {
+  IUserSettings,
+  DefaultExifProperties,
+  IExifData,
+  IExifDataProp,
+} from '../../types';
 import { map } from '../../utils';
 import { Component } from '../../lib/component';
 import { CssClasses, OverlayHeight } from '../../constants';
+
+interface IProps {
+  openSettings?: (exifData: IExifData) => any;
+}
+
+interface IScope {
+  status?: Status;
+  userExifData?: IExifDataProp[];
+}
 
 enum Status {
   Loading = 'loading',
@@ -11,25 +25,16 @@ enum Status {
 }
 
 const getUserExifProps = (
-  exifData: object,
+  exifData: IExifData,
   { optionalExifProperties }: IUserSettings
 ) =>
-  map([...Object.keys(DefaultExifProperties), ...optionalExifProperties], {})(
-    prop => ({ name: prop, value: exifData[prop] })
+  map([...Object.keys(DefaultExifProperties), ...optionalExifProperties])(
+    prop => exifData[prop]
   );
 
-export class Overlay extends Component<
-  {
-    settings: (exifData: object) => any;
-  },
-  {
-    settings?: () => any;
-    status?: Status;
-    userExifData?: IExifData;
-  }
-> {
+export class Overlay extends Component<IProps, IScope> {
   private image: HTMLImageElement;
-  private exifData: object;
+  private exifData: IExifData;
 
   protected template = `
     <div class="${CssClasses.Overlay}" ex-class="'${
@@ -42,14 +47,18 @@ export class Overlay extends Component<
         }" ex-if="status === 'loading' || status === 'error'"></div>
         <span class="${CssClasses.OverlaySettingsToggle} ${
     CssClasses.Icon
-  }" ex-if="status === 'success' "ex-click="settings()">more_horiz</span>
+  }" ex-if="status === 'success' "ex-click="onSettingsClick()">more_horiz</span>
         <exify-exif ex-if="status === 'success'" data="userExifData"></exify-exif>
       </div>
     </div>
   `;
 
-  constructor(root: HTMLElement, props) {
+  constructor(root: HTMLElement, props: IProps) {
     super(root, props);
+
+    this.events = {
+      onSettingsClick: () => this.props.openSettings(this.exifData),
+    };
   }
 
   protected link(element: HTMLElement) {
@@ -67,12 +76,11 @@ export class Overlay extends Component<
     this.image = image;
 
     this.updateScope({
-      settings: () => this.props.settings(this.exifData),
       status: Status.Loading,
     });
   }
 
-  public exif(exifData: object, userSettings?: IUserSettings) {
+  public exif(exifData: IExifData, userSettings?: IUserSettings) {
     if (!this.element) {
       return;
     }

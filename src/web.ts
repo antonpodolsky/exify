@@ -1,7 +1,7 @@
 import { readExif } from './lib/exif-reader';
 import { Exify } from './exify';
 import { IStorage, IUserSettings } from './types';
-import { StorageKey } from './constants';
+import { StorageKey, DefaultUserSettings } from './constants';
 
 import 'dialog-polyfill/dialog-polyfill.css';
 import './components/exify.scss';
@@ -13,15 +13,19 @@ class Storage implements IStorage {
   constructor(private localStorage) {}
 
   public getUserSettings() {
+    let userSettings: IUserSettings;
+
     try {
-      return Promise.resolve(
-        JSON.parse(this.localStorage.getItem(StorageKey)) || {
-          optionalExifProperties: [],
-        }
-      );
+      userSettings = JSON.parse(this.localStorage.getItem(StorageKey));
     } catch (e) {
-      return Promise.resolve({ optionalExifProperties: [] });
+      // tslint:disable-next-line: no-console
+      console.error(e);
     }
+
+    userSettings = userSettings || { ...DefaultUserSettings };
+    userSettings.disabledDomains = userSettings.disabledDomains || [];
+
+    return Promise.resolve(userSettings);
   }
 
   public saveUserSettings(userSettings: IUserSettings) {
