@@ -1,37 +1,40 @@
 import { readExif } from './lib/exif-reader';
 import { Exify } from './exify';
-import { IStorage, IUserSettings } from './types';
-import { StorageKey, DefaultUserSettings } from './constants';
+import { IStorage, ISettings } from './types';
+import { StorageKey, DefaultSettings } from './constants';
 
 import 'dialog-polyfill/dialog-polyfill.css';
 import './components/exify.scss';
 import './components/exif/exif.scss';
 import './components/overlay/overlay.scss';
 import './components/settings/settings.scss';
+import './components/switch/switch.scss';
 
 class Storage implements IStorage {
   constructor(private localStorage) {}
 
-  public getUserSettings() {
-    let userSettings: IUserSettings;
+  public get() {
+    let settings: ISettings;
 
     try {
-      userSettings = JSON.parse(this.localStorage.getItem(StorageKey));
+      settings = JSON.parse(this.localStorage.getItem(StorageKey));
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.error(e);
     }
 
-    userSettings = userSettings || { ...DefaultUserSettings };
-    userSettings.disabledDomains = userSettings.disabledDomains || [];
+    settings = settings || DefaultSettings.get();
+    settings.disabledDomains = settings.disabledDomains || [];
+    settings.enabled =
+      settings.disabledDomains.indexOf(document.location.hostname) === -1;
 
-    return Promise.resolve(userSettings);
+    return Promise.resolve(settings);
   }
 
-  public saveUserSettings(userSettings: IUserSettings) {
-    this.localStorage.setItem(StorageKey, JSON.stringify(userSettings));
+  public save(settings: ISettings) {
+    this.localStorage.setItem(StorageKey, JSON.stringify(settings));
 
-    return Promise.resolve(userSettings);
+    return Promise.resolve(settings);
   }
 }
 

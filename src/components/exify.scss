@@ -56,6 +56,69 @@
   }
 }
 
+.exify-row {
+  display: flex;
+}
+
+.exify-align {
+  align-items: center;
+}
+
+.exify-center {
+  justify-content: center;
+}
+
+.exify-pointer {
+  cursor: pointer;
+}
+
+.exify-button {
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 14px;
+  border: 1px solid #c4c4c4;
+  cursor: pointer;
+}
+
+.exify-space-h {
+  > *:not(:first-child) {
+    margin-left: 10px;
+  }
+
+  &.exify-x2 {
+    > *:not(:first-child) {
+      margin-left: 20px;
+    }
+  }
+}
+
+.exify-space-v {
+  > *:not(:first-child) {
+    margin-top: 10px;
+  }
+
+  &.exify-x2 {
+    > *:not(:first-child) {
+      margin-top: 20px;
+    }
+  }
+
+  &.exify-border {
+    > *:not(:first-child) {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #36393f;
+    }
+
+    &.exify-x2 {
+      > *:not(:first-child) {
+        margin-top: 20px;
+        padding-top: 20px;
+      }
+    }
+  }
+}
+
 .exify-icon {
   font-family: 'Exify Icons';
   font-size: 24px;

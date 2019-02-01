@@ -93,9 +93,9 @@ const attribute = (element: HTMLElement, scope: object) =>
 const events = (element: HTMLElement, scope: object) =>
   ['click'].forEach(type =>
     eachAttr(element, `ex-${type}`)((el, value) =>
-      el.addEventListener(type, () => {
-        evalInScope(value, { ...scope, $element: el });
-      })
+      el.addEventListener(type, () =>
+        evalInScope(value, { ...scope, $element: el })
+      )
     )
   );
 

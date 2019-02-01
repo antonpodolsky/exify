@@ -1,8 +1,8 @@
-import { CssClasses, CheckboxIcon } from '../../constants';
-import { IUserSettings } from '../../types';
+import { Css, CheckboxIcon } from '../../constants';
+import { ISettings } from '../../types';
 
 const destroy = (dialog: HTMLDialogElement, next) => {
-  dialog.classList.remove(CssClasses.Show);
+  dialog.classList.remove(Css.Show);
   dialog.addEventListener('transitionend', e => {
     if (e.propertyName === 'transform') {
       dialog.close();
@@ -12,7 +12,7 @@ const destroy = (dialog: HTMLDialogElement, next) => {
 };
 
 export const toggleProp = (prop, element: HTMLElement) => {
-  const checkbox = element.querySelector(`.${CssClasses.Icon}`);
+  const checkbox = element.querySelector(`.${Css.Icon}`);
 
   prop.selected = !prop.selected;
   checkbox.innerHTML = prop.selected ? CheckboxIcon.On : CheckboxIcon.Off;
@@ -24,12 +24,12 @@ export const toggleEnabled = (scope, enabled: boolean) => {
 
 export const save = (
   scope,
-  props: { userSettings: IUserSettings },
+  props: { settings: ISettings },
   dialog: HTMLDialogElement,
-  next: (userSettings: IUserSettings) => void
+  next: (settings: ISettings) => void
 ) =>
   destroy(dialog, () => {
-    const disabledDomains = props.userSettings.disabledDomains;
+    const disabledDomains = props.settings.disabledDomains;
     const domainIndex = disabledDomains.indexOf(document.location.hostname);
 
     if (scope.enabled && domainIndex !== -1) {

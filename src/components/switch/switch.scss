@@ -1,0 +1,39 @@
+exify-switch {
+  position: relative;
+  width: 42px;
+  height: 24px;
+
+  span {
+    transition: all 0.12s ease-in;
+    position: absolute;
+    top: 4px;
+    width: 100%;
+    height: 16px;
+
+    background-color: black;
+    border-radius: 100px;
+    cursor: pointer;
+
+    &:before {
+      content: '';
+      transition: all 0.12s ease-in;
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      top: -4px;
+      left: -1px;
+      bottom: 1px;
+      border-radius: 100px;
+      background-color: #c4c4c4;
+    }
+
+    &[checked] {
+      background-color: lighten(#c7e1a2, 5);
+
+      &:before {
+        left: 19px;
+        background-color: darken(#c7e1a2, 30);
+      }
+    }
+  }
+}

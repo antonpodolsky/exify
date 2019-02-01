@@ -1,13 +1,13 @@
 import { DomListener } from '../../dom-listener';
 import {
-  IUserSettings,
+  ISettings,
   DefaultExifProperties,
   IExifData,
   IExifDataProp,
 } from '../../types';
 import { map } from '../../utils';
 import { Component } from '../../lib/component';
-import { CssClasses, OverlayHeight } from '../../constants';
+import { Css, OverlayHeight } from '../../constants';
 
 interface IProps {
   openSettings?: (exifData: IExifData) => any;
@@ -26,7 +26,7 @@ enum Status {
 
 const getUserExifProps = (
   exifData: IExifData,
-  { optionalExifProperties }: IUserSettings
+  { optionalExifProperties }: ISettings
 ) =>
   map([...Object.keys(DefaultExifProperties), ...optionalExifProperties])(
     prop => exifData[prop]
@@ -37,16 +37,14 @@ export class Overlay extends Component<IProps, IScope> {
   private exifData: IExifData;
 
   protected template = `
-    <div class="${CssClasses.Overlay}" ex-class="'${
-    CssClasses.Overlay
-  }--' + status">
-      <div class="${CssClasses.OverlayBackground}"></div>
-      <div class="${CssClasses.OverlayContent}">
+    <div class="${Css.Overlay}" ex-class="'${Css.Overlay}--' + status">
+      <div class="${Css.OverlayBackground}"></div>
+      <div class="${Css.OverlayContent}">
         <div class="${
-          CssClasses.Loader
+          Css.Loader
         }" ex-if="status === 'loading' || status === 'error'"></div>
-        <span class="${CssClasses.OverlaySettingsToggle} ${
-    CssClasses.Icon
+        <span class="${Css.OverlaySettingsToggle} ${
+    Css.Icon
   }" ex-if="status === 'success' "ex-click="onSettingsClick()">more_horiz</span>
         <exify-exif ex-if="status === 'success'" data="userExifData"></exify-exif>
       </div>
@@ -80,7 +78,7 @@ export class Overlay extends Component<IProps, IScope> {
     });
   }
 
-  public exif(exifData: IExifData, userSettings?: IUserSettings) {
+  public exif(exifData: IExifData, settings?: ISettings) {
     if (!this.element) {
       return;
     }
@@ -92,7 +90,7 @@ export class Overlay extends Component<IProps, IScope> {
 
     this.updateScope({
       status: Status.Success,
-      userExifData: getUserExifProps(exifData, userSettings),
+      userExifData: getUserExifProps(exifData, settings),
     });
 
     this.exifData = exifData;

@@ -1,10 +1,19 @@
-import { IUserSettings } from './types';
+import { ISettings } from './types';
 
-export enum CssClasses {
+export enum Css {
+  Row = 'exify-row',
+  Align = 'exify-align',
+  Center = 'exify-center',
+  Pointer = 'exify-pointer',
+  Border = 'exify-border',
   Shadow = 'exify-shadow',
+  SpaceH = 'exify-space-h',
+  SpaceV = 'exify-space-v',
+  X2 = 'exify-x2',
   Logo = 'exify-logo',
   Loader = 'exify-loader',
   Icon = 'exify-icon',
+  Button = 'exify-button',
   Show = 'exify-show',
   PropertyList = 'exify-property-list',
   PropertyName = 'exify-property-name',
@@ -17,8 +26,6 @@ export enum CssClasses {
   SettingsHeader = 'exify-settings-header',
   SettingsContent = 'exify-settings-content',
   SettingsFooter = 'exify-settings-footer',
-  SettingsSave = 'exify-settings-save',
-  SettingsCancel = 'exify-settings-cancel',
   SettingsProperty = 'exify-settings-property',
 }
 
@@ -31,12 +38,15 @@ export enum BackgroundMethods {
   READ_EXIF,
 }
 
-export const DefaultUserSettings: IUserSettings = {
-  optionalExifProperties: [],
-  disabledDomains: [],
+export const DefaultSettings = {
+  get: (): ISettings => ({
+    optionalExifProperties: [],
+    disabledDomains: [],
+    enabled: true,
+  }),
 };
 
-export const StorageKey = 'exifyUserSettings';
+export const StorageKey = 'exifysettings';
 export const OverlayHeight = 60;
 export const MinLongSideLength = 600;
 export const RequestTimeout = 4500;

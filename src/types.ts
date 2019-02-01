@@ -18,13 +18,14 @@ export interface IExifDataProp {
 }
 
 export interface IStorage {
-  getUserSettings: () => Promise<IUserSettings>;
-  saveUserSettings: (userSettings: IUserSettings) => Promise<IUserSettings>;
+  get: () => Promise<ISettings>;
+  save: (settings: ISettings) => Promise<ISettings>;
 }
 
-export interface IUserSettings {
+export interface ISettings {
   optionalExifProperties: Array<OptionalExifProperties[0]>;
   disabledDomains: string[];
+  enabled?: boolean;
 }
 
 export enum DefaultExifProperties {

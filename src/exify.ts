@@ -7,7 +7,7 @@ import './components/switch/switch';
 import './components/exif/exif';
 
 export class Exify {
-  constructor(private document) {}
+  constructor(private document: Document) {}
 
   public init(
     readExif: (image: HTMLElement) => Promise<IExifData>,
@@ -19,12 +19,10 @@ export class Exify {
       openSettings(exifData) {
         overlay.destroy();
 
-        storage.getUserSettings().then(userSettings =>
+        storage.get().then(settings =>
           new Settings(document.body)
-            .show(exifData, userSettings)
-            .then(updatedUserSettings =>
-              storage.saveUserSettings(updatedUserSettings)
-            )
+            .show(exifData, settings)
+            .then(updatedsettings => storage.save(updatedsettings))
             // tslint:disable-next-line: no-console
             .catch(e => e && console.error(e))
         );
@@ -32,17 +30,21 @@ export class Exify {
     });
 
     new DomListener(this.document)
-      .onImageMouseIn(image => onImageLoad => {
-        overlay.show(image);
+      .onImageMouseIn(image => onImageLoad =>
+        storage.get().then(settings => {
+          if (!settings.enabled) {
+            return;
+          }
 
-        onImageLoad(() =>
-          Promise.all([readExif(image), storage.getUserSettings()])
-            .then(([exifData, userSettings]) =>
-              overlay.exif(exifData, userSettings)
-            )
-            .catch(() => overlay.exif(null))
-        );
-      })
+          overlay.show(image);
+
+          onImageLoad(() =>
+            readExif(image)
+              .then(exifData => overlay.exif(exifData, settings))
+              .catch(() => overlay.exif(null))
+          );
+        })
+      )
       .onScroll(() => overlay.destroy())
       .onImageMouseOut(() => overlay.destroy());
   }

@@ -1,4 +1,4 @@
-import { MinLongSideLength, CssClasses, OverlayHeight } from './constants';
+import { MinLongSideLength, Css, OverlayHeight } from './constants';
 
 const isImage = (element: Element) => element && element.tagName === 'IMG';
 
@@ -13,7 +13,7 @@ const isImageFullyVisible = (image: HTMLElement) => {
 };
 
 const isOverlay = (element: Element) =>
-  element && element.closest(`.${CssClasses.Overlay}`);
+  element && element.closest(`.${Css.Overlay}`);
 
 const invokeImageHandler = (
   element: Element,

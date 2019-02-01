@@ -11,17 +11,15 @@ interface IScope {
 
 export class Switch extends Component<IProps, IScope> {
   protected template = `
-    <input type="checkbox" ex-attr-checked="on" ex-click="onClick()"/>
+    <span ex-attr-checked="on" ex-click="onClick()"></span>
   `;
 
-  constructor(root, props: IProps) {
+  constructor(root: HTMLElement, props: IProps) {
     super(root, props);
 
     this.events = {
-      onClick: () => {
-        this.updateScope({ on: !this.scope.on });
-        props.onChange(this.scope.on);
-      },
+      onClick: () =>
+        props.onChange(root.querySelector('span').toggleAttribute('checked')),
     };
 
     this.updateScope({
