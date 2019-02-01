@@ -22,7 +22,7 @@ export class Exify {
         storage.get().then(settings =>
           new Settings(document.body)
             .show(exifData, settings)
-            .then(updatedsettings => storage.save(updatedsettings))
+            .then(updatedSettings => storage.save(updatedSettings))
             // tslint:disable-next-line: no-console
             .catch(e => e && console.error(e))
         );

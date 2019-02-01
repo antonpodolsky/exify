@@ -11,7 +11,7 @@ import './components/settings/settings.scss';
 import './components/switch/switch.scss';
 
 class Storage implements IStorage {
-  constructor(private localStorage) {}
+  constructor(private localStorage, private url: URL) {}
 
   public get() {
     let settings: ISettings;
@@ -26,16 +26,33 @@ class Storage implements IStorage {
     settings = settings || DefaultSettings.get();
     settings.disabledDomains = settings.disabledDomains || [];
     settings.enabled =
-      settings.disabledDomains.indexOf(document.location.hostname) === -1;
+      settings.disabledDomains.indexOf(this.url.hostname) === -1;
 
     return Promise.resolve(settings);
   }
 
-  public save(settings: ISettings) {
-    this.localStorage.setItem(StorageKey, JSON.stringify(settings));
+  public save(newSettings: ISettings) {
+    return this.get().then(settings => {
+      const { enabled, optionalExifProperties } = newSettings;
+      const { disabledDomains } = settings;
+      const domainIndex = disabledDomains.indexOf(this.url.hostname);
 
-    return Promise.resolve(settings);
+      if (enabled && domainIndex !== -1) {
+        disabledDomains.splice(domainIndex, 1);
+      } else if (!enabled && domainIndex === -1) {
+        disabledDomains.push(this.url.hostname);
+      }
+
+      settings = { optionalExifProperties, disabledDomains };
+
+      this.localStorage.setItem(StorageKey, JSON.stringify(settings));
+
+      return settings;
+    });
   }
 }
 
-new Exify(document).init(readExif, new Storage(localStorage));
+new Exify(document).init(
+  readExif,
+  new Storage(localStorage, document.location as any)
+);

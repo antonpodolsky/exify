@@ -12,6 +12,7 @@ exify-switch {
 
     background-color: black;
     border-radius: 100px;
+    border-bottom: 1px solid darken(#36393f, 3);
     cursor: pointer;
 
     &:before {

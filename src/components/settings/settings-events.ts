@@ -24,25 +24,15 @@ export const toggleEnabled = (scope, enabled: boolean) => {
 
 export const save = (
   scope,
-  props: { settings: ISettings },
   dialog: HTMLDialogElement,
   next: (settings: ISettings) => void
 ) =>
   destroy(dialog, () => {
-    const disabledDomains = props.settings.disabledDomains;
-    const domainIndex = disabledDomains.indexOf(document.location.hostname);
-
-    if (scope.enabled && domainIndex !== -1) {
-      disabledDomains.splice(domainIndex, 1);
-    } else if (!scope.enabled && domainIndex === -1) {
-      disabledDomains.push(document.location.hostname);
-    }
-
     next({
       optionalExifProperties: scope.props
         .filter(prop => prop.selected)
         .map(({ name }) => name),
-      disabledDomains,
+      enabled: scope.enabled,
     });
   });
 

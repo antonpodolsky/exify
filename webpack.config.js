@@ -50,6 +50,7 @@ const extension = (
     entry: {
       background: `./src/extension/${browser}/background.ts`,
       content: `./src/extension/${browser}/content.ts`,
+      popup: `./src/extension/${browser}/popup.ts`,
     },
     output: {
       filename: `${browser}/[name].js`,
@@ -59,6 +60,7 @@ const extension = (
         { from: './manifest.json', to: `${browser}/` },
         { from: './dist/web/bundle.css', to: `${browser}/` },
         { from: './src/icons', to: `${browser}/icons` },
+        { from: './src/extension/shared/popup.html', to: `${browser}/` },
       ]),
     ],
   });

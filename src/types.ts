@@ -24,7 +24,7 @@ export interface IStorage {
 
 export interface ISettings {
   optionalExifProperties: Array<OptionalExifProperties[0]>;
-  disabledDomains: string[];
+  disabledDomains?: string[];
   enabled?: boolean;
 }
 
