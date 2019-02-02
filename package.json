@@ -1,6 +1,6 @@
 {
   "name": "exify-web",
-  "version": "1.0.7",
+  "version": "2.0.0",
   "description": "View essential EXIF information",
   "main": "dist/web/bundle.js",
   "repository": {
