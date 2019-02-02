@@ -1,16 +1,7 @@
-import { readExif } from './lib/exif-reader';
-import { Exify } from './exify';
-import { IStorage, ISettings } from './types';
-import { StorageKey, DefaultSettings } from './constants';
+import { IStorage, ISettings } from '../types';
+import { StorageKey, DefaultSettings } from '../constants';
 
-import 'dialog-polyfill/dialog-polyfill.css';
-import './components/exify.scss';
-import './components/exif/exif.scss';
-import './components/overlay/overlay.scss';
-import './components/settings/settings.scss';
-import './components/switch/switch.scss';
-
-class Storage implements IStorage {
+export class Storage implements IStorage {
   constructor(private localStorage, private url: URL) {}
 
   public get() {
@@ -51,8 +42,3 @@ class Storage implements IStorage {
     });
   }
 }
-
-new Exify(document).init(
-  readExif,
-  new Storage(localStorage, document.location as any)
-);

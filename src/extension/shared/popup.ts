@@ -8,15 +8,11 @@ export const init = (browser: typeof chrome) =>
     const storage = new Storage(browser, new URL(url));
 
     storage.get().then(settings =>
-      setTimeout(
-        () =>
-          new Settings(document.body)
-            .show({}, settings)
-            .then(updatedSettings => storage.save(updatedSettings))
-            // tslint:disable-next-line: no-console
-            .catch(e => e && console.error(e))
-            .finally(window.close),
-        30
-      )
+      new Settings(document.body, { animate: false })
+        .show(settings)
+        .then(updatedSettings => storage.save(updatedSettings))
+        // tslint:disable-next-line: no-console
+        .catch(e => e && console.error(e))
+        .finally(window.close)
     );
   });

@@ -1,14 +1,19 @@
 import { Css, CheckboxIcon } from '../../constants';
 import { ISettings } from '../../types';
 
-const destroy = (dialog: HTMLDialogElement, next) => {
-  dialog.classList.remove(Css.Show);
-  dialog.addEventListener('transitionend', e => {
-    if (e.propertyName === 'transform') {
-      dialog.close();
-      next();
-    }
-  });
+const destroy = (dialog: HTMLDialogElement, props, next) => {
+  if (props.animate) {
+    dialog.classList.remove(Css.Show);
+    dialog.addEventListener('transitionend', e => {
+      if (e.propertyName === 'transform') {
+        dialog.close();
+        next();
+      }
+    });
+  } else {
+    dialog.close();
+    next();
+  }
 };
 
 export const toggleProp = (prop, element: HTMLElement) => {
@@ -24,10 +29,11 @@ export const toggleEnabled = (scope, enabled: boolean) => {
 
 export const save = (
   scope,
+  props,
   dialog: HTMLDialogElement,
   next: (settings: ISettings) => void
 ) =>
-  destroy(dialog, () => {
+  destroy(dialog, props, () => {
     next({
       optionalExifProperties: scope.props
         .filter(prop => prop.selected)
@@ -36,5 +42,5 @@ export const save = (
     });
   });
 
-export const cancel = (dialog: HTMLDialogElement, next) =>
-  destroy(dialog, next);
+export const cancel = (dialog: HTMLDialogElement, props, next) =>
+  destroy(dialog, props, next);

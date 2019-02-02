@@ -6,7 +6,7 @@
   color: #fff !important;
   z-index: 2147483647;
 
-  .exify-overlay--error {
+  &.exify-overlay--error {
     .exify-loader {
       animation: exify-rotate 1s ease 1;
     }

@@ -14,7 +14,7 @@ const extend = conf => {
     },
     devServer: {
       disableHostCheck: true,
-      contentBase: './src',
+      contentBase: './src/web',
       noInfo: false,
     },
     resolve: {
@@ -67,7 +67,7 @@ const extension = (
 
 const web = extend({
   entry: {
-    web: './src/web.ts',
+    web: './src/web/web.ts',
   },
   output: {
     filename: '[name]/bundle.js',

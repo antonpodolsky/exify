@@ -13,7 +13,7 @@ import template from './settings-template';
 import * as Events from './settings-events';
 
 interface IProps {
-  settings: ISettings;
+  animate: boolean;
 }
 
 interface IScope {
@@ -35,22 +35,27 @@ const getOptionalExifProps = (
 export class Settings extends Component<IProps, IScope, HTMLDialogElement> {
   protected template = template;
 
-  constructor(root: HTMLElement) {
-    super(root);
+  constructor(root: HTMLElement, props = { animate: true }) {
+    super(root, props);
   }
 
   protected link(dialog: HTMLDialogElement) {
     dialogPolyfill.registerDialog(dialog);
 
-    dialog.showModal();
-    dialog.classList.add(Css.Show);
+    if (this.props.animate) {
+      dialog.showModal();
+      dialog.classList.add(Css.Show);
+    } else {
+      dialog.classList.add(Css.Show);
+      dialog.showModal();
+    }
   }
 
-  public show(exifData: IExifData, settings: ISettings) {
+  public show(settings: ISettings, exifData: IExifData = {}) {
     return new Promise<ISettings>((resolve, reject) => {
       this.events = {
-        save: () => Events.save(this.scope, this.element, resolve),
-        cancel: () => Events.cancel(this.element, reject),
+        save: () => Events.save(this.scope, this.props, this.element, resolve),
+        cancel: () => Events.cancel(this.element, this.props, reject),
         toggleEnabled: enabled => Events.toggleEnabled(this.scope, enabled),
         toggleProp: (prop, element) => Events.toggleProp(prop, element),
       };
