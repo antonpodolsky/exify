@@ -34,10 +34,6 @@ const extend = conf => {
       ],
     },
     plugins: [
-      new CleanWebpackPlugin(['dist']),
-      new MiniCssExtractPlugin({
-        filename: './web/bundle.css',
-      }),
       ...(process.env.NODE_ENV !== 'production' ? [] : conf.plugins || []),
     ],
   };
@@ -58,9 +54,9 @@ const extension = (
     plugins: [
       new CopyWebpackPlugin([
         { from: './manifest.json', to: `${browser}/` },
-        { from: './dist/web/bundle.css', to: `${browser}/` },
         { from: './src/icons', to: `${browser}/icons` },
         { from: './src/extension/shared/popup.html', to: `${browser}/` },
+        { from: './dist/web/bundle.css', to: `${browser}/` },
       ]),
     ],
   });
@@ -72,6 +68,12 @@ const web = extend({
   output: {
     filename: '[name]/bundle.js',
   },
+  plugins: [
+    new CleanWebpackPlugin(['dist']),
+    new MiniCssExtractPlugin({
+      filename: './web/bundle.css',
+    }),
+  ],
 });
 
 module.exports = [web, extension('webkit'), extension('firefox')];
