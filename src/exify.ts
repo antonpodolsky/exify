@@ -43,7 +43,7 @@ export class Exify {
           );
         })
       )
-      .onScroll(() => overlay.destroy())
-      .onImageMouseOut(() => overlay.destroy());
+      .onScroll(() => overlay && overlay.destroy())
+      .onImageMouseOut(() => overlay && overlay.destroy());
   }
 }
