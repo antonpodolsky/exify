@@ -40,13 +40,17 @@ export class Overlay extends Component<IProps, IScope> {
     <div class="${Css.Overlay}" ex-class="'${Css.Overlay}--' + status">
       <div class="${Css.OverlayBackground}"></div>
       <div class="${Css.OverlayContent}">
-        <div class="${
-          Css.Loader
-        }" ex-if="status === 'loading' || status === 'error'"></div>
+        <div class="${Css.Loader}" ex-if="status === '${
+    Status.Loading
+  }' || status === '${Status.Error}'"></div>
         <span class="${Css.OverlaySettingsToggle} ${
     Css.Icon
-  }" ex-if="status === 'success' "ex-click="onSettingsClick()">more_horiz</span>
-        <exify-exif ex-if="status === 'success'" data="userExifData"></exify-exif>
+  }" ex-if="status === '${
+    Status.Success
+  }' "ex-click="onSettingsClick()">more_horiz</span>
+        <exify-exif ex-if="status === '${
+          Status.Success
+        }'" data="userExifData"></exify-exif>
       </div>
     </div>
   `;

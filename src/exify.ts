@@ -1,7 +1,8 @@
 import { DomListener } from './dom-listener';
 import { Overlay } from './components/overlay/overlay';
 import { Settings } from './components/settings/settings';
-import { IStorage, IExifData } from './types';
+import { SettingsStorage } from './lib/settings-storage';
+import { IExifData } from './types';
 
 import './components/switch/switch';
 import './components/exif/exif';
@@ -11,7 +12,7 @@ export class Exify {
 
   public init(
     readExif: (image: HTMLElement) => Promise<IExifData>,
-    storage: IStorage
+    settingsStorage: SettingsStorage
   ) {
     const document = this.document;
 
@@ -19,10 +20,10 @@ export class Exify {
       openSettings(exifData) {
         overlay.destroy();
 
-        storage.get().then(settings =>
+        settingsStorage.get().then(settings =>
           new Settings(document.body)
             .show(settings, exifData)
-            .then(updatedSettings => storage.save(updatedSettings))
+            .then(updatedSettings => settingsStorage.save(updatedSettings))
             // tslint:disable-next-line: no-console
             .catch(e => e && console.error(e))
         );
@@ -31,7 +32,7 @@ export class Exify {
 
     new DomListener(this.document)
       .onImageMouseIn(image => onImageLoad =>
-        storage.get().then(settings => {
+        settingsStorage.get().then(settings => {
           if (!settings.enabled) {
             return;
           }

@@ -17,9 +17,9 @@ export interface IExifDataProp {
   selected?: boolean;
 }
 
-export interface IStorage {
-  get: () => Promise<ISettings>;
-  save: (settings: ISettings) => Promise<ISettings>;
+export interface IStorage<T> {
+  get: () => Promise<T>;
+  save: (obj: T) => Promise<T>;
 }
 
 export interface ISettings {
