@@ -5,8 +5,9 @@ export class Component<P = {}, S = {}, T extends HTMLElement = HTMLElement> {
   protected element: T = null;
   protected scope: S = null;
   protected events = null;
+  private linked = false;
 
-  constructor(private root: HTMLElement, protected props?: P) {}
+  constructor(protected root: HTMLElement, protected props?: P) {}
 
   private static registry: { [key: string]: typeof Component } = {};
   public static register(name: string, component: typeof Component) {
@@ -27,11 +28,17 @@ export class Component<P = {}, S = {}, T extends HTMLElement = HTMLElement> {
   }
 
   protected render() {
-    this.destroy(true);
+    if (this.linked) {
+      this.destroy(true);
+    }
 
     this.element = compile<T>(this.template, Component.registry)(this.scope);
     this.root.appendChild((this.element as unknown) as HTMLElement);
-    this.link(this.element);
+
+    if (!this.linked) {
+      this.link(this.element);
+      this.linked = true;
+    }
 
     return this.element;
   }

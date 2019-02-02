@@ -14,21 +14,8 @@ export class Exify {
     readExif: (image: HTMLElement) => Promise<IExifData>,
     settingsStorage: SettingsStorage
   ) {
+    let overlay: Overlay;
     const document = this.document;
-
-    const overlay = new Overlay(this.document.body, {
-      openSettings(exifData) {
-        overlay.destroy();
-
-        settingsStorage.get().then(settings =>
-          new Settings(document.body)
-            .show(settings, exifData)
-            .then(updatedSettings => settingsStorage.save(updatedSettings))
-            // tslint:disable-next-line: no-console
-            .catch(e => e && console.error(e))
-        );
-      },
-    });
 
     new DomListener(this.document)
       .onImageMouseIn(image => onImageLoad =>
@@ -37,12 +24,22 @@ export class Exify {
             return;
           }
 
-          overlay.show(image);
+          overlay = new Overlay(image, this.document.body, {
+            onOpenSettings(exifData) {
+              overlay.destroy();
+
+              new Settings(document.body)
+                .show(settings, exifData)
+                .then(updatedSettings => settingsStorage.save(updatedSettings))
+                // tslint:disable-next-line: no-console
+                .catch(e => e && console.error(e));
+            },
+          });
 
           onImageLoad(() =>
             readExif(image)
-              .then(exifData => overlay.exif(exifData, settings))
-              .catch(() => overlay.exif(null))
+              .then(exifData => overlay.showExif(exifData, settings))
+              .catch(() => overlay.showExif(null))
           );
         })
       )

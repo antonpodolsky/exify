@@ -7,21 +7,16 @@ import {
 } from '../../types';
 import { map } from '../../utils';
 import { Component } from '../../lib/component';
-import { Css, OverlayHeight } from '../../constants';
+import { Css, OverlayHeight, Status } from '../../constants';
+import template from './overlay-template';
 
 interface IProps {
-  openSettings?: (exifData: IExifData) => any;
+  onOpenSettings?: (exifData: IExifData) => any;
 }
 
 interface IScope {
   status?: Status;
   userExifData?: IExifDataProp[];
-}
-
-enum Status {
-  Loading = 'loading',
-  Success = 'success',
-  Error = 'error',
 }
 
 const getUserExifProps = (
@@ -32,57 +27,56 @@ const getUserExifProps = (
     prop => exifData[prop]
   );
 
+const getRoot = (root: HTMLElement) => {
+  const res = document.createElement('div');
+
+  res.classList.add(Css.Overlay);
+  root.appendChild(res);
+
+  return res;
+};
+
 export class Overlay extends Component<IProps, IScope> {
-  private image: HTMLImageElement;
   private exifData: IExifData;
 
-  protected template = `
-    <div class="${Css.Overlay}" ex-class="'${Css.Overlay}--' + status">
-      <div class="${Css.OverlayBackground}"></div>
-      <div class="${Css.OverlayContent}">
-        <div class="${Css.Loader}" ex-if="status === '${
-    Status.Loading
-  }' || status === '${Status.Error}'"></div>
-        <span class="${Css.OverlaySettingsToggle} ${
-    Css.Icon
-  }" ex-if="status === '${
-    Status.Success
-  }' "ex-click="onSettingsClick()">more_horiz</span>
-        <exify-exif ex-if="status === '${
-          Status.Success
-        }'" data="userExifData"></exify-exif>
-      </div>
-    </div>
-  `;
+  protected template = template;
 
-  constructor(root: HTMLElement, props: IProps) {
-    super(root, props);
+  constructor(
+    private image: HTMLImageElement,
+    root: HTMLElement,
+    props: IProps
+  ) {
+    super(getRoot(root), props);
 
     this.events = {
-      onSettingsClick: () => this.props.openSettings(this.exifData),
+      onSettingsClick: () => this.props.onOpenSettings(this.exifData),
     };
-  }
-
-  protected link(element: HTMLElement) {
-    const { top, left, width, height } = this.image.getBoundingClientRect();
-
-    element.style.top = `${top + height - OverlayHeight}px`;
-    element.style.left = `${left}px`;
-    element.style.width = `${width}px`;
-    element.style.height = `${OverlayHeight}px`;
-
-    DomListener.onOverlayMouseOut(element, this.image, () => this.destroy());
-  }
-
-  public show(image: HTMLImageElement) {
-    this.image = image;
 
     this.updateScope({
       status: Status.Loading,
     });
   }
 
-  public exif(exifData: IExifData, settings?: ISettings) {
+  protected link() {
+    const { top, left, width, height } = this.image.getBoundingClientRect();
+
+    this.root.style.top = `${top + height - OverlayHeight}px`;
+    this.root.style.left = `${left}px`;
+    this.root.style.width = `${width}px`;
+    this.root.style.height = `${OverlayHeight}px`;
+
+    DomListener.onOverlayMouseOut(this.root, this.image, () => this.destroy());
+  }
+
+  protected unlink() {
+    if (!this.root) {
+      return;
+    }
+
+    this.root.remove();
+  }
+
+  public showExif(exifData: IExifData, settings?: ISettings) {
     if (!this.element) {
       return;
     }
@@ -98,5 +92,7 @@ export class Overlay extends Component<IProps, IScope> {
     });
 
     this.exifData = exifData;
+
+    return this;
   }
 }
