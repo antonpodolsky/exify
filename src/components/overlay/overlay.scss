@@ -56,17 +56,19 @@
         margin-left: 24px;
       }
     }
+  }
 
-    .exify-overlay-settings-toggle {
-      position: absolute;
-      top: 20px;
-      right: 24px;
-      opacity: 0.6;
-      cursor: pointer;
+  .exify-overlay-settings-toggle {
+    animation: exify-fade-in 0.2s;
+    transition: color 0.2s;
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    color: #acacac;
+    cursor: pointer;
 
-      &:hover {
-        opacity: 1;
-      }
+    &:hover {
+      color: white;
     }
   }
 }

@@ -98,11 +98,17 @@
 }
 
 .exify-button {
+  transition: all 0.2s;
   padding: 5px 14px;
   border-radius: 100px;
   font-size: 14px;
   border: 1px solid #c4c4c4;
   cursor: pointer;
+
+  &:hover {
+    color: #e1e1e1;
+    border-color: #e1e1e1;
+  }
 }
 
 .exify-space-h {

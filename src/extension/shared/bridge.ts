@@ -1,8 +1,8 @@
-import { IExifyImage } from '../../types';
+import { IExifyImage, IExifData } from '../../types';
 import { BackgroundMethods } from '../../constants';
 
 export const readExif = (browser: typeof chrome) => (image: IExifyImage) =>
-  new Promise<object>(resolve => {
+  new Promise<IExifData>(resolve => {
     let src = image.getAttribute('src');
 
     if (src.startsWith('/')) {
