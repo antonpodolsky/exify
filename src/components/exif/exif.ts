@@ -2,6 +2,8 @@ import { Css } from '../../constants';
 import { IExifDataProp } from '../../types';
 import { Component } from '../../lib/component';
 
+import './exif.scss';
+
 export class Exif extends Component<
   { data: IExifDataProp[] },
   { data: IExifDataProp[] }

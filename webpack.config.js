@@ -3,7 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const extend = conf => {
+const extend = (conf, { extractCss } = { extractCss: false }) => {
   return {
     ...conf,
     mode: process.env.NODE_ENV !== 'production' ? 'development' : 'production',
@@ -25,41 +25,50 @@ const extend = conf => {
         { test: /\.ts?$/, loader: 'ts-loader' },
         {
           test: /\.css?$/,
-          loader: [MiniCssExtractPlugin.loader, 'css-loader'],
+          loader: [
+            ...(extractCss ? [MiniCssExtractPlugin.loader] : ['style-loader']),
+            ...['css-loader'],
+          ],
         },
         {
           test: /\.scss?$/,
-          loader: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+          loader: [
+            ...(extractCss ? [MiniCssExtractPlugin.loader] : ['style-loader']),
+            ...['css-loader', 'sass-loader'],
+          ],
         },
       ],
     },
-    plugins: [
-      ...(process.env.NODE_ENV !== 'production' ? [] : conf.plugins || []),
-    ],
+    plugins: conf.plugins,
   };
 };
 
 const extension = (
   browser // webkit | firefox
 ) =>
-  extend({
-    entry: {
-      background: `./src/extension/${browser}/background.ts`,
-      content: `./src/extension/${browser}/content.ts`,
-      popup: `./src/extension/${browser}/popup.ts`,
+  extend(
+    {
+      entry: {
+        background: `./src/extension/${browser}/background.ts`,
+        content: `./src/extension/${browser}/content.ts`,
+        popup: `./src/extension/${browser}/popup.ts`,
+      },
+      output: {
+        filename: `${browser}/[name].js`,
+      },
+      plugins: [
+        new CopyWebpackPlugin([
+          { from: './manifest.json', to: `${browser}/` },
+          { from: './src/icons', to: `${browser}/icons` },
+          { from: './src/extension/shared/popup.html', to: `${browser}/` },
+        ]),
+        new MiniCssExtractPlugin({
+          filename: `./${browser}/[name].css`,
+        }),
+      ],
     },
-    output: {
-      filename: `${browser}/[name].js`,
-    },
-    plugins: [
-      new CopyWebpackPlugin([
-        { from: './manifest.json', to: `${browser}/` },
-        { from: './src/icons', to: `${browser}/icons` },
-        { from: './src/extension/shared/popup.html', to: `${browser}/` },
-        { from: './dist/web/bundle.css', to: `${browser}/` },
-      ]),
-    ],
-  });
+    { extractCss: true }
+  );
 
 const web = extend({
   entry: {
@@ -68,12 +77,7 @@ const web = extend({
   output: {
     filename: '[name]/bundle.js',
   },
-  plugins: [
-    new CleanWebpackPlugin(['dist']),
-    new MiniCssExtractPlugin({
-      filename: './web/bundle.css',
-    }),
-  ],
+  plugins: [new CleanWebpackPlugin(['dist'])],
 });
 
 module.exports = [web, extension('webkit'), extension('firefox')];

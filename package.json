@@ -1,6 +1,6 @@
 {
   "name": "exify-web",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "View essential EXIF information",
   "main": "dist/web/bundle.js",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "SET NODE_ENV=production&& webpack",
+    "build": "webpack",
     "lint": "tslint './src/**/*.ts'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

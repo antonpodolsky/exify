@@ -1,3 +1,4 @@
+import 'dialog-polyfill/dialog-polyfill.css';
 import * as dialogPolyfill from 'dialog-polyfill';
 import { Css } from '../../constants';
 import { map } from '../../utils';
@@ -11,6 +12,8 @@ import {
 
 import template from './settings-template';
 import * as Events from './settings-events';
+
+import './settings.scss';
 
 interface IProps {
   animate: boolean;

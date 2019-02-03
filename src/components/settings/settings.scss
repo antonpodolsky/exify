@@ -18,6 +18,10 @@
     opacity: 0;
   }
 
+  & + .backdrop {
+    animation: exify-fade-in 0.2s;
+  }
+
   &.exify-show {
     transform: scale(1);
     opacity: 1;

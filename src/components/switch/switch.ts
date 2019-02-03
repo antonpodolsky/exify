@@ -1,5 +1,7 @@
 import { Component } from '../../lib/component';
 
+import './switch.scss';
+
 interface IProps {
   on: boolean;
   onChange: (on: boolean) => void;

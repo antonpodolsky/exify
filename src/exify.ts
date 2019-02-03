@@ -4,6 +4,7 @@ import { Settings } from './components/settings/settings';
 import { SettingsStorage } from './lib/settings-storage';
 import { IExifData } from './types';
 
+import './components/exify.scss';
 import './components/switch/switch';
 import './components/exif/exif';
 

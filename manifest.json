@@ -17,7 +17,7 @@
     {
       "matches": ["*://*/*"],
       "js": ["content.js"],
-      "css": ["bundle.css"]
+      "css": ["content.css"]
     }
   ],
   "browser_action": {

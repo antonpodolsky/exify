@@ -1,3 +1,5 @@
+import './overlay.scss';
+
 import { DomListener } from '../../dom-listener';
 import {
   ISettings,
