@@ -60,12 +60,7 @@ export class Overlay extends Component<IProps, IScope> {
   }
 
   protected link() {
-    const { top, left, width, height } = this.image.getBoundingClientRect();
-
-    this.root.style.top = `${top + height - OverlayHeight}px`;
-    this.root.style.left = `${left}px`;
-    this.root.style.width = `${width}px`;
-    this.root.style.height = `${OverlayHeight}px`;
+    this.reposition();
 
     DomListener.onOverlayMouseOut(this.root, this.image, () => this.destroy());
   }
@@ -96,5 +91,14 @@ export class Overlay extends Component<IProps, IScope> {
     this.exifData = exifData;
 
     return this;
+  }
+
+  public reposition() {
+    const { top, left, width, height } = this.image.getBoundingClientRect();
+
+    this.root.style.top = `${top + height - OverlayHeight}px`;
+    this.root.style.left = `${left}px`;
+    this.root.style.width = `${width}px`;
+    this.root.style.height = `${OverlayHeight}px`;
   }
 }

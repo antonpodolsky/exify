@@ -25,6 +25,10 @@ export class Exify {
             return;
           }
 
+          if (overlay) {
+            overlay.destroy();
+          }
+
           overlay = new Overlay(image, this.document.body, {
             onOpenSettings(exifData) {
               overlay.destroy();
@@ -44,7 +48,7 @@ export class Exify {
           );
         })
       )
-      .onScroll(() => overlay && overlay.destroy())
+      .onScroll(() => overlay && overlay.reposition())
       .onImageMouseOut(() => overlay && overlay.destroy());
   }
 }
