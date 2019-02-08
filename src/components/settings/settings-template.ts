@@ -39,9 +39,9 @@ export default `
       </div>
       <div class="${Css.SettingsFooter} ${Css.Row} ${Css.Center} ${Css.SpaceH}">
         <div 
-        class="${Css.Button}"
-          ex-click="cancel()"
-        >Cancel</div>
+          class="${Css.Button}"
+            ex-click="cancel()"
+          >Cancel</div>
         <div class="${Css.Button}" ex-click="save()">Save</div>
       </div>
     </div>
