@@ -9,7 +9,7 @@ https://www.exify.info/
 npm i
 ```
 
-## Run as a web app
+## Run as web app
 
 ```bash
 npm start
@@ -17,7 +17,7 @@ npm start
 
 Open http://localhost:8080/
 
-## Install as a browser extension
+## Install as browser extension
 
 ```bash
 npm run build
