@@ -38,7 +38,6 @@ export class DomListener {
     mouseout: (e: MouseEvent) => e,
     mouseover: (e: MouseEvent) => e,
     scroll: (e: UIEvent) => e,
-    click: (e: MouseEvent) => e,
   };
 
   constructor(private document: Document) {
