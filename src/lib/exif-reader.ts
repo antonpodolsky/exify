@@ -38,7 +38,7 @@ export const formatValue = (
     case ExifProperties.ExposureTime:
       return `${originalValue >= 1 ? value : `1/${value}`}s`;
     case ExifProperties.ExposureBias:
-      return `${value >= 0 ? '+' : '-'}${value}`;
+      return `${value >= 0 ? '+' : ''}${value}`;
     case ExifProperties.DateTimeOriginal:
       return (([date, hour]) => [
         date.replace(/\:/g, '/'),
