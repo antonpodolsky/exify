@@ -2,8 +2,10 @@ import { ISettings } from './types';
 
 export enum Css {
   Row = 'exify-row',
+  Grow = 'exify-grow',
   Align = 'exify-align',
   Center = 'exify-center',
+  Spread = 'exify-spread',
   Pointer = 'exify-pointer',
   Border = 'exify-border',
   Shadow = 'exify-shadow',

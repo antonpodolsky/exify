@@ -83,14 +83,26 @@
 
 .exify-row {
   display: flex;
+  flex-direction: row;
+}
+
+.exify-grow {
+  flex-grow: 1;
 }
 
 .exify-align {
+  display: flex;
   align-items: center;
 }
 
 .exify-center {
+  display: flex;
   justify-content: center;
+}
+
+.exify-spread {
+  display: flex;
+  justify-content: space-between;
 }
 
 .exify-pointer {

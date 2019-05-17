@@ -22,6 +22,7 @@ interface IProps {
 interface IScope {
   props: IExifDataProp[];
   enabled: boolean;
+  url: string;
 }
 
 const getOptionalExifProps = (
@@ -66,6 +67,7 @@ export class Settings extends Component<IProps, IScope, HTMLDialogElement> {
       this.updateScope({
         props: getOptionalExifProps(exifData, settings.optionalExifProperties),
         enabled: settings.enabled,
+        url: document.location.host,
       });
     }).finally(() => this.destroy());
   }

@@ -9,9 +9,12 @@ export default `
       </div>
 
       <div class="${Css.SettingsContent} ${Css.SpaceV} ${Css.Border} ${Css.X2}">
-        <div class="${Css.Row} ${Css.Align} ${Css.SpaceH} ${Css.X2}">
+        <div class="${Css.Row} ${Css.Align} ${Css.SpaceH}">
           <div>Enabled on this site</div>
-          <exify-switch on="enabled" on-change="toggleEnabled"></exify-switch>
+          <div class="${Css.Spread} ${Css.Align} ${Css.SpaceH}  ${Css.Grow}">
+            <exify-switch on="enabled" on-change="toggleEnabled"></exify-switch>
+            <span ex-html="url"></span>
+          </div>
         </div>
 
         <div class="${Css.Row} ${Css.SpaceH} ${Css.X2}">
