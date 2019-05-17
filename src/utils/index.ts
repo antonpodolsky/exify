@@ -4,6 +4,12 @@ type Reducible = any[] | IKeyValue;
 type Value<I> = I extends any[] ? I[0] : I[keyof I];
 type Key<I> = I extends any[] ? number : keyof I;
 
+export const round = (value: number, decimalDigits = 0) => {
+  const multiplier = Math.pow(10, decimalDigits);
+
+  return Math.round(value * multiplier) / multiplier;
+};
+
 export const escapeHTML = (value: string) => {
   return ('' + value)
     .replace(/&/g, '&amp;')

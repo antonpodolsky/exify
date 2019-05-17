@@ -1,7 +1,7 @@
 import * as exif from 'exif-js';
 import { RequestTimeout } from '../constants';
 import { IExifyImage, ExifProperties, IExifData } from '../types';
-import { reduce } from '../utils';
+import { reduce, round } from '../utils';
 
 const convertValue = (property: ExifProperties, value: any) => {
   if (typeof value === 'undefined') {
@@ -10,12 +10,12 @@ const convertValue = (property: ExifProperties, value: any) => {
 
   switch (property) {
     case ExifProperties.FocalLength:
-      return Math.round(value);
+      return round(value);
     case ExifProperties.FNumber:
     case ExifProperties.ExposureBias:
-      return Math.round(value * 10) / 10;
+      return round(value, 1);
     case ExifProperties.ExposureTime:
-      return value >= 1 ? value : `1/${1 / value}`;
+      return round(value >= 1 ? value : 1 / value, 2);
     default:
       return value;
   }
