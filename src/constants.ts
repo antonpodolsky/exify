@@ -17,6 +17,7 @@ export enum Css {
   Loader = 'exify-loader',
   Icon = 'exify-icon',
   Button = 'exify-button',
+  TextSm = 'exify-text--sm',
   Show = 'exify-show',
   PropertyList = 'exify-property-list',
   PropertyName = 'exify-property-name',

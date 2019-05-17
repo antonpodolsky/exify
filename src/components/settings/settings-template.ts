@@ -13,7 +13,7 @@ export default `
           <div>Enabled on this site</div>
           <div class="${Css.Spread} ${Css.Align} ${Css.SpaceH}  ${Css.Grow}">
             <exify-switch on="enabled" on-change="toggleEnabled"></exify-switch>
-            <span ex-html="url"></span>
+            <span class="${Css.TextSm}" ex-html="url"></span>
           </div>
         </div>
 
