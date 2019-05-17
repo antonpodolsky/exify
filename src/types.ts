@@ -26,6 +26,7 @@ export interface ISettings {
   optionalExifProperties: Array<OptionalExifProperties[0]>;
   disabledDomains?: string[];
   enabled?: boolean;
+  url?: string;
 }
 
 export enum DefaultExifProperties {

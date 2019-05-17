@@ -5,7 +5,7 @@ import { reduce, round } from '../utils';
 
 const convertValue = (property: ExifProperties, value: any) => {
   if (typeof value === 'undefined') {
-    return '--';
+    return value;
   }
 
   switch (property) {
@@ -15,13 +15,17 @@ const convertValue = (property: ExifProperties, value: any) => {
     case ExifProperties.ExposureBias:
       return round(value, 1);
     case ExifProperties.ExposureTime:
-      return round(value >= 1 ? value : 1 / value, 2);
+      return round(value >= 1 ? value : 1 / value, 1);
     default:
       return value;
   }
 };
 
-export const formatValue = (prop: ExifProperties, value: any) => {
+export const formatValue = (
+  prop: ExifProperties,
+  value: any,
+  originalValue: any
+) => {
   if (typeof value === 'undefined') {
     return '--';
   }
@@ -32,7 +36,7 @@ export const formatValue = (prop: ExifProperties, value: any) => {
     case ExifProperties.FNumber:
       return `f/${value}`;
     case ExifProperties.ExposureTime:
-      return `${value}s`;
+      return `${originalValue >= 1 ? value : `1/${value}`}s`;
     case ExifProperties.ExposureBias:
       return `${value >= 0 ? '+' : '-'}${value}`;
     case ExifProperties.DateTimeOriginal:
@@ -59,7 +63,11 @@ export const readExif = (image: IExifyImage): Promise<IExifData> =>
           (res[key] = {
             name: key,
             title: prop,
-            value: formatValue(prop, convertValue(prop, image.exifdata[key])),
+            value: formatValue(
+              prop,
+              convertValue(prop, image.exifdata[key]),
+              image.exifdata[key]
+            ),
           })
       );
 

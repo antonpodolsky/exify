@@ -7,7 +7,11 @@ export class SettingsStorage {
   public async get() {
     let settings = await this.storage.get();
 
-    settings = { ...DefaultSettings.get(), ...settings };
+    settings = {
+      ...DefaultSettings.get(),
+      ...settings,
+      url: this.url.hostname,
+    };
     settings.disabledDomains = settings.disabledDomains || [];
     settings.enabled =
       settings.disabledDomains.indexOf(this.url.hostname) === -1;

@@ -67,7 +67,7 @@ export class Settings extends Component<IProps, IScope, HTMLDialogElement> {
       this.updateScope({
         props: getOptionalExifProps(exifData, settings.optionalExifProperties),
         enabled: settings.enabled,
-        url: document.location.host,
+        url: settings.url,
       });
     }).finally(() => this.destroy());
   }
