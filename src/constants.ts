@@ -3,6 +3,7 @@ import { ISettings } from './types';
 export enum Css {
   Row = 'exify-row',
   Grow = 'exify-grow',
+  DontShrink = 'exify-dont-shrink',
   Align = 'exify-align',
   Center = 'exify-center',
   Spread = 'exify-spread',

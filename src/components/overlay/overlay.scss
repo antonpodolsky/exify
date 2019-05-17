@@ -7,6 +7,17 @@
   line-height: normal;
   z-index: 2147483647;
 
+  .exify-overlay--success {
+    .exify-loader {
+      animation: exify-rotate 0s;
+      margin-left: 15px;
+    }
+
+    .exify-overlay-background {
+      opacity: 0.7;
+    }
+  }
+
   .exify-overlay--error {
     .exify-loader {
       animation: exify-rotate 1s ease 1;
@@ -24,27 +35,26 @@
     bottom: 0;
     left: 0;
     background-color: #000;
-    opacity: 0.7;
+    opacity: 0;
   }
 
   .exify-overlay-content {
     position: absolute;
     display: flex;
     top: 0;
-    right: 0;
+    right: 15px;
     bottom: 0;
-    left: 0;
-    justify-content: center;
+    left: 15px;
+    align-items: center;
 
     .exify-loader {
-      margin-top: 15px;
+      margin-left: auto;
     }
 
     .exify-property-list {
       animation: exify-fade-in 0.2s;
-      max-width: 100%;
-      margin: 14px 74px 0;
-      white-space: nowrap;
+      height: 34px;
+      flex-wrap: wrap;
       overflow: hidden;
 
       > * {
@@ -55,20 +65,6 @@
       > *:not(:first-child) {
         margin-left: 24px;
       }
-    }
-  }
-
-  .exify-overlay-settings-toggle {
-    animation: exify-fade-in 0.2s;
-    transition: color 0.2s;
-    position: absolute;
-    top: 20px;
-    right: 24px;
-    color: #acacac;
-    cursor: pointer;
-
-    &:hover {
-      color: white;
     }
   }
 }
