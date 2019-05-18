@@ -1,4 +1,5 @@
 import { Component } from '../../lib/component';
+import { Css } from '../../constants';
 
 import './switch.scss';
 
@@ -13,7 +14,9 @@ interface IScope {
 
 export class Switch extends Component<IProps, IScope> {
   protected template = `
-    <span ex-attr-checked="on" ex-click="onClick()"></span>
+    <span class="${
+      Css.Pointer
+    }" ex-attr-checked="on" ex-click="onClick()"></span>
   `;
 
   constructor(root: HTMLElement, props: IProps) {
