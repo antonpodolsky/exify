@@ -92,8 +92,6 @@ export const readExif = (image: IExifyImage): Promise<IExifData> =>
         map(ExifProperties, [])(async (prop: ExifProperties, key) => {
           const [value, isHtml] = await resolveValue(prop, key, image.exifdata);
 
-          console.log(value);
-
           return {
             name: key,
             title: prop,

@@ -17,11 +17,18 @@ export const dmsToDD = (location: number[], direction: 'S' | 'W') => {
 
 export const fetchLocationString = (lat: number, lon: number) => {
   return fetch(
-    `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
+    `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=en`
   )
     .then(res => res.json())
     .then(({ address }) =>
-      [address.city || address.state || address.region, address.country]
+      [
+        address.village ||
+          address.town ||
+          address.city ||
+          address.state ||
+          address.region,
+        address.country,
+      ]
         .filter(x => !!x)
         .join(', ')
     );
