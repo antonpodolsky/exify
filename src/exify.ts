@@ -17,6 +17,7 @@ export class Exify {
   ) {
     let overlay: Overlay;
     const document = this.document;
+    let src;
 
     new DomListener(this.document)
       .onImageMouseIn(image => onImageLoad =>
@@ -28,6 +29,8 @@ export class Exify {
           if (overlay) {
             overlay.destroy();
           }
+
+          src = image.src;
 
           overlay = new Overlay(image, this.document.body, {
             onOpenSettings(exifData) {
@@ -43,7 +46,10 @@ export class Exify {
 
           onImageLoad(() =>
             readExif(image)
-              .then(exifData => overlay.showExif(exifData, settings))
+              .then(
+                exifData =>
+                  src === image.src && overlay.showExif(exifData, settings)
+              )
               .catch(() => overlay.showExif(null))
           );
         })
