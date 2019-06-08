@@ -11,6 +11,7 @@ export interface IExifDataProp {
   name?: string;
   title?: string;
   selected?: boolean;
+  isHtml?: boolean;
 }
 
 export interface IStorage<T> {

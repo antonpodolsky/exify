@@ -34,7 +34,7 @@ export default `
                 }" ex-if="!!prop.value || prop.value === null" ex-html="prop.title"></div>
                 <div class="${
                   Css.PropertyValue
-                }" ex-html="prop.value === null ? '--' : prop.value || prop.title"></div>
+                }" ex-bind-html="prop.value === null ? '--' : prop.value || prop.title"></div>
               </div>
             </div>
           </div>

@@ -207,4 +207,13 @@
 .exify-property-value {
   font-size: 16px;
   font-weight: 500;
+
+  a {
+    color: #ffffff !important;
+    text-decoration: underline;
+
+    &:focus {
+      outline: none !important;
+    }
+  }
 }

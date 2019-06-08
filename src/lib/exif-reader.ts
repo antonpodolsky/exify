@@ -1,7 +1,7 @@
 import * as exif from 'exif-js';
 import { RequestTimeout } from '../constants';
 import { IExifyImage, ExifProperties, IExifData } from '../types';
-import { map, reduce, round, dmsToDD, fetchLocationString } from '../utils';
+import { map, reduce, round, dmsToDD, fetchLocationLink } from '../utils';
 
 const isValidProperty = (key: string, value: any) => {
   return typeof value !== 'undefined' || (key as string).charAt(0) === '_';
@@ -17,9 +17,12 @@ const convertValue = (property: ExifProperties, value: any, exifData: any) => {
     case ExifProperties.ExposureTime:
       return round(value >= 1 ? value : 1 / value, 1);
     case ExifProperties._Location:
-      return [exifData.GPSLatitude, exifData.GPSLongitude]
-        .filter(x => !!x)
-        .map(location => dmsToDD(location, exifData.GPSLatitudeRef));
+      return [
+        [exifData.GPSLatitude, exifData.GPSLatitudeRef],
+        [exifData.GPSLongitude, exifData.GPSLongitudeRef],
+      ]
+        .filter(x => !!x[0])
+        .map(([location, ref]) => dmsToDD(location, ref));
     default:
       return value;
   }
@@ -57,8 +60,8 @@ export const formatValue = (
         );
       case ExifProperties._Location:
         return value.length
-          ? fetchLocationString(value[0], value[1])
-              .then(resolve)
+          ? fetchLocationLink(value[0], value[1])
+              .then(res => resolve([res, true]))
               .catch(() => resolve(null))
           : resolve(null);
       default:
@@ -66,16 +69,18 @@ export const formatValue = (
     }
   });
 
-const resolveValue = (prop, key, exifData) => {
+const resolveValue = async (prop, key, exifData) => {
   if (!isValidProperty(key as string, exifData[key])) {
-    return null;
+    return [null, false];
   }
 
-  return formatValue(
+  const value = await formatValue(
     prop,
     convertValue(prop, exifData[key], exifData),
     exifData[key]
   );
+
+  return Array.isArray(value) ? value : [value, false];
 };
 
 export const readExif = (image: IExifyImage): Promise<IExifData> =>
@@ -85,10 +90,15 @@ export const readExif = (image: IExifyImage): Promise<IExifData> =>
     exif.getData(image as any, async () => {
       let exifData = await Promise.all(
         map(ExifProperties, [])(async (prop: ExifProperties, key) => {
+          const [value, isHtml] = await resolveValue(prop, key, image.exifdata);
+
+          console.log(value);
+
           return {
             name: key,
             title: prop,
-            value: await resolveValue(prop, key, image.exifdata),
+            value,
+            isHtml,
           };
         })
       );

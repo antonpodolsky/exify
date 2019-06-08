@@ -1,3 +1,5 @@
+import { escapeHTML } from './dom';
+
 export const dmsToDD = (location: number[], direction: 'S' | 'W') => {
   if (!location) {
     return '38.909833';
@@ -13,10 +15,24 @@ export const dmsToDD = (location: number[], direction: 'S' | 'W') => {
   return res;
 };
 
-export const fetchLocationString = (lon: number, lat: number) => {
+export const fetchLocationString = (lat: number, lon: number) => {
   return fetch(
-    `https://nominatim.openstreetmap.org/reverse?lat=${lon}&lon=${lat}&format=json`
+    `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
   )
     .then(res => res.json())
-    .then(({ address }) => `${address.state}, ${address.country}`);
+    .then(({ address }) =>
+      [address.city || address.state || address.region, address.country]
+        .filter(x => !!x)
+        .join(', ')
+    );
+};
+
+export const fetchLocationLink = (lat: number, lon: number) => {
+  return fetchLocationString(lat, lon).then(
+    res => `
+    <a 
+      href="https://maps.google.com/?q=${lat},${lon}"
+      target="_blank"
+    >${escapeHTML(res)}</a>`
+  );
 };

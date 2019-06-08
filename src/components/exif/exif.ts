@@ -12,7 +12,15 @@ export class Exif extends Component<
     <div class="${Css.PropertyList}">
       <div ex-repeat="data::prop">
         <div class="${Css.PropertyName}" ex-html="prop.title"></div>
-        <div class="${Css.PropertyValue}" ex-html="prop.value || '--'"></div>
+        <div class="${Css.PropertyValue}">
+          <span ex-if="prop.isHtml">
+            <span ex-bind-html="prop.value"></span>
+          </span>
+
+          <span ex-if="!prop.isHtml">
+            <span ex-html="prop.value || '--'"></span>
+          </span>
+        </div>
       </div>
     </div>
   `;

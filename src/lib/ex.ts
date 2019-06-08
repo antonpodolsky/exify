@@ -11,6 +11,7 @@ export const compile = <E extends HTMLElement>(
   condition(element, scope);
   component(element, scope, registry);
   html(element, scope);
+  bindHtml(element, scope);
   cssClass(element, scope);
   attribute(element, scope);
   events(element, scope);
@@ -76,6 +77,11 @@ const component = (element: HTMLElement, scope: object, registry: object) =>
 const html = (element: HTMLElement, scope: object) =>
   eachAttr(element, 'ex-html')(
     (el, value) => (el.innerHTML = escapeHTML(evalInScope(value, scope)))
+  );
+
+const bindHtml = (element: HTMLElement, scope: object) =>
+  eachAttr(element, 'ex-bind-html')(
+    (el, value) => (el.innerHTML = evalInScope(value, scope))
   );
 
 const cssClass = (element: HTMLElement, scope: object) =>
