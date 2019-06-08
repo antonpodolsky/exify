@@ -33,6 +33,7 @@ const getOptionalExifProps = (
     name: prop,
     title: value,
     value: exifData[prop] && exifData[prop].value,
+    isHtml: exifData[prop] && exifData[prop].isHtml,
     selected: optionalExifProperties.indexOf(prop) !== -1,
   }));
 
