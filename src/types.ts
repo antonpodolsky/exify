@@ -1,7 +1,3 @@
-export interface IKeyValue<V = any> {
-  [key: string]: V;
-}
-
 export interface IExifyImage extends HTMLImageElement {
   exifdata?: object;
 }
@@ -43,6 +39,7 @@ export enum OptionalExifProperties {
   ExposureBias = 'Exposure bias',
   DateTimeOriginal = 'Date taken',
   Software = 'Software',
+  _Location = 'Location',
 }
 
 export const ExifProperties = {

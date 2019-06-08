@@ -31,10 +31,10 @@ export default `
               <div>
                 <div class="${
                   Css.PropertyName
-                }" ex-if="!!prop.value" ex-html="prop.title"></div>
+                }" ex-if="!!prop.value || prop.value === null" ex-html="prop.title"></div>
                 <div class="${
                   Css.PropertyValue
-                }" ex-html="prop.value || prop.title"></div>
+                }" ex-html="prop.value === null ? '--' : prop.value || prop.title"></div>
               </div>
             </div>
           </div>
