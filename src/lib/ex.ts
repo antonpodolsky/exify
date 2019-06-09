@@ -67,7 +67,7 @@ const component = (element: HTMLElement, scope: object, registry: object) =>
     el =>
       new registry[(el.tagName.toLowerCase())](
         el,
-        reduce(Array.from(el.attributes))(
+        reduce(Array.from(el.attributes), {})(
           (res, { name, value }) =>
             (res[camelCase(name)] = evalInScope(value, scope))
         )

@@ -7,12 +7,14 @@ import { IExifData } from './types';
 import './components/exify.scss';
 import './components/switch/switch';
 import './components/exif/exif';
+import './components/histogram/histogram';
 
 export class Exify {
   constructor(private document: Document) {}
 
   public init(
     readExif: (image: HTMLElement) => Promise<IExifData>,
+    readHistogram: (src: string) => Promise<any>,
     settingsStorage: SettingsStorage
   ) {
     let overlay: Overlay;
@@ -33,11 +35,11 @@ export class Exify {
           src = image.src;
 
           overlay = new Overlay(image, this.document.body, {
-            onOpenSettings(exifData) {
+            async onOpenSettings(exifData) {
               overlay.destroy();
 
               new Settings(document.body)
-                .show(settings, exifData)
+                .show(settings, exifData, readHistogram.bind(null, image.src))
                 .then(updatedSettings => settingsStorage.save(updatedSettings))
                 // tslint:disable-next-line: no-console
                 .catch(e => e && console.error(e));

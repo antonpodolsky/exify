@@ -1,8 +1,8 @@
-import { escapeHTML } from './dom';
+import { escapeHTML } from '../utils';
 
 export const dmsToDD = (location: number[], direction: 'S' | 'W') => {
   if (!location) {
-    return '38.909833';
+    return 0;
   }
 
   const [degrees, minutes, seconds] = location;
@@ -39,6 +39,7 @@ export const fetchLocationLink = (lat: number, lon: number) => {
     res => `
     <a 
       href="https://maps.google.com/?q=${lat},${lon}"
+      onclick="event.stopPropagation()"
       target="_blank"
     >${escapeHTML(res)}</a>`
   );

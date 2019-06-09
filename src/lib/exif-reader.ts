@@ -1,7 +1,8 @@
 import * as exif from 'exif-js';
 import { RequestTimeout } from '../constants';
 import { IExifyImage, ExifProperties, IExifData } from '../types';
-import { map, reduce, round, dmsToDD, fetchLocationLink } from '../utils';
+import { map, reduce, round } from '../utils';
+import { dmsToDD, fetchLocationLink } from '../lib/geo';
 
 const isValidProperty = (key: string, value: any) => {
   return typeof value !== 'undefined' || (key as string).charAt(0) === '_';

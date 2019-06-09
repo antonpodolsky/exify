@@ -1,0 +1,19 @@
+exify-histogram {
+  display: flex;
+  height: 120px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    font-size: 12px;
+  }
+
+  svg {
+    animation: exify-fade-in 0.5s;
+  }
+
+  .mg-voronoi path {
+    stroke-opacity: 1;
+  }
+}

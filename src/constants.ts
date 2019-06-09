@@ -46,6 +46,7 @@ export enum Status {
 
 export enum BackgroundMethods {
   READ_EXIF,
+  READ_HISTOGRAM,
 }
 
 export const DefaultSettings = {

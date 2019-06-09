@@ -17,6 +17,8 @@ export default `
           </div>
         </div>
 
+        <exify-histogram ex-if="readHistogram" read-histogram="readHistogram"></exify-histogram>
+
         <div class="${Css.Row} ${Css.SpaceH} ${Css.X2}">
           <div>Additional properties</div>
           <div class="${Css.SpaceV} ${Css.X2}">

@@ -23,6 +23,7 @@ interface IScope {
   props: IExifDataProp[];
   enabled: boolean;
   url: string;
+  readHistogram: any;
 }
 
 const getOptionalExifProps = (
@@ -56,7 +57,11 @@ export class Settings extends Component<IProps, IScope, HTMLDialogElement> {
     }
   }
 
-  public show(settings: ISettings, exifData: IExifData = {}) {
+  public show(
+    settings: ISettings,
+    exifData: IExifData = {},
+    readHistogram = null
+  ) {
     return new Promise<ISettings>((resolve, reject) => {
       this.events = {
         save: () => Events.save(this.scope, this.props, this.element, resolve),
@@ -69,6 +74,7 @@ export class Settings extends Component<IProps, IScope, HTMLDialogElement> {
         props: getOptionalExifProps(exifData, settings.optionalExifProperties),
         enabled: settings.enabled,
         url: settings.url,
+        readHistogram,
       });
     }).finally(() => this.destroy());
   }

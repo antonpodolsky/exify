@@ -3,16 +3,21 @@ import { BackgroundMethods } from '../../constants';
 
 export const readExif = (browser: typeof chrome) => (image: IExifyImage) =>
   new Promise<IExifData>(resolve => {
-    let src = image.getAttribute('src');
-
-    if (src.startsWith('/')) {
-      src = location.protocol + '//' + location.host + src;
-    }
-
     browser.runtime.sendMessage(
       {
         method: BackgroundMethods.READ_EXIF,
         args: [image.getAttribute('src'), image.exifdata],
+      },
+      resolve
+    );
+  });
+
+export const readHistogram = (browser: typeof chrome) => (src: string) =>
+  new Promise<IExifData>(resolve => {
+    browser.runtime.sendMessage(
+      {
+        method: BackgroundMethods.READ_HISTOGRAM,
+        args: [src],
       },
       resolve
     );
