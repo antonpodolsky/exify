@@ -1,5 +1,4 @@
 .exify-overlay {
-  animation: exify-fade-in 0.3s;
   position: fixed;
   font-family: 'Exify Font';
   line-height: normal !important;
@@ -7,21 +6,18 @@
   line-height: normal;
   z-index: 2147483647;
 
+  /* States */
   .exify-overlay--success {
     .exify-loader {
       margin-left: 15px;
 
       &:before {
-        animation: exify-rotate 0s;
+        animation: unset;
       }
 
       &:after {
         display: none;
       }
-    }
-
-    .exify-overlay-background {
-      opacity: 0.7;
     }
   }
 
@@ -37,16 +33,18 @@
     }
   }
 
+  /* Background */
   .exify-overlay-background {
+    animation: exify-fade-in-partial 0.3s forwards;
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     background-color: #000;
-    opacity: 0;
   }
 
+  /* Content */
   .exify-overlay-content {
     position: absolute;
     display: flex;
@@ -62,6 +60,7 @@
 
       &:after {
         content: '';
+        animation: exify-fade-in-partial 0.3s forwards;
         position: absolute;
         top: -2px;
         right: -2px;
@@ -69,13 +68,12 @@
         left: -2px;
         border-radius: 100px;
         background-color: #000;
-        opacity: 0.7;
         z-index: -1;
       }
     }
 
     .exify-property-list {
-      animation: exify-fade-in 0.2s;
+      animation: exify-fade-in 0.3s;
       height: 34px;
       flex-wrap: wrap;
       overflow: hidden;

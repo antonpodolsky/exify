@@ -52,6 +52,15 @@
   }
 }
 
+@keyframes exify-fade-in-partial {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.7;
+  }
+}
+
 @keyframes exify-fade-in-scale {
   from {
     transform: scale(0.7);
@@ -210,10 +219,10 @@
 
   a {
     color: #ffffff !important;
-    text-decoration: underline;
 
     &:focus {
       outline: none !important;
+      text-decoration: underline;
     }
   }
 }

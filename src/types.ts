@@ -39,8 +39,8 @@ export enum OptionalExifProperties {
   ExposureProgram = 'Exposure mode',
   ExposureBias = 'Exposure bias',
   DateTimeOriginal = 'Date taken',
-  Software = 'Software',
   _Location = 'Location',
+  Software = 'Software',
 }
 
 export const ExifProperties = {
