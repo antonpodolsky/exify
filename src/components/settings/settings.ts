@@ -26,8 +26,8 @@ interface IScope {
 }
 
 const getOptionalExifProps = (
-  exifData: IExifData,
-  optionalExifProperties: Array<OptionalExifProperties[0]>
+  exifData: IExifData = {},
+  optionalExifProperties: string[]
 ) =>
   map(OptionalExifProperties, [])((value, prop) => ({
     name: prop,

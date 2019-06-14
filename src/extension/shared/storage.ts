@@ -1,5 +1,5 @@
 import { IStorage } from '../../types';
-import { StorageKey } from '../../constants';
+import { StorageKey } from '../../config';
 
 export class Storage<T> implements IStorage<T> {
   constructor(private browser: typeof chrome) {}

@@ -13,7 +13,7 @@ export class SettingsStorage {
     let settings = await this.storage.get();
 
     settings = {
-      ...getDefaultSettings,
+      ...getDefaultSettings(),
       ...settings,
       url: this.url.hostname,
     };

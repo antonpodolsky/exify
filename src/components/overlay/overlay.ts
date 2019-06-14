@@ -5,9 +5,9 @@ import { DomListener } from '../../lib/dom-listener';
 import { ISettings, IExifData, IExifDataProp } from '../../types';
 import { map } from '../../utils';
 import { Component } from '../../lib/component';
-import { OverlayHeight, Status } from '../../constants';
+import { Status } from '../../constants';
 import { Css } from '../markdown';
-import { DefaultExifProperties } from '../../config';
+import { DefaultExifProperties, OverlayHeight } from '../../config';
 
 interface IProps {
   image: HTMLImageElement;

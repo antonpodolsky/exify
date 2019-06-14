@@ -1,24 +1,22 @@
 import { IExifyImage, IExifData } from '../../types';
 import { BackgroundMethods } from '../../constants';
 
-export const readExif = (browser: typeof chrome) => (image: IExifyImage) =>
-  new Promise<IExifData>(resolve => {
+const call = <T = any>(browser, method: BackgroundMethods, args: any[]) =>
+  new Promise<T>(resolve => {
     browser.runtime.sendMessage(
       {
-        method: BackgroundMethods.READ_EXIF,
-        args: [image.getAttribute('src'), image.exifdata],
+        method,
+        args,
       },
       resolve
     );
   });
 
+export const readExif = (browser: typeof chrome) => (image: IExifyImage) =>
+  call<IExifData>(browser, BackgroundMethods.ReadExif, [
+    image.getAttribute('src'),
+    image.exifdata,
+  ]);
+
 export const readHistogram = (browser: typeof chrome) => (src: string) =>
-  new Promise<IExifData>(resolve => {
-    browser.runtime.sendMessage(
-      {
-        method: BackgroundMethods.READ_HISTOGRAM,
-        args: [src],
-      },
-      resolve
-    );
-  });
+  call(browser, BackgroundMethods.ReadHistogram, [src]);

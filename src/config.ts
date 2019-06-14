@@ -1,3 +1,8 @@
+export const StorageKey = 'exifysettings';
+export const OverlayHeight = 60;
+export const MinLongSideLength = 600;
+export const RequestTimeout = 4500;
+
 export enum DefaultExifProperties {
   Model = 'Camera',
   FocalLength = 'Focal length',
