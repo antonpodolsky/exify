@@ -92,7 +92,7 @@ export const formatExifProp = (
   value: any,
   exif: Record<string, any>
 ) =>
-  new Promise<{ value: any; isHtml: boolean }>(async (resolve, reject) => {
+  new Promise<{ value: any; isHtml: boolean }>(async resolve => {
     let val = null;
     let isHtml = false;
 
