@@ -4,10 +4,7 @@ import { Settings } from './components/settings/settings';
 import { SettingsStorage } from './lib/settings-storage';
 import { IExifData, ISettings } from './types';
 
-import './exify.scss';
-import './components/switch/switch';
-import './components/exif/exif';
-import './components/histogram/histogram';
+import './bootstrap';
 
 export class Exify {
   private image: HTMLImageElement;

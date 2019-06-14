@@ -2,7 +2,7 @@ import { Storage } from './storage';
 import { Settings } from '../../components/settings/settings';
 import { SettingsStorage } from '../../lib/settings-storage';
 
-import '../../components/switch/switch';
+import '../../bootstrap';
 
 export const init = (browser: typeof chrome) =>
   browser.tabs.query(
