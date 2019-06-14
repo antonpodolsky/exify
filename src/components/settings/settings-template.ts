@@ -36,7 +36,7 @@ export default `
                 }" ex-if="!!prop.value || prop.value === null" ex-html="prop.title"></div>
                 <div class="${Css.PropertyValue}">
                   <span ex-if="prop.isHtml">
-                    <span ex-bind-html="prop.value"></span>
+                    <span ex-bind-html="prop.value === null ? '--' : prop.value || prop.title"></span>
                   </span>
         
                   <span ex-if="!prop.isHtml">
