@@ -103,16 +103,12 @@ export const formatExifProp = (
       return;
     }
 
-    val = convert ? convert(value, exif) : value;
-    val = text ? text(val, exif, value) : val;
+    val = convert ? await convert(value, exif) : value;
+    val = text ? await text(val, exif, value) : val;
 
     if (html) {
-      val = html(val, exif, value);
+      val = await html(val, exif, value);
       isHtml = true;
-    }
-
-    if (val instanceof Promise) {
-      val = await val;
     }
 
     return resolve({ value: val, isHtml });
