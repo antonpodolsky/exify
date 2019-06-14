@@ -1,14 +1,10 @@
 import 'dialog-polyfill/dialog-polyfill.css';
 import * as dialogPolyfill from 'dialog-polyfill';
-import { Css } from '../../constants';
+import { Css } from '../markdown';
 import { map } from '../../utils';
 import { Component } from '../../lib/component';
-import {
-  ISettings,
-  OptionalExifProperties,
-  IExifDataProp,
-  IExifData,
-} from '../../types';
+import { ISettings, IExifDataProp, IExifData } from '../../types';
+import { OptionalExifProperties } from '../../config';
 
 import template from './settings-template';
 import * as Events from './settings-events';

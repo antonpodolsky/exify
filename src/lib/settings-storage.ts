@@ -1,5 +1,10 @@
-import { DefaultSettings } from '../constants';
 import { ISettings, IStorage } from '../types';
+
+export const getDefaultSettings = (): ISettings => ({
+  optionalExifProperties: [],
+  disabledDomains: [],
+  enabled: true,
+});
 
 export class SettingsStorage {
   constructor(private storage: IStorage<ISettings>, private url: URL) {}
@@ -8,7 +13,7 @@ export class SettingsStorage {
     let settings = await this.storage.get();
 
     settings = {
-      ...DefaultSettings.get(),
+      ...getDefaultSettings,
       ...settings,
       url: this.url.hostname,
     };

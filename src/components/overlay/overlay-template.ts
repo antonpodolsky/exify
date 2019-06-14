@@ -1,4 +1,5 @@
-import { Css, Status } from '../../constants';
+import { Css } from '../markdown';
+import { Status } from '../../constants';
 
 export default `
   <div ex-class="'${Css.Overlay}--' + status">

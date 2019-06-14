@@ -2,15 +2,12 @@ import './overlay.scss';
 import template from './overlay-template';
 
 import { DomListener } from '../../lib/dom-listener';
-import {
-  ISettings,
-  DefaultExifProperties,
-  IExifData,
-  IExifDataProp,
-} from '../../types';
+import { ISettings, IExifData, IExifDataProp } from '../../types';
 import { map } from '../../utils';
 import { Component } from '../../lib/component';
-import { Css, OverlayHeight, Status } from '../../constants';
+import { OverlayHeight, Status } from '../../constants';
+import { Css } from '../markdown';
+import { DefaultExifProperties } from '../../config';
 
 interface IProps {
   image: HTMLImageElement;

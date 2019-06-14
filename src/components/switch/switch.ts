@@ -1,5 +1,5 @@
 import { Component } from '../../lib/component';
-import { Css } from '../../constants';
+import { Css } from '../markdown';
 
 import './switch.scss';
 
