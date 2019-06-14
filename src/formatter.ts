@@ -6,7 +6,7 @@ interface IFormatter {
   convert?(value?: any, exif?: Record<string, any>): any;
   text?(value?: any, exif?: Record<string, any>, originalValue?: any): any;
   html?(value?: any, exif?: Record<string, any>, originalValue?: any): any;
-  compound?: boolean;
+  isCompound?: boolean;
 }
 
 const identity = {
@@ -70,7 +70,7 @@ const formatters: Record<keyof typeof ExifProperties, IFormatter> = {
     },
   },
   Location: {
-    compound: true,
+    isCompound: true,
     convert(value, exif) {
       return [
         [exif.GPSLatitude, exif.GPSLatitudeRef],
@@ -96,9 +96,9 @@ export const formatExifProp = (
     let val = null;
     let isHtml = false;
 
-    const { compound, convert, text, html } = formatters[name];
+    const { isCompound, convert, text, html } = formatters[name];
 
-    if (!compound && typeof value === 'undefined') {
+    if (!isCompound && typeof value === 'undefined') {
       resolve({ value: val, isHtml });
       return;
     }
