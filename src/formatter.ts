@@ -99,7 +99,7 @@ export const formatExifProp = (
     const { compound, convert, text, html } = props[name];
 
     if (!compound && typeof value === 'undefined') {
-      resolve({ value: null, isHtml });
+      resolve({ value: val, isHtml });
       return;
     }
 
