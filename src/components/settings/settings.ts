@@ -29,12 +29,12 @@ const getOptionalExifProps = (
   exifData: IExifData = {},
   optionalExifProperties: string[]
 ) =>
-  map(OptionalExifProperties, [])((value, prop) => ({
-    name: prop,
-    title: value,
-    value: exifData[prop] && exifData[prop].value,
-    isHtml: exifData[prop] && exifData[prop].isHtml,
-    selected: optionalExifProperties.indexOf(prop) !== -1,
+  map(OptionalExifProperties, [])((title, name) => ({
+    name,
+    title,
+    value: exifData[name] && exifData[name].value,
+    isHtml: exifData[name] && exifData[name].isHtml,
+    selected: optionalExifProperties.indexOf(name) !== -1,
   }));
 
 export class Settings extends Component<IProps, IScope, HTMLDialogElement> {
