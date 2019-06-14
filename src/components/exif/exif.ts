@@ -18,7 +18,7 @@ export class Exif extends Component<
           </span>
 
           <span ex-if="!prop.isHtml">
-            <span ex-html="prop.value || '--'"></span>
+            <span ex-html="prop.value === null ? '--' : prop.value"></span>
           </span>
         </div>
       </div>

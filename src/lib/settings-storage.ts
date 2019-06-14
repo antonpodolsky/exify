@@ -1,4 +1,6 @@
 import { ISettings, IStorage } from '../types';
+import { reduce } from '../utils';
+import { OptionalExifProperties } from '../config';
 
 export const getDefaultSettings = (): ISettings => ({
   optionalExifProperties: [],
@@ -20,6 +22,10 @@ export class SettingsStorage {
     settings.disabledDomains = settings.disabledDomains || [];
     settings.enabled =
       settings.disabledDomains.indexOf(this.url.hostname) === -1;
+
+    settings.optionalExifProperties = settings.optionalExifProperties.filter(
+      name => !!OptionalExifProperties[name]
+    );
 
     return settings;
   }

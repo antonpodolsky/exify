@@ -26,15 +26,23 @@ export class Exify {
 
   private async showOverlay(image: HTMLImageElement, onImageLoad: any) {
     this.image = image;
-    const settings = await this.settingsStorage.get();
 
-    if (!settings.enabled) {
-      return;
+    try {
+      const settings = await this.settingsStorage.get();
+
+      if (!settings.enabled) {
+        return;
+      }
+
+      this.createOverlay(image, settings);
+
+      onImageLoad(img => this.updateOverlay(img));
+    } catch (e) {
+      if (e) {
+        // tslint:disable-next-line: no-console
+        console.error(e);
+      }
     }
-
-    this.createOverlay(image, settings);
-
-    onImageLoad(img => this.updateOverlay(img));
   }
 
   private async updateOverlay(image) {
@@ -47,6 +55,11 @@ export class Exify {
     } catch (e) {
       if (this.overlay) {
         this.overlay.showExif(null);
+      }
+
+      if (e) {
+        // tslint:disable-next-line: no-console
+        console.error(e);
       }
     }
   }

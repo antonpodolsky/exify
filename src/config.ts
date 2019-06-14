@@ -16,7 +16,7 @@ export enum OptionalExifProperties {
   ExposureProgram = 'Exposure mode',
   ExposureBias = 'Exposure bias',
   DateTimeOriginal = 'Date taken',
-  _Location = 'Location',
+  Location = 'Location',
   Software = 'Software',
 }
 
