@@ -15,7 +15,7 @@ const identity = {
   },
 };
 
-const props: Record<keyof typeof ExifProperties, IFormatter> = {
+const formatters: Record<keyof typeof ExifProperties, IFormatter> = {
   ISOSpeedRatings: identity,
   MeteringMode: identity,
   Model: identity,
@@ -96,7 +96,7 @@ export const formatExifProp = (
     let val = null;
     let isHtml = false;
 
-    const { compound, convert, text, html } = props[name];
+    const { compound, convert, text, html } = formatters[name];
 
     if (!compound && typeof value === 'undefined') {
       resolve({ value: val, isHtml });
