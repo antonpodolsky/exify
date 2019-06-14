@@ -22,7 +22,7 @@ interface IScope {
   props: IExifDataProp[];
   enabled: boolean;
   url: string;
-  readHistogram: any;
+  readHistogram?(): void;
 }
 
 const getOptionalExifProps = (
