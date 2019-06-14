@@ -5,18 +5,29 @@ import { SettingsStorage } from '../../lib/settings-storage';
 import '../../components/switch/switch';
 
 export const init = (browser: typeof chrome) =>
-  browser.tabs.query({ currentWindow: true, active: true }, ([{ url }]) => {
-    const settingsStorage = new SettingsStorage(
-      new Storage(browser),
-      new URL(url)
-    );
+  browser.tabs.query(
+    { currentWindow: true, active: true },
+    async ([{ url }]) => {
+      const settingsStorage = new SettingsStorage(
+        new Storage(browser),
+        new URL(url)
+      );
 
-    settingsStorage.get().then(settings =>
-      new Settings(document.body, { animate: false })
-        .show(settings)
-        .then(updatedSettings => settingsStorage.save(updatedSettings))
-        // tslint:disable-next-line: no-console
-        .catch(e => e && console.error(e))
-        .finally(window.close)
-    );
-  });
+      try {
+        const settings = await settingsStorage.get();
+        const newSettings = await new Settings(document.body, {
+          settings,
+          animate: false,
+        }).show();
+
+        await settingsStorage.save(newSettings);
+      } catch (e) {
+        if (e) {
+          // tslint:disable-next-line: no-console
+          console.error(e);
+        }
+      }
+
+      window.close();
+    }
+  );

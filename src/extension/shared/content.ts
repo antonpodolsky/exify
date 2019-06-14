@@ -5,8 +5,9 @@ import { Storage } from './storage';
 import { SettingsStorage } from '../../lib/settings-storage';
 
 export const init = (browser: typeof chrome) =>
-  new Exify(document).init(
+  new Exify(
+    document,
+    new SettingsStorage(new Storage(browser), document.location as any),
     readExif(browser),
-    readHistogram(browser),
-    new SettingsStorage(new Storage(browser), document.location as any)
+    readHistogram(browser)
   );

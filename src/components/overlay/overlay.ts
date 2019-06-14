@@ -1,6 +1,7 @@
 import './overlay.scss';
+import template from './overlay-template';
 
-import { DomListener } from '../../dom-listener';
+import { DomListener } from '../../lib/dom-listener';
 import {
   ISettings,
   DefaultExifProperties,
@@ -10,10 +11,12 @@ import {
 import { map } from '../../utils';
 import { Component } from '../../lib/component';
 import { Css, OverlayHeight, Status } from '../../constants';
-import template from './overlay-template';
 
 interface IProps {
-  onOpenSettings?: (exifData: IExifData) => any;
+  image: HTMLImageElement;
+  settings: ISettings;
+  onOpenSettings: (exifData: IExifData) => any;
+  onMouseOut: () => any;
 }
 
 interface IScope {
@@ -40,14 +43,9 @@ const getRoot = (root: HTMLElement) => {
 
 export class Overlay extends Component<IProps, IScope> {
   private exifData: IExifData;
-
   protected template = template;
 
-  constructor(
-    private image: HTMLImageElement,
-    root: HTMLElement,
-    props: IProps
-  ) {
+  constructor(root: HTMLElement, props: IProps) {
     super(getRoot(root), props);
 
     this.events = {
@@ -62,7 +60,11 @@ export class Overlay extends Component<IProps, IScope> {
   protected link() {
     this.reposition();
 
-    DomListener.onOverlayMouseOut(this.root, this.image, () => this.destroy());
+    DomListener.onOverlayMouseOut(
+      this.root,
+      this.props.image,
+      this.props.onMouseOut
+    );
   }
 
   protected unlink() {
@@ -73,7 +75,7 @@ export class Overlay extends Component<IProps, IScope> {
     this.root.remove();
   }
 
-  public showExif(exifData: IExifData, settings?: ISettings) {
+  public showExif(exifData: IExifData) {
     if (!this.element) {
       return;
     }
@@ -85,7 +87,7 @@ export class Overlay extends Component<IProps, IScope> {
 
     this.updateScope({
       status: Status.Success,
-      userExifData: getUserExifProps(exifData, settings),
+      userExifData: getUserExifProps(exifData, this.props.settings),
     });
 
     this.exifData = exifData;
@@ -94,7 +96,12 @@ export class Overlay extends Component<IProps, IScope> {
   }
 
   public reposition() {
-    const { top, left, width, height } = this.image.getBoundingClientRect();
+    const {
+      top,
+      left,
+      width,
+      height,
+    } = this.props.image.getBoundingClientRect();
 
     this.root.style.top = `${top + height - OverlayHeight}px`;
     this.root.style.left = `${left}px`;

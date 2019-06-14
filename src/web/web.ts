@@ -4,8 +4,9 @@ import { Exify } from '../exify';
 import { Storage } from './storage';
 import { SettingsStorage } from '../lib/settings-storage';
 
-new Exify(document).init(
+new Exify(
+  document,
+  new SettingsStorage(new Storage(), document.location as any),
   readExif,
-  readHistogram,
-  new SettingsStorage(new Storage(), document.location as any)
+  readHistogram
 );

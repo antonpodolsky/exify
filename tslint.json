@@ -4,6 +4,7 @@
     "member-ordering": false,
     "ordered-imports": false,
     "object-literal-sort-keys": false,
-    "no-namespace": false
+    "no-namespace": false,
+    "no-unused-expression": false
   }
 }

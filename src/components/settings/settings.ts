@@ -17,6 +17,9 @@ import './settings.scss';
 
 interface IProps {
   animate: boolean;
+  settings: ISettings;
+  exifData?: IExifData;
+  readHistogram?(): void;
 }
 
 interface IScope {
@@ -41,7 +44,7 @@ const getOptionalExifProps = (
 export class Settings extends Component<IProps, IScope, HTMLDialogElement> {
   protected template = template;
 
-  constructor(root: HTMLElement, props = { animate: true }) {
+  constructor(root: HTMLElement, props) {
     super(root, props);
   }
 
@@ -57,12 +60,10 @@ export class Settings extends Component<IProps, IScope, HTMLDialogElement> {
     }
   }
 
-  public show(
-    settings: ISettings,
-    exifData: IExifData = {},
-    readHistogram = null
-  ) {
+  public show() {
     return new Promise<ISettings>((resolve, reject) => {
+      const { exifData, settings, readHistogram } = this.props;
+
       this.events = {
         save: () => Events.save(this.scope, this.props, this.element, resolve),
         cancel: () => Events.cancel(this.element, this.props, reject),

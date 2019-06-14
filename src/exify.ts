@@ -1,62 +1,100 @@
-import { DomListener } from './dom-listener';
+import { DomListener } from './lib/dom-listener';
 import { Overlay } from './components/overlay/overlay';
 import { Settings } from './components/settings/settings';
 import { SettingsStorage } from './lib/settings-storage';
-import { IExifData } from './types';
+import { IExifData, ISettings } from './types';
 
-import './components/exify.scss';
+import './exify.scss';
 import './components/switch/switch';
 import './components/exif/exif';
 import './components/histogram/histogram';
 
 export class Exify {
-  constructor(private document: Document) {}
+  private image: HTMLImageElement;
+  private overlay: Overlay;
 
-  public init(
-    readExif: (image: HTMLElement) => Promise<IExifData>,
-    readHistogram: (src: string) => Promise<any>,
-    settingsStorage: SettingsStorage
+  constructor(
+    private document: Document,
+    private settingsStorage: SettingsStorage,
+    private readExif: (image: HTMLElement) => Promise<IExifData>,
+    private readHistogram: (src: string) => Promise<any>
   ) {
-    let overlay: Overlay;
-    const document = this.document;
-    let src;
-
     new DomListener(this.document)
       .onImageMouseIn(image => onImageLoad =>
-        settingsStorage.get().then(settings => {
-          if (!settings.enabled) {
-            return;
-          }
-
-          if (overlay) {
-            overlay.destroy();
-          }
-
-          src = image.src;
-
-          overlay = new Overlay(image, this.document.body, {
-            async onOpenSettings(exifData) {
-              overlay.destroy();
-
-              new Settings(document.body)
-                .show(settings, exifData, readHistogram.bind(null, image.src))
-                .then(updatedSettings => settingsStorage.save(updatedSettings))
-                // tslint:disable-next-line: no-console
-                .catch(e => e && console.error(e));
-            },
-          });
-
-          onImageLoad(() =>
-            readExif(image)
-              .then(
-                exifData =>
-                  src === image.src && overlay.showExif(exifData, settings)
-              )
-              .catch(() => overlay.showExif(null))
-          );
-        })
+        this.showOverlay(image, onImageLoad)
       )
-      .onScroll(() => overlay && overlay.reposition())
-      .onImageMouseOut(() => overlay && overlay.destroy());
+      .onImageMouseOut(() => this.destroyOverlay())
+      .onScroll(() => this.repositionOverlay());
+  }
+
+  private async showOverlay(image: HTMLImageElement, onImageLoad: any) {
+    this.image = image;
+    const settings = await this.settingsStorage.get();
+
+    if (!settings.enabled) {
+      return;
+    }
+
+    this.createOverlay(image, settings);
+
+    onImageLoad(img => this.updateOverlay(img));
+  }
+
+  private async updateOverlay(image) {
+    try {
+      const exifData = await this.readExif(image);
+
+      if (this.overlay && this.image.src === image.src) {
+        this.overlay.showExif(exifData);
+      }
+    } catch (e) {
+      if (this.overlay) {
+        this.overlay.showExif(null);
+      }
+    }
+  }
+
+  private createOverlay(image: HTMLImageElement, settings: ISettings) {
+    this.destroyOverlay();
+
+    this.overlay = new Overlay(document.body, {
+      image,
+      settings,
+      onOpenSettings: async exifData => this.openSettings(exifData, settings),
+      onMouseOut: () => this.destroyOverlay(),
+    });
+  }
+
+  private async openSettings(exifData: IExifData, settings: ISettings) {
+    this.destroyOverlay();
+
+    try {
+      const newSettings = await new Settings(document.body, {
+        exifData,
+        settings,
+        animate: true,
+        readHistogram: this.readHistogram.bind(null, this.image.src),
+      }).show();
+
+      this.settingsStorage.save(newSettings);
+    } catch (e) {
+      if (e) {
+        // tslint:disable-next-line: no-console
+        console.error(e);
+      }
+    }
+  }
+
+  private repositionOverlay() {
+    if (this.overlay) {
+      this.overlay.reposition();
+    }
+  }
+
+  private destroyOverlay() {
+    if (this.overlay) {
+      this.overlay.destroy();
+      this.overlay = null;
+    }
   }
 }

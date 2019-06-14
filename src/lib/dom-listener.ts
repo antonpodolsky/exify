@@ -1,4 +1,4 @@
-import { MinLongSideLength, Css, OverlayHeight } from './constants';
+import { MinLongSideLength, Css, OverlayHeight } from '../constants';
 
 const isImage = (element: Element) => element && element.tagName === 'IMG';
 
