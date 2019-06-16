@@ -3,7 +3,6 @@ import { Component } from '../../lib/component';
 
 import 'metrics-graphics/dist/metricsgraphics.css';
 import './histogram.scss';
-import { map } from '../../utils';
 
 interface IProps {
   image: HTMLImageElement;
