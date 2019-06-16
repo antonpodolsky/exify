@@ -1,7 +1,7 @@
 {
   "name": "Exify",
-  "version": "2.0.8",
-  "description": "View essential EXIF information",
+  "version": "2.0.9",
+  "description": "EXIF viewer for the modern Web",
   "homepage_url": "https://www.exify.info/",
 
   "icons": {
