@@ -1,4 +1,4 @@
-import { each, query, querySelf, reduce } from '../utils';
+import { each, query, querySelf, reduce, escapeHTML } from '../utils';
 import { camelCase } from 'change-case';
 
 export const compile = <E extends HTMLElement>(
@@ -122,13 +122,5 @@ const evalInScope = (expression: string, scope: object) =>
       )
     );
   }).call(scope);
-
-const escapeHTML = (value: any) =>
-  ('' + value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
 
 const escapeRegex = (value: any) => ('' + value).replace(/\$/g, '\\$');
