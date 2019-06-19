@@ -1,5 +1,4 @@
 import { ISettings, IStorage } from '../types';
-import { reduce } from '../utils';
 import { OptionalExifProperties } from '../config';
 
 export const getDefaultSettings = (): ISettings => ({
