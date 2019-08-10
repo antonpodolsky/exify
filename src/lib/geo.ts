@@ -9,7 +9,7 @@ export const dmsToDD = (location: number[], direction: 'S' | 'W') => {
   let res = degrees + minutes / 60 + seconds / 3600;
 
   if (direction === 'S' || direction === 'W') {
-    res += -1;
+    res *= -1;
   }
 
   return res;
