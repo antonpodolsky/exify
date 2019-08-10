@@ -56,8 +56,8 @@ export class Histogram extends Component<IProps, IScope> {
         target: this.root.querySelector(
           `[data-hook="exify-histogram-${name}"]`
         ),
-        width: width,
-        height: height,
+        width,
+        height,
         linked: true,
         buffer: 0,
         top: 0,
