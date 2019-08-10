@@ -92,6 +92,16 @@ export class Overlay extends Component<IProps, IScope> {
     return this;
   }
 
+  public initBackground() {
+    const background = this.root.querySelector(
+      '[data-hook="exify-overlay-background"]'
+    ) as HTMLElement;
+
+    background.style.background = `url('${
+      this.props.image.src
+    }') left bottom / 100%`;
+  }
+
   public reposition() {
     const {
       top,

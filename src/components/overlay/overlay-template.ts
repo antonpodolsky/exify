@@ -5,7 +5,7 @@ export default `
   <div ex-class="'${Css.Overlay}--' + status">
     <div class="${Css.OverlayBackground}" ex-if="status === '${
   Status.Success
-}'"></div>
+}'" data-hook="exify-overlay-background"></div>
     <div class="${Css.OverlayContent}">
       <exify-exif 
         ex-if="status === '${Status.Success}'" data="userExifData"

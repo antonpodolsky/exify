@@ -46,9 +46,9 @@ export class Histogram extends Component<IProps, IScope> {
 
     const charts = [
       ['avg', '#c4c4c4', 420, 128],
-      ['r', '#ffb3ba', 160, 34],
-      ['g', '#baffc9', 160, 34],
-      ['b', '#bae1ff', 160, 34],
+      ['r', '#ffb3ba', 160, 36],
+      ['g', '#baffc9', 160, 36],
+      ['b', '#bae1ff', 160, 36],
     ];
 
     charts.forEach(([name, color, width, height]) => {
