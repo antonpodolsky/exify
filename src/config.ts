@@ -1,5 +1,6 @@
 export const StorageKey = 'exifysettings';
 export const OverlayHeight = 60;
+export const OverlayCompactHeight = 40;
 export const MinLongSideLength = 600;
 export const RequestTimeout = 4500;
 

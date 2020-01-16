@@ -74,7 +74,6 @@
 
     .exify-property-list {
       animation: exify-fade-in 0.3s;
-      height: 34px;
       flex-wrap: wrap;
       overflow: hidden;
 
@@ -85,6 +84,45 @@
 
       > *:not(:first-child) {
         margin-left: 24px;
+      }
+    }
+  }
+
+  .exify-overlay--default {
+    .exify-overlay-content {
+      .exify-property-list {
+        height: 34px;
+      }
+    }
+  }
+
+  .exify-overlay--compact {
+    .exify-overlay-content {
+      right: 7px;
+
+      .exify-loader {
+        width: 26px;
+        height: 26px;
+      }
+
+      .exify-property-list {
+        height: 17px;
+
+        > *:not(:first-child) {
+          margin-left: 8px;
+
+          .exify-property-value {
+            &:before {
+              content: '•';
+              padding-right: 6px;
+              color: darken(white, 70);
+            }
+          }
+        }
+
+        .exify-property-value {
+          font-size: 13px;
+        }
       }
     }
   }

@@ -86,18 +86,20 @@ const bindHtml = (element: HTMLElement, scope: object) =>
 
 const cssClass = (element: HTMLElement, scope: object) =>
   eachAttr(element, 'ex-class')((el, value) =>
-    el.classList.add(evalInScope(value, scope))
+    evalInScope(value, scope)
+      .split(' ')
+      .forEach(c => c && el.classList.add(c))
   );
 
 const attribute = (element: HTMLElement, scope: object) =>
-  ['checked'].forEach(attr =>
-    eachAttr(element, `ex-attr-${attr}`)(
-      (el, value) => evalInScope(value, scope) && el.setAttribute(attr, attr)
+  ['checked', 'title'].forEach(attr =>
+    eachAttr(element, `ex-attr-${attr}`)((el, value) =>
+      el.setAttribute(attr, evalInScope(value, scope))
     )
   );
 
 const events = (element: HTMLElement, scope: object) =>
-  ['click'].forEach(type =>
+  ['click', 'mouseover'].forEach(type =>
     eachAttr(element, `ex-${type}`)((el, value) =>
       el.addEventListener(type, () =>
         evalInScope(value, { ...scope, $element: el })

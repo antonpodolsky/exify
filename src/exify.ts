@@ -50,11 +50,11 @@ export class Exify {
       const exifData = await this.readExif(image);
 
       if (this.overlay && this.image.src === image.src) {
-        this.overlay.showExif(exifData);
+        this.overlay.setExif(exifData);
       }
     } catch (e) {
       if (this.overlay) {
-        this.overlay.showExif(null);
+        this.overlay.setExif(null);
       }
 
       if (e) {
@@ -70,7 +70,7 @@ export class Exify {
     this.overlay = new Overlay(document.body, {
       image,
       settings,
-      onOpenSettings: async exifData => this.openSettings(exifData, settings),
+      onLogoClick: async exifData => this.openSettings(exifData, settings),
       onMouseOut: () => this.destroyOverlay(),
     });
   }

@@ -1,6 +1,6 @@
 {
   "name": "exify-web",
-  "version": "2.0.10",
+  "version": "2.0.11",
   "description": "EXIF viewer for the modern Web.",
   "main": "dist/web/bundle.js",
   "repository": {
@@ -33,7 +33,8 @@
     "uglifyjs-webpack-plugin": "^2.0.1",
     "webpack": "^4.28.1",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.11"
+    "webpack-dev-server": "^3.1.11",
+    "zip-webpack-plugin": "^3.0.0"
   },
   "dependencies": {
     "change-case": "^3.1.0",

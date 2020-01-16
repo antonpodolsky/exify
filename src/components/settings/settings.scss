@@ -43,6 +43,19 @@
     > div > div:first-child {
       width: 160px;
     }
+
+    .exify-settings-property-list {
+      margin-bottom: -20px;
+      padding-top: 20px !important;
+      align-items: start;
+      flex-wrap: wrap;
+
+      .exify-settings-property {
+        margin-bottom: 20px;
+        flex-basis: 50%;
+        flex-shrink: 0;
+      }
+    }
   }
 
   .exify-settings-footer {

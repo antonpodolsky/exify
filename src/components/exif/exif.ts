@@ -5,13 +5,15 @@ import { Component } from '../../lib/component';
 import './exif.scss';
 
 export class Exif extends Component<
-  { data: IExifDataProp[] },
-  { data: IExifDataProp[] }
+  { data: IExifDataProp[]; size: string },
+  { data: IExifDataProp[]; size: string }
 > {
   protected template = `
     <div class="${Css.PropertyList}">
       <div ex-repeat="data::prop">
-        <div class="${Css.PropertyName}" ex-html="prop.title"></div>
+        <div class="${
+          Css.PropertyName
+        }" ex-if="size === 'default'" ex-html="prop.title"></div>
         <div class="${Css.PropertyValue}">
           <span ex-if="prop.isHtml">
             <span ex-bind-html="prop.value === null ? '--' : prop.value"></span>
@@ -25,11 +27,12 @@ export class Exif extends Component<
     </div>
   `;
 
-  constructor(root: HTMLElement, { data }) {
+  constructor(root: HTMLElement, { data, size }) {
     super(root);
 
     this.updateScope({
       data,
+      size,
     });
   }
 }

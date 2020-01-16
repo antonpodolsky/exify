@@ -16,6 +16,6 @@ export const querySelf = (element: HTMLElement, selector: string) => (
 ) =>
   selector &&
   [
-    ...Array.from(selector ? element.querySelectorAll(selector) : []),
+    ...Array.from(element.querySelectorAll(selector)),
     ...(element.matches(selector) ? [element] : []),
   ].forEach(fn);

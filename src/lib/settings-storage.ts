@@ -3,6 +3,9 @@ import { OptionalExifProperties } from '../config';
 
 export const getDefaultSettings = (): ISettings => ({
   optionalExifProperties: [],
+  siteFilterType: 'blacklist',
+  overlayToggleType: 'imageHover',
+  overlaySize: 'default',
   disabledDomains: [],
   enabled: true,
 });
@@ -29,10 +32,16 @@ export class SettingsStorage {
     return settings;
   }
 
-  public async save(newSettings) {
+  public async save(newSettings: ISettings) {
     let settings = await this.get();
 
-    const { enabled, optionalExifProperties } = newSettings;
+    const {
+      enabled,
+      optionalExifProperties,
+      siteFilterType,
+      overlayToggleType,
+      overlaySize,
+    } = newSettings;
     const { disabledDomains } = settings;
     const domainIndex = disabledDomains.indexOf(this.url.hostname);
 
@@ -42,7 +51,13 @@ export class SettingsStorage {
       disabledDomains.push(this.url.hostname);
     }
 
-    settings = { optionalExifProperties, disabledDomains };
+    settings = {
+      optionalExifProperties,
+      disabledDomains,
+      siteFilterType,
+      overlayToggleType,
+      overlaySize,
+    };
 
     this.storage.save(settings);
 

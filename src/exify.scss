@@ -118,12 +118,20 @@
   justify-content: space-between;
 }
 
+.exify-fade-in {
+  animation: exify-fade-in 0.3s;
+}
+
 .exify-pointer {
   cursor: pointer;
 }
 
 .exify-text--sm {
   font-size: 10px;
+}
+
+.exify-text--md {
+  font-size: 13px;
 }
 
 .exify-button {
@@ -145,6 +153,12 @@
     margin-left: 10px;
   }
 
+  &.exify-x15 {
+    > *:not(:first-child) {
+      margin-left: 15px;
+    }
+  }
+
   &.exify-x2 {
     > *:not(:first-child) {
       margin-left: 20px;
@@ -155,6 +169,12 @@
 .exify-space-v {
   > *:not(:first-child) {
     margin-top: 10px;
+  }
+
+  &.exify-x15 {
+    > *:not(:first-child) {
+      margin-top: 15px;
+    }
   }
 
   &.exify-x2 {
@@ -170,6 +190,13 @@
       border-top: 1px solid #36393f;
     }
 
+    &.exify-x15 {
+      > *:not(:first-child) {
+        margin-top: 15px;
+        padding-top: 15px;
+      }
+    }
+
     &.exify-x2 {
       > *:not(:first-child) {
         margin-top: 20px;
@@ -177,6 +204,10 @@
       }
     }
   }
+}
+
+.exify-success {
+  color: #86b541;
 }
 
 .exify-icon {

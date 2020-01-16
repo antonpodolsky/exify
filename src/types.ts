@@ -21,6 +21,9 @@ export interface IStorage<T> {
 
 export interface ISettings {
   optionalExifProperties: string[];
+  siteFilterType: 'whitelist' | 'blacklist';
+  overlayToggleType: 'imageHover' | 'logoHover';
+  overlaySize: 'default' | 'compact';
   disabledDomains?: string[];
   enabled?: boolean;
   url?: string;

@@ -7,18 +7,24 @@ import { map } from '../../utils';
 import { Component } from '../../lib/component';
 import { Status } from '../../constants';
 import { Css } from '../markdown';
-import { DefaultExifProperties, OverlayHeight } from '../../config';
+import {
+  DefaultExifProperties,
+  OverlayHeight,
+  OverlayCompactHeight,
+} from '../../config';
 
 interface IProps {
   image: HTMLImageElement;
   settings: ISettings;
-  onOpenSettings: (exifData: IExifData) => any;
+  onLogoClick: (exifData: IExifData) => any;
   onMouseOut: () => any;
 }
 
 interface IScope {
   status?: Status;
   userExifData?: IExifDataProp[];
+  showExif?: boolean;
+  size?: string;
 }
 
 const getUserExifProps = (
@@ -46,11 +52,14 @@ export class Overlay extends Component<IProps, IScope> {
     super(getRoot(root), props);
 
     this.events = {
-      onSettingsClick: () => this.props.onOpenSettings(this.exifData),
+      onSettingsClick: () => this.props.onLogoClick(this.exifData),
+      onLogoHover: () => this.onLogoHover(),
     };
 
     this.updateScope({
       status: Status.Loading,
+      showExif: false,
+      size: props.settings.overlaySize,
     });
   }
 
@@ -72,7 +81,17 @@ export class Overlay extends Component<IProps, IScope> {
     this.root.remove();
   }
 
-  public showExif(exifData: IExifData) {
+  protected onLogoHover() {
+    if (
+      this.props.settings.overlayToggleType === 'logoHover' &&
+      this.scope.status === Status.Success &&
+      !this.scope.showExif
+    ) {
+      this.updateScope({ showExif: true });
+    }
+  }
+
+  public setExif(exifData: IExifData) {
     if (!this.element) {
       return;
     }
@@ -85,21 +104,12 @@ export class Overlay extends Component<IProps, IScope> {
     this.updateScope({
       status: Status.Success,
       userExifData: getUserExifProps(exifData, this.props.settings),
+      showExif: this.props.settings.overlayToggleType === 'imageHover',
     });
 
     this.exifData = exifData;
 
     return this;
-  }
-
-  public initBackground() {
-    const background = this.root.querySelector(
-      '[data-hook="exify-overlay-background"]'
-    ) as HTMLElement;
-
-    background.style.background = `url('${
-      this.props.image.src
-    }') left bottom / 100%`;
   }
 
   public reposition() {
@@ -110,9 +120,14 @@ export class Overlay extends Component<IProps, IScope> {
       height,
     } = this.props.image.getBoundingClientRect();
 
-    this.root.style.top = `${top + height - OverlayHeight}px`;
+    const overlayHeight =
+      this.props.settings.overlaySize === 'compact'
+        ? OverlayCompactHeight
+        : OverlayHeight;
+
+    this.root.style.top = `${top + height - overlayHeight}px`;
     this.root.style.left = `${left}px`;
     this.root.style.width = `${width}px`;
-    this.root.style.height = `${OverlayHeight}px`;
+    this.root.style.height = `${overlayHeight}px`;
   }
 }

@@ -27,6 +27,18 @@ export const toggleEnabled = (scope, enabled: boolean) => {
   scope.enabled = enabled;
 };
 
+export const toggleSiteFilterType = (scope, type: string) => {
+  scope.siteFilterType = type;
+};
+
+export const toggleOverlayToggleType = (scope, type: string) => {
+  scope.overlayToggleType = type;
+};
+
+export const toggleOverlaySize = (scope, size: string) => {
+  scope.overlaySize = size;
+};
+
 export const save = (
   scope,
   props,
@@ -39,6 +51,9 @@ export const save = (
         .filter(prop => prop.selected)
         .map(({ name }) => name),
       enabled: scope.enabled,
+      siteFilterType: scope.siteFilterType,
+      overlayToggleType: scope.overlayToggleType,
+      overlaySize: scope.overlaySize,
     });
   });
 

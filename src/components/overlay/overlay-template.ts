@@ -1,17 +1,14 @@
 import { Css } from '../markdown';
-import { Status } from '../../constants';
 
 export default `
-  <div ex-class="'${Css.Overlay}--' + status">
-    <div class="${Css.OverlayBackground}" ex-if="status === '${
-  Status.Success
-}'" data-hook="exify-overlay-background"></div>
+  <div ex-class="'${Css.Overlay}--' + status + ' ' + '${Css.Overlay}--' + size">
+    <div class="${Css.OverlayBackground}" ex-if="showExif"></div>
     <div class="${Css.OverlayContent}">
-      <exify-exif 
-        ex-if="status === '${Status.Success}'" data="userExifData"
-      ></exify-exif>
+      <exify-exif ex-if="showExif" data="userExifData" size="size"></exify-exif>
 
-      <div class="${Css.Loader} ${Css.Pointer} ${Css.DontShrink}" 
+      <div 
+        class="${Css.Loader} ${Css.Pointer} ${Css.DontShrink}"
+        ex-mouseover="onLogoHover()"
         ex-click="onSettingsClick()"
       ></div>
     </div>
