@@ -93,9 +93,13 @@ const cssClass = (element: HTMLElement, scope: object) =>
 
 const attribute = (element: HTMLElement, scope: object) =>
   ['checked', 'title'].forEach(attr =>
-    eachAttr(element, `ex-attr-${attr}`)((el, value) =>
-      el.setAttribute(attr, evalInScope(value, scope))
-    )
+    eachAttr(element, `ex-attr-${attr}`)((el, value) => {
+      const evaluated = evalInScope(value, scope);
+
+      if (evaluated) {
+        el.setAttribute(attr, evalInScope(value, scope));
+      }
+    })
   );
 
 const events = (element: HTMLElement, scope: object) =>

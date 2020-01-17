@@ -25,6 +25,7 @@ export interface ISettings {
   overlayToggleType: 'imageHover' | 'logoHover';
   overlaySize: 'default' | 'compact';
   disabledDomains?: string[];
+  enabledDomains?: string[];
   enabled?: boolean;
   url?: string;
 }

@@ -1,7 +1,9 @@
 import { Css } from '../markdown';
 
 export default `
-  <div ex-class="'${Css.Overlay}--' + status + ' ' + '${Css.Overlay}--' + size">
+  <div ex-class="'${Css.Overlay}--' + status + ' ' + '${
+  Css.Overlay
+}--' + size + ' ' + '${Css.Overlay}--' + (showExif ? 'visible' : 'hidden')">
     <div class="${Css.OverlayBackground}" ex-if="showExif"></div>
     <div class="${Css.OverlayContent}">
       <exify-exif ex-if="showExif" data="userExifData" size="size"></exify-exif>
