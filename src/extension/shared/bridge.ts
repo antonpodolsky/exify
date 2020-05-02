@@ -18,7 +18,7 @@ export const readExif = (browser: typeof chrome) => (
 ) => {
   let src = image.getAttribute('src');
 
-  if (image.getAttribute('src').indexOf('http') !== 0) {
+  if (src.indexOf('http') !== 0) {
     src = `${location.protocol}//${location.host}/${src}`;
   }
 
