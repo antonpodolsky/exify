@@ -12,11 +12,21 @@ const call = <T = any>(browser, method: BackgroundMethods, args: any[]) =>
     );
   });
 
-export const readExif = (browser: typeof chrome) => (image: IExifyImage) =>
-  call<IExifData>(browser, BackgroundMethods.ReadExif, [
-    image.getAttribute('src'),
+export const readExif = (browser: typeof chrome) => (
+  image: IExifyImage,
+  location: URL
+) => {
+  let src = image.getAttribute('src');
+
+  if (image.getAttribute('src').indexOf('http') !== 0) {
+    src = `${location.protocol}//${location.host}/${src}`;
+  }
+
+  return call<IExifData>(browser, BackgroundMethods.ReadExif, [
+    src,
     image.exifdata,
   ]);
+};
 
 export const readHistogram = (browser: typeof chrome) => (src: string) =>
   call(browser, BackgroundMethods.ReadHistogram, [src]);
