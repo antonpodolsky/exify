@@ -29,7 +29,7 @@
     }
   },
   "web_accessible_resources": ["icons/icon48.png"],
-  "permissions": ["*://*/*", "storage", "activeTab"],
+  "permissions": ["*://*/*", "storage"],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "manifest_version": 2
 }
