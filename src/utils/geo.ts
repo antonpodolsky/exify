@@ -1,4 +1,4 @@
-import { escapeHTML } from '../utils';
+import { escapeHTML } from '.';
 
 export const dmsToDD = (location: number[], direction: 'S' | 'W') => {
   if (!location) {

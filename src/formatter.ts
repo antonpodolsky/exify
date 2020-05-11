@@ -1,6 +1,5 @@
 import { ExifProperties } from './config';
-import { round } from './utils';
-import { dmsToDD, fetchLocationLink } from './lib/geo';
+import { round, dmsToDD, fetchLocationLink } from './utils';
 import { Css } from './components/markdown';
 
 interface IFormatter {
