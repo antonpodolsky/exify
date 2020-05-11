@@ -22,7 +22,6 @@ const formatters: Record<keyof typeof ExifProperties, IFormatter> = {
   Software: identity,
   ExposureProgram: identity,
   Model: {
-    isCompound: true,
     html(value, exif) {
       return `
         <span class="${Css.Align} ${Css.SpaceH}">
@@ -32,13 +31,12 @@ const formatters: Record<keyof typeof ExifProperties, IFormatter> = {
               <span>${value}</span>
             </span>  
             `,
-            exif.LensModel
-              ? `<span class="${Css.Align} ${Css.SpaceH} ${Css.X05}">
+            exif.LensModel &&
+              `<span class="${Css.Align} ${Css.SpaceH} ${Css.X05}">
               <span class="${Css.Icon}">camera</span>
               <span>${exif.LensModel}</span>
             </span>  
-            `
-              : null,
+            `,
           ]
             .filter(v => v)
             .join('')}

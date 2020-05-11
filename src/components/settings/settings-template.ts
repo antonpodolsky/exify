@@ -46,7 +46,7 @@ export default `
           ></exify-radio-group>
         </div>
 
-        <exify-histogram ex-if="readHistogram" read-histogram="readHistogram"></exify-histogram>
+        <exify-histogram ex-if="fetchHistogram" fetch-histogram="fetchHistogram"></exify-histogram>
 
         <div class="${Css.SettingsPropertyList} ${Css.Row}">
           <div 

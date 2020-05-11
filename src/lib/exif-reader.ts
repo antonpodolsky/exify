@@ -1,17 +1,16 @@
 import exifr from 'exifr';
 import { RequestTimeout } from '../config';
 import { IExifyImage, IExifData } from '../types';
-import { map, reduce } from '../utils';
+import { map, reduce, fetchlBlob } from '../utils';
 import { ExifProperties } from '../config';
 import { formatExifProp } from '../formatter';
-import { readBlob } from './pixel-reader';
 
-export const readExif = (image: IExifyImage): Promise<IExifData> =>
+export const fetchExif = (image: IExifyImage): Promise<IExifData> =>
   new Promise((resolve, reject) => {
     let timedOut = false;
 
-    readBlob(image.src)
-      .then(blob => exifr.parse(blob, { makerNote: true, xmp: true }))
+    fetchlBlob(image.src)
+      .then(blob => exifr.parse(blob, { xmp: true }))
       .then(async data => {
         image.exifdata = data;
 

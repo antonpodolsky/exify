@@ -1,11 +1,11 @@
 import { BackgroundMethods } from '../../constants';
-import { readExif } from '../../lib/exif-reader';
-import { readHistogram } from '../../lib/pixel-reader';
+import { fetchExif } from '../../lib/exif-reader';
+import { fetchHistogram } from '../../utils';
 
 const Methods: { [key: string]: (...args) => Promise<any> } = {
-  [BackgroundMethods.ReadExif]: (src: string, exifdata: object) =>
-    readExif({ src, exifdata } as any),
-  [BackgroundMethods.ReadHistogram]: (src: string) => readHistogram(src),
+  [BackgroundMethods.FetchExif]: (src: string, exifdata: object) =>
+    fetchExif({ src, exifdata } as any),
+  [BackgroundMethods.FetchHistogram]: (src: string) => fetchHistogram(src),
 };
 
 export const init = (browser: typeof chrome) =>

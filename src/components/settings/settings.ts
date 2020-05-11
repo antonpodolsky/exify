@@ -15,7 +15,7 @@ interface IProps {
   animate: boolean;
   settings: ISettings;
   exifData?: IExifData;
-  readHistogram?(): void;
+  fetchHistogram?(): void;
 }
 
 interface IScope {
@@ -40,7 +40,7 @@ interface IScope {
     value: string;
     description: string;
   }>;
-  readHistogram?(): void;
+  fetchHistogram?(): void;
 }
 
 const getOptionalExifProps = (
@@ -76,7 +76,7 @@ export class Settings extends Component<IProps, IScope, HTMLDialogElement> {
 
   public show() {
     return new Promise<ISettings>((resolve, reject) => {
-      const { exifData, settings, readHistogram } = this.props;
+      const { exifData, settings, fetchHistogram } = this.props;
 
       this.events = {
         save: () => Events.save(this.scope, this.props, this.element, resolve),
@@ -135,7 +135,7 @@ export class Settings extends Component<IProps, IScope, HTMLDialogElement> {
             description: 'Compact overlay size',
           },
         ],
-        readHistogram,
+        fetchHistogram,
       });
     }).finally(() => this.destroy());
   }

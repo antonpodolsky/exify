@@ -7,7 +7,7 @@ import { Css } from '../markdown';
 
 interface IProps {
   image: HTMLImageElement;
-  readHistogram(): Promise<any>;
+  fetchHistogram(): Promise<any>;
 }
 
 interface IScope {
@@ -38,7 +38,7 @@ export class Histogram extends Component<IProps, IScope> {
   }
 
   protected async link() {
-    const histogram = await this.props.readHistogram();
+    const histogram = await this.props.fetchHistogram();
 
     this.updateScope({
       loading: false,

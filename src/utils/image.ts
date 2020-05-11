@@ -1,11 +1,11 @@
-import { getHistogram } from '../utils';
+import { getHistogram } from './histogram';
 
-export const readBlob = (src: string) => {
-  return fetch(src).then(response => response.blob());
+export const fetchlBlob = (src: string) => {
+  return fetch(src, { mode: 'no-cors' }).then(response => response.blob());
 };
 
-export const readHistogram = (src: string) => {
-  return readBlob(src).then(blob => {
+export const fetchHistogram = (src: string) => {
+  return fetchlBlob(src).then(blob => {
     const image = new Image();
     image.src = URL.createObjectURL(blob);
 

@@ -1,6 +1,6 @@
 export enum BackgroundMethods {
-  ReadExif,
-  ReadHistogram,
+  FetchExif,
+  FetchHistogram,
 }
 
 export enum Status {

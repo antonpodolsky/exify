@@ -12,7 +12,7 @@ const call = <T = any>(browser, method: BackgroundMethods, args: any[]) =>
     );
   });
 
-export const readExif = (browser: typeof chrome) => (
+export const fetchExif = (browser: typeof chrome) => (
   image: IExifyImage,
   location: URL
 ) => {
@@ -22,11 +22,11 @@ export const readExif = (browser: typeof chrome) => (
     src = `${location.protocol}//${location.host}/${src}`;
   }
 
-  return call<IExifData>(browser, BackgroundMethods.ReadExif, [
+  return call<IExifData>(browser, BackgroundMethods.FetchExif, [
     src,
     image.exifdata,
   ]);
 };
 
-export const readHistogram = (browser: typeof chrome) => (src: string) =>
-  call(browser, BackgroundMethods.ReadHistogram, [src]);
+export const fetchHistogram = (browser: typeof chrome) => (src: string) =>
+  call(browser, BackgroundMethods.FetchHistogram, [src]);

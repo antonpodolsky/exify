@@ -1,6 +1,6 @@
 {
   "name": "Exify",
-  "version": "2.0.15",
+  "version": "2.0.16",
   "description": "EXIF viewer for the modern Web",
   "homepage_url": "https://www.exify.info/",
 
@@ -29,7 +29,7 @@
     }
   },
   "web_accessible_resources": ["icons/icon48.png"],
-  "permissions": ["storage", "activeTab"],
+  "permissions": ["*://*/*", "storage", "activeTab"],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "manifest_version": 2
 }

@@ -1,6 +1,6 @@
 {
   "name": "exify-web",
-  "version": "2.0.15",
+  "version": "2.0.16",
   "description": "EXIF viewer for the modern Web.",
   "main": "dist/web/bundle.js",
   "repository": {
@@ -9,9 +9,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack",
-    "lint": "tslint './src/**/*.ts'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack"
   },
   "author": "Anton Podolsky",
   "license": "ISC",
@@ -40,8 +38,6 @@
     "change-case": "^3.1.0",
     "dialog-polyfill": "^0.4.10",
     "exifr": "^5.0.1",
-    "install": "^0.13.0",
-    "metrics-graphics": "^2.15.6",
-    "npm": "^6.14.5"
+    "metrics-graphics": "^2.15.6"
   }
 }
