@@ -14,7 +14,7 @@ export class Exif extends Component<
         <div class="${
           Css.PropertyName
         }" ex-if="size === 'default'" ex-html="prop.title"></div>
-        <div class="${Css.PropertyValue}">
+        <div class="${Css.PropertyValue} ${Css.Align}">
           <span ex-if="prop.isHtml">
             <span ex-bind-html="prop.value === null ? '--' : prop.value"></span>
           </span>

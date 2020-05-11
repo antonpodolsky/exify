@@ -153,6 +153,12 @@
     margin-left: 10px;
   }
 
+  &.exify-x05 {
+    > *:not(:first-child) {
+      margin-left: 5px;
+    }
+  }
+
   &.exify-x15 {
     > *:not(:first-child) {
       margin-left: 15px;
@@ -214,6 +220,11 @@
   font-family: 'Exify Icons';
   font-size: 24px;
   line-height: 24px;
+
+  &.exify-x05 {
+    font-size: 16px;
+    line-height: 16px;
+  }
 }
 
 .exify-logo {
@@ -250,10 +261,11 @@
 
   a {
     color: #ffffff !important;
+    text-decoration: underline !important;
 
     &:focus {
       outline: none !important;
-      text-decoration: underline;
+      text-decoration: underline !important;
     }
   }
 }

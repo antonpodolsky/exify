@@ -10,6 +10,7 @@ export enum Css {
   Shadow = 'exify-shadow',
   SpaceH = 'exify-space-h',
   SpaceV = 'exify-space-v',
+  X05 = 'exify-x05',
   X15 = 'exify-x15',
   X2 = 'exify-x2',
   Logo = 'exify-logo',

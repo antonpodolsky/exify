@@ -1,6 +1,7 @@
 import { ExifProperties } from './config';
 import { round } from './utils';
 import { dmsToDD, fetchLocationLink } from './lib/geo';
+import { Css } from './components/markdown';
 
 interface IFormatter {
   convert?(value?: any, exif?: Record<string, any>): any;
@@ -16,28 +17,62 @@ const identity = {
 };
 
 const formatters: Record<keyof typeof ExifProperties, IFormatter> = {
-  ISOSpeedRatings: identity,
+  ISO: identity,
   MeteringMode: identity,
-  Model: identity,
   Software: identity,
   ExposureProgram: identity,
-  DateTimeOriginal: {
-    text(value: string) {
-      const [date, hour] = value.split(' ');
-
-      return [
-        date
-          .split(':')
-          .reverse()
-          .join('/'),
-        hour
-          .split(':')
-          .splice(0, 2)
-          .join(':'),
-      ].join(' ');
+  Model: {
+    isCompound: true,
+    html(value, exif) {
+      return `
+        <span class="${Css.Align} ${Css.SpaceH}">
+          ${[
+            `<span class="${Css.Align} ${Css.SpaceH} ${Css.X05}">
+              <span class="${Css.Icon}">photo_camera</span>
+              <span>${value}</span>
+            </span>  
+            `,
+            exif.LensModel
+              ? `<span class="${Css.Align} ${Css.SpaceH} ${Css.X05}">
+              <span class="${Css.Icon}">camera</span>
+              <span>${exif.LensModel}</span>
+            </span>  
+            `
+              : null,
+          ]
+            .filter(v => v)
+            .join('')}
+        </span>
+      `;
     },
   },
-  ExposureBias: {
+  DateTimeOriginal: {
+    html(value: Date) {
+      const date = new Intl.DateTimeFormat('en', {
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      });
+
+      const [
+        { value: month },
+        ,
+        { value: day },
+        ,
+        { value: year },
+        ,
+        { value: hour },
+        ,
+        { value: minute },
+      ] = date.formatToParts(value);
+
+      return `${month} ${day}, ${year} ${hour}:${minute}`;
+    },
+  },
+  ExposureCompensation: {
     convert(value) {
       return round(value, 1);
     },
@@ -79,10 +114,18 @@ const formatters: Record<keyof typeof ExifProperties, IFormatter> = {
         .filter(x => !!x[0])
         .map(([location, ref]) => dmsToDD(location, ref));
     },
-    html(value) {
-      return value.length
-        ? fetchLocationLink(value[0], value[1]).catch(() => null)
+    async html(value) {
+      const link = value.length
+        ? await fetchLocationLink(value[0], value[1]).catch(() => null)
         : null;
+
+      return (
+        link &&
+        `<span class="${Css.Align} ${Css.SpaceH} ${Css.X05}">
+          <span class="${Css.Icon}">place</span>
+          ${link}
+        </span>`
+      );
     },
   },
 };

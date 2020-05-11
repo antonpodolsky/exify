@@ -5,17 +5,17 @@ export const MinLongSideLength = 600;
 export const RequestTimeout = 4500;
 
 export enum DefaultExifProperties {
-  Model = 'Camera',
+  Model = 'Equipment',
   FocalLength = 'Focal length',
   FNumber = 'Aperture',
   ExposureTime = 'Exposure',
-  ISOSpeedRatings = 'ISO',
+  ISO = 'ISO',
 }
 
 export enum OptionalExifProperties {
   MeteringMode = 'Metering mode',
   ExposureProgram = 'Exposure mode',
-  ExposureBias = 'Exposure bias',
+  ExposureCompensation = 'Exposure bias',
   DateTimeOriginal = 'Date taken',
   Location = 'Location',
   Software = 'Software',

@@ -90,6 +90,15 @@
       > *:not(:first-child) {
         margin-left: 24px;
       }
+
+      .exify-property-value {
+        .exify-icon {
+          margin-top: 1px;
+          font-size: 16px;
+          line-height: 16px;
+          color: darken(white, 30);
+        }
+      }
     }
   }
 
@@ -115,19 +124,25 @@
         align-items: center;
 
         > *:not(:first-child) {
-          margin-left: 8px;
+          margin-left: 10px;
 
           .exify-property-value {
             &:before {
               content: '•';
-              padding-right: 6px;
-              color: darken(white, 70);
+              padding-right: 10px;
+              color: darken(white, 60);
             }
           }
         }
 
         .exify-property-value {
           font-size: 13px;
+
+          .exify-icon {
+            font-size: 13px;
+            line-height: 13px;
+            color: darken(white, 30);
+          }
         }
       }
     }

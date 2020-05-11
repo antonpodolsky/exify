@@ -54,6 +54,14 @@
         margin-bottom: 20px;
         flex-basis: 50%;
         flex-shrink: 0;
+
+        .exify-property-value {
+          .exify-icon {
+            margin-top: 1px;
+            font-size: 16px;
+            line-height: 16px;
+          }
+        }
       }
     }
   }
