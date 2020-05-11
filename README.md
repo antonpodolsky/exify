@@ -9,7 +9,7 @@ https://www.exify.info/
 npm i
 ```
 
-## Run as web app
+## Run in browser
 
 ```bash
 npm start
