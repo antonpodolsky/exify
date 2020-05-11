@@ -1,6 +1,6 @@
 # Exify
 
-Browser extension for viewing EXIF information.  
+Browser add-on for viewing EXIF information.  
 https://www.exify.info/
 
 ## Install
@@ -9,7 +9,7 @@ https://www.exify.info/
 npm i
 ```
 
-## Run as web app
+## Run in browser
 
 ```bash
 npm start
@@ -25,8 +25,8 @@ npm run build
 
 ### Firefox
 
-Use the contents of the `/dist/firefox` folder and follow https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Temporary_Installation_in_Firefox
+Use `/dist/exify-firefox.zip` and follow https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Temporary_Installation_in_Firefox
 
 ### Webkit
 
-Use the contents of the `/dist/webkit` folder and follow https://developer.chrome.com/extensions/getstarted
+Use `/dist/exify-webkit.zip` folder and follow https://developer.chrome.com/extensions/getstarted
