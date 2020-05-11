@@ -1,6 +1,6 @@
 # Exify
 
-Browser extension for viewing EXIF information.  
+Browser add-on for viewing EXIF information.  
 https://www.exify.info/
 
 ## Install
