@@ -3,8 +3,7 @@ import { fetchExif } from '../../lib/exif-reader';
 import { fetchHistogram } from '../../utils';
 
 const Methods: { [key: string]: (...args) => Promise<any> } = {
-  [BackgroundMethods.FetchExif]: (src: string, exifdata: object) =>
-    fetchExif({ src, exifdata } as any),
+  [BackgroundMethods.FetchExif]: (src: string) => fetchExif(src),
   [BackgroundMethods.FetchHistogram]: (src: string) => fetchHistogram(src),
 };
 

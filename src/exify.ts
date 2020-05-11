@@ -13,7 +13,7 @@ export class Exify {
   constructor(
     private document: Document,
     private settingsStorage: SettingsStorage,
-    private fetchExif: (image: HTMLElement, host: URL) => Promise<IExifData>,
+    private fetchExif: (src: string, host: URL) => Promise<IExifData>,
     private fetchHistogram: (src: string) => Promise<any>
   ) {
     new DomListener(this.document)
@@ -45,9 +45,12 @@ export class Exify {
     }
   }
 
-  private async updateOverlay(image) {
+  private async updateOverlay(image: HTMLImageElement) {
     try {
-      const exifData = await this.fetchExif(image, document.location as any);
+      const exifData = await this.fetchExif(
+        image.src,
+        document.location as any
+      );
 
       if (this.overlay && this.image.src === image.src) {
         this.overlay.setExif(exifData);

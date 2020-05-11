@@ -1,7 +1,3 @@
-export interface IExifyImage extends HTMLImageElement {
-  exifdata?: object;
-}
-
 export interface IExifData {
   [key: string]: IExifDataProp;
 }

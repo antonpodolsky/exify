@@ -1,4 +1,4 @@
-import { IExifyImage, IExifData } from '../../types';
+import { IExifData } from '../../types';
 import { BackgroundMethods } from '../../constants';
 
 const call = <T = any>(browser, method: BackgroundMethods, args: any[]) =>
@@ -13,19 +13,14 @@ const call = <T = any>(browser, method: BackgroundMethods, args: any[]) =>
   });
 
 export const fetchExif = (browser: typeof chrome) => (
-  image: IExifyImage,
+  src: string,
   location: URL
 ) => {
-  let src = image.getAttribute('src');
-
   if (src.indexOf('http') !== 0) {
     src = `${location.protocol}//${location.host}/${src}`;
   }
 
-  return call<IExifData>(browser, BackgroundMethods.FetchExif, [
-    src,
-    image.exifdata,
-  ]);
+  return call<IExifData>(browser, BackgroundMethods.FetchExif, [src]);
 };
 
 export const fetchHistogram = (browser: typeof chrome) => (src: string) =>
