@@ -9,7 +9,7 @@ export const fetchExif = (src: string): Promise<IExifData> =>
     .then(blob => exifr.parse(blob, { xmp: true }))
     .then(async data => {
       if (!data) {
-        return Promise.reject();
+        return Promise.reject('No data');
       }
 
       const exifData = await Promise.all(
@@ -34,4 +34,6 @@ export const fetchExif = (src: string): Promise<IExifData> =>
       }
 
       return reduce(exifData, {})((res, value) => (res[value.name] = value));
-    });
+    })
+    // tslint:disable-next-line: no-console
+    .catch(e => console.error(e));

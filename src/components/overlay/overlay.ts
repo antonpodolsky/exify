@@ -6,7 +6,7 @@ import { ISettings, IExifData, IExifDataProp } from '../../types';
 import { map } from '../../utils';
 import { Component } from '../../lib/component';
 import { Status } from '../../constants';
-import { Css } from '../markdown';
+import { Css } from '../../css';
 import {
   DefaultExifProperties,
   OverlayHeight,

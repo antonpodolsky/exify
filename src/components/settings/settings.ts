@@ -1,6 +1,6 @@
 import 'dialog-polyfill/dialog-polyfill.css';
 import * as dialogPolyfill from 'dialog-polyfill';
-import { Css } from '../markdown';
+import { Css } from '../../css';
 import { map } from '../../utils';
 import { Component } from '../../lib/component';
 import { ISettings, IExifDataProp, IExifData } from '../../types';

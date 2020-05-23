@@ -1,6 +1,6 @@
 import { ExifProperties } from './config';
-import { round, dmsToDD, fetchLocationLink } from './utils';
-import { Css } from './components/markdown';
+import { round, dmsToDD, fetchLocationLink, escapeHTML } from './utils';
+import { Css } from './css';
 
 interface IFormatter {
   convert?(value?: any, exif?: Record<string, any>): any;
@@ -16,24 +16,25 @@ const identity = {
 };
 
 const formatters: Record<keyof typeof ExifProperties, IFormatter> = {
-  ISO: identity,
   MeteringMode: identity,
   Software: identity,
   ExposureProgram: identity,
   Model: {
     html(value, exif) {
+      const lens = exif.LensModel || exif.Lens;
+
       return `
         <span class="${Css.Align} ${Css.SpaceH}">
           ${[
             `<span class="${Css.Align} ${Css.SpaceH} ${Css.X05}">
-              <span class="${Css.Icon}">photo_camera</span>
-              <span>${value}</span>
+              <span class="${Css.Icon} ${Css.ColorGray}">photo_camera</span>
+              <span>${escapeHTML(value)}</span>
             </span>  
             `,
-            exif.LensModel &&
+            lens &&
               `<span class="${Css.Align} ${Css.SpaceH} ${Css.X05}">
-              <span class="${Css.Icon}">camera</span>
-              <span>${exif.LensModel}</span>
+              <span class="${Css.Icon} ${Css.ColorGray}">camera</span>
+              <span>${escapeHTML(lens)}</span>
             </span>  
             `,
           ]
@@ -81,24 +82,34 @@ const formatters: Record<keyof typeof ExifProperties, IFormatter> = {
     convert(value) {
       return round(value >= 1 ? value : 1 / value, 1);
     },
-    text(value, exif, originalValue) {
-      return `${originalValue >= 1 ? value : `1/${value}`}s`;
+    html(value, exif, originalValue) {
+      return `${originalValue >= 1 ? '' : `<span>1/</span>`}<span>${escapeHTML(
+        value
+      )}</span><span>s</span>`;
     },
   },
   FNumber: {
     convert(value) {
       return round(value, 1);
     },
-    text(value) {
-      return `f/${value}`;
+    html(value) {
+      return `<span>f/</span><span>${escapeHTML(value)}</span>`;
     },
   },
   FocalLength: {
     convert(value) {
       return round(value);
     },
-    text(value) {
-      return `${value}mm`;
+    html(value, exif, originalValue) {
+      return `<span>${escapeHTML(value)}</span><span>mm</span>`;
+    },
+  },
+  ISO: {
+    html(value) {
+      return `<span>
+        <span class="${Css.TextXs}">ISO</span>
+        <span>${escapeHTML(value)}</span>
+      </span>`;
     },
   },
   Location: {
@@ -119,7 +130,7 @@ const formatters: Record<keyof typeof ExifProperties, IFormatter> = {
       return (
         link &&
         `<span class="${Css.Align} ${Css.SpaceH} ${Css.X05}">
-          <span class="${Css.Icon}">place</span>
+          <span class="${Css.Icon} ${Css.ColorOrange}">place</span>
           ${link}
         </span>`
       );

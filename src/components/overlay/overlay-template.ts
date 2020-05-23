@@ -1,4 +1,4 @@
-import { Css } from '../markdown';
+import { Css } from '../../css';
 
 export default `
   <div ex-class="'${Css.Overlay}--' + status + ' ' + '${

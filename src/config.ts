@@ -8,7 +8,7 @@ export enum DefaultExifProperties {
   FocalLength = 'Focal length',
   FNumber = 'Aperture',
   ExposureTime = 'Exposure',
-  ISO = 'ISO',
+  ISO = 'Sensitivity',
 }
 
 export enum OptionalExifProperties {

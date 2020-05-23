@@ -1,4 +1,4 @@
-import { Css } from '../markdown';
+import { Css } from '../../css';
 import { IExifDataProp } from '../../types';
 import { Component } from '../../lib/component';
 

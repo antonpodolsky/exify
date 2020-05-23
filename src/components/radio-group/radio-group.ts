@@ -1,5 +1,5 @@
 import { Component } from '../../lib/component';
-import { Css } from '../markdown';
+import { Css } from '../../css';
 
 import './radio-group.scss';
 

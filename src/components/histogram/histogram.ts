@@ -3,7 +3,7 @@ import './histogram.scss';
 
 import MG from 'metrics-graphics';
 import { Component } from '../../lib/component';
-import { Css } from '../markdown';
+import { Css } from '../../css';
 
 interface IProps {
   image: HTMLImageElement;

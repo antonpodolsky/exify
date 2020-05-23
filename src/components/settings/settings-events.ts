@@ -1,4 +1,4 @@
-import { Css, CheckboxIcon } from '../markdown';
+import { Css, CheckboxIcon } from '../../css';
 import { ISettings } from '../../types';
 
 const destroy = (dialog: HTMLDialogElement, props, next) => {

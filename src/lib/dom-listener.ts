@@ -1,5 +1,5 @@
 import { MinLongSideLength, OverlayHeight } from '../config';
-import { Css } from '../components/markdown';
+import { Css } from '../css';
 
 const isImage = (element: Element) => element && element.tagName === 'IMG';
 

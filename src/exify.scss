@@ -90,6 +90,14 @@
   }
 }
 
+.exify-color--gray {
+  color: darken(white, 30);
+}
+
+.exify-color--orange {
+  color: #ff8f00;
+}
+
 .exify-row {
   display: flex;
   flex-direction: row;
@@ -124,6 +132,10 @@
 
 .exify-pointer {
   cursor: pointer;
+}
+
+.exify-text--xs {
+  font-size: 8px;
 }
 
 .exify-text--sm {
@@ -224,6 +236,21 @@
   &.exify-x05 {
     font-size: 16px;
     line-height: 16px;
+  }
+}
+
+.exify-png-icon {
+  width: 24px;
+  height: 24px;
+
+  &.exify-x05 {
+    width: 16px;
+    height: 16px;
+  }
+
+  &.exify-png-icon--camera {
+    background: url('chrome-extension://__MSG_@@extension_id__/icons/camera.png');
+    background-size: contain;
   }
 }
 

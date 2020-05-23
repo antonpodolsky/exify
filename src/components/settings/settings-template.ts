@@ -1,4 +1,4 @@
-import { Css, CheckboxIcon } from '../markdown';
+import { Css, CheckboxIcon } from '../../css';
 
 export default `
   <dialog class="${Css.Settings}">
