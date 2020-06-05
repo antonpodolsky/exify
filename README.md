@@ -1,7 +1,7 @@
 # Exify
 
 Browser add-on for viewing EXIF information.  
-https://www.exify.info/
+https://www.exify.io/
 
 ## Install
 
