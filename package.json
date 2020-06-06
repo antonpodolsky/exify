@@ -8,7 +8,7 @@
     "url": "https://github.com/antonpod/exify.git"
   },
   "scripts": {
-    "start": "webpack-dev-server",
+    "start:frontend": "webpack-dev-server",
     "build": "webpack"
   },
   "author": "Anton Podolsky",
