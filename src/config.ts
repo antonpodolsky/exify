@@ -1,7 +1,7 @@
 export const StorageKey = 'exifysettings';
 export const OverlayHeight = 60;
 export const OverlayCompactHeight = 40;
-export const MinLongSideLength = 600;
+export const MinLongSideLength = 500;
 
 export enum DefaultExifProperties {
   Model = 'Equipment',
