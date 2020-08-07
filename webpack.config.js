@@ -11,7 +11,7 @@ const webpack = (conf, { extractCss } = { extractCss: false }) => {
     output: {
       ...conf.output,
       path: path.resolve(__dirname, './dist'),
-      publicPath: '/dist',
+      publicPath: 'public/',
     },
     devServer: {
       disableHostCheck: true,

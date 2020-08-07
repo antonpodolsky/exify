@@ -1,6 +1,6 @@
 {
   "name": "exify-web",
-  "version": "2.0.19",
+  "version": "2.0.20",
   "description": "EXIF viewer for the modern Web.",
   "main": "dist/web/bundle.js",
   "repository": {

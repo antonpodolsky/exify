@@ -1,6 +1,6 @@
 {
   "name": "Exify",
-  "version": "2.0.19",
+  "version": "2.0.20",
   "description": "EXIF viewer for the modern Web",
   "homepage_url": "https://www.exify.info/",
 
@@ -28,12 +28,7 @@
       "128": "icons/icon128.png"
     }
   },
-  "web_accessible_resources": [
-    "icons/icon48.png",
-    "icons/camera.png",
-    "icons/lens.png",
-    "icons/location.png"
-  ],
+  "web_accessible_resources": ["icons/*"],
   "permissions": ["*://*/*", "storage", "activeTab"],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "manifest_version": 2
