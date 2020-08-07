@@ -5,6 +5,8 @@
     "ordered-imports": false,
     "object-literal-sort-keys": false,
     "no-namespace": false,
-    "no-unused-expression": false
+    "no-unused-expression": false,
+    "interface-name": false,
+    "no-empty-interface": false
   }
 }

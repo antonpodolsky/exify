@@ -44,12 +44,6 @@ export class Component<P = {}, S = {}, T extends HTMLElement = HTMLElement> {
   }
 
   public destroy(mute = false) {
-    if (!this.element) {
-      return;
-    }
-
-    ((this.element as unknown) as HTMLElement).remove();
-
     if (!mute) {
       this.unlink(this.element);
     }

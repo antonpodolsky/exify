@@ -1,17 +1,20 @@
 import './overlay.scss';
 import template from './overlay-template';
 
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Overlay as OverlayComp } from './OverlayComp';
 import { DomListener } from '../../lib/dom-listener';
 import { ISettings, IExifData, IExifDataProp } from '../../types';
-import { map } from '../../utils';
 import { Component } from '../../lib/component';
 import { Status } from '../../constants';
 import { Css } from '../../css';
 import {
-  DefaultExifProperties,
   OverlayHeight,
   OverlayCompactHeight,
+  DefaultExifProperties,
 } from '../../config';
+import { map } from '../../utils';
 
 interface IProps {
   image: HTMLImageElement;
@@ -47,20 +50,21 @@ const getRoot = (root: HTMLElement) => {
 export class Overlay extends Component<IProps, IScope> {
   private exifData: IExifData;
   protected template = template;
+  protected cb: (exifPops: IExifDataProp[]) => void;
 
   constructor(root: HTMLElement, props: IProps) {
     super(getRoot(root), props);
 
-    this.events = {
-      onSettingsClick: () => this.props.onLogoClick(this.exifData),
-      onLogoHover: () => this.onLogoHover(),
-    };
+    ReactDOM.render(
+      <OverlayComp
+        settings={this.props.settings}
+        onLogoClick={() => this.props.onLogoClick(this.exifData)}
+        subscribe={cb => (this.cb = cb)}
+      />,
+      this.root
+    );
 
-    this.updateScope({
-      status: Status.Loading,
-      showExif: false,
-      size: props.settings.overlaySize,
-    });
+    this.reposition();
   }
 
   protected link() {
@@ -74,10 +78,7 @@ export class Overlay extends Component<IProps, IScope> {
   }
 
   protected unlink() {
-    if (!this.root) {
-      return;
-    }
-
+    ReactDOM.unmountComponentAtNode(this.root);
     this.root.remove();
   }
 
@@ -92,22 +93,18 @@ export class Overlay extends Component<IProps, IScope> {
   }
 
   public setExif(exifData: IExifData) {
-    if (!this.element) {
-      return;
-    }
-
-    if (!exifData) {
-      this.updateScope({ status: Status.Error });
-      return;
-    }
-
-    this.updateScope({
-      status: Status.Success,
-      userExifData: getUserExifProps(exifData, this.props.settings),
-      showExif: this.props.settings.overlayToggleType === 'imageHover',
-    });
-
     this.exifData = exifData;
+
+    this.cb(
+      getUserExifProps(
+        exifData || {
+          ISO: {
+            value: 'test value',
+          },
+        },
+        this.props.settings
+      )
+    );
 
     return this;
   }

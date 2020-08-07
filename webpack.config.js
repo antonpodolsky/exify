@@ -23,16 +23,20 @@ const webpack = (conf, { extractCss } = { extractCss: false }) => {
     },
     module: {
       rules: [
-        { test: /\.ts?$/, loader: 'ts-loader' },
         {
-          test: /\.css?$/,
+          test: /\.tsx?$/,
+          loader: 'ts-loader',
+          resolve: { extensions: ['.tsx', '.ts', '.js'] },
+        },
+        {
+          test: /\.css$/,
           loader: [
             ...(extractCss ? [MiniCssExtractPlugin.loader] : ['style-loader']),
             ...['css-loader'],
           ],
         },
         {
-          test: /\.scss?$/,
+          test: /\.scss$/,
           loader: [
             ...(extractCss ? [MiniCssExtractPlugin.loader] : ['style-loader']),
             ...['css-loader', 'sass-loader'],
